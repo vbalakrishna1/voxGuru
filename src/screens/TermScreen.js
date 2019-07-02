@@ -35,7 +35,8 @@ class TScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      params: undefined
+      params: undefined,
+      // params: props.navigation.state.params.ScreenName,
     }
   }
 
@@ -43,7 +44,12 @@ class TScreen extends React.Component {
 
   }
 
+
+  
+
   render() {
+
+   
     const backAction = NavigationActions.back({
       routeName: 'HomeScreen',
     });

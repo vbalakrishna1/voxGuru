@@ -48,10 +48,12 @@ PayuNewOrder.prototype.Create = function(payment, secure) {
             if (secure !== undefined && secure === false) {
                 this.__main__.key = "6w6X3W";
                 this.salt = "rpcWTLKv";
+                // this.url = "https://testtxncdn.payubiz.in/hdfc";
                 this.url = "https://test.payu.in/_payment";
                 // this.__main__.amount = Number.toFixed(this.__main__.amount, 2);
             } else {
                 this.url = "https://secure.payu.in/_payment";
+                // this.url = "https://testtxncdn.payubiz.in/hdfc";
             }
             if ("salt" in payment) this.salt = payment.salt;
             for (let prop in payment) {

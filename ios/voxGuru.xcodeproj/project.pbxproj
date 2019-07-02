@@ -16,7 +16,6 @@
 		00E356F31AD99517003FC87E /* voxGuruTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* voxGuruTests.m */; };
 		07CF023A168147289E196FE6 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 771822CE62224336A1943DAC /* MaterialCommunityIcons.ttf */; };
 		0A5A00AE55FC45ED8F63988F /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EAEB72A7CA64036ACD65B87 /* Ionicons.ttf */; };
-		0F08F7766B4E05E8A0F682A5 /* libPods-voxGuruTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ABE6775B7693543901AD143 /* libPods-voxGuruTests.a */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
 		139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 139105C11AF99BAD00B5F7CC /* libRCTSettings.a */; };
@@ -50,8 +49,6 @@
 		A4412F18250CBAB6040A4C1C /* libPods-voxGuru.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5102B08174AD8C19DB4600F1 /* libPods-voxGuru.a */; };
 		A4B4C9613A6640A38F78FCF6 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BCFA5CE2705F4FF0AD1D9156 /* Entypo.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
-		BE6D666D11CC2F0AC097BDFC /* libPods-voxGuru-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AF0C45C3B67D6BFD13770D51 /* libPods-voxGuru-tvOSTests.a */; };
-		CB61F036EA8C3539F2C41F9A /* libPods-voxGuru-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2A47C3DFBBDD999F9B51C79 /* libPods-voxGuru-tvOS.a */; };
 		E75C5C0514EF4C75B3BA7CBC /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2EA79F84497F4B6B8B1CEDC7 /* Octicons.ttf */; };
 		F91FBDD12227E21600553977 /* libBoringSSL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F91FBDD02227E21600553977 /* libBoringSSL.a */; };
 		F99D3C0D2201DE2C0059E781 /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F99D3BD32201DA6E0059E781 /* libBVLinearGradient.a */; };
@@ -400,7 +397,6 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		21938540453B464EA122DD70 /* libRNRandomBytes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNRandomBytes.a; sourceTree = "<group>"; };
 		23D9C0AFA144487C9E12CFCB /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		29B62C6056F8E9716CE0EEA4 /* Pods-voxGuru-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-voxGuru-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-voxGuru-tvOS/Pods-voxGuru-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* voxGuru-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "voxGuru-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* voxGuru-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "voxGuru-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -408,7 +404,6 @@
 		3191E3D8D88C41BBAE36558C /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		3F74993D67644758B9D099B0 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		5102B08174AD8C19DB4600F1 /* libPods-voxGuru.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-voxGuru.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		57C62DD4DBFF82CC34E11B8F /* Pods-voxGuru-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-voxGuru-tvOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-voxGuru-tvOSTests/Pods-voxGuru-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		58CCF579A62C41CA9CB55827 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		5AD10A9C441D4B3DA80E1271 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
@@ -419,19 +414,15 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8DF7A65F8D954207B553C56D /* RNRandomBytes.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRandomBytes.xcodeproj; path = "../node_modules/react-native-randombytes/RNRandomBytes.xcodeproj"; sourceTree = "<group>"; };
-		916873DA5651665479966AE0 /* Pods-voxGuruTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-voxGuruTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-voxGuruTests/Pods-voxGuruTests.release.xcconfig"; sourceTree = "<group>"; };
 		9ABE6775B7693543901AD143 /* libPods-voxGuruTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-voxGuruTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A544671A237F7ED718B1A38E /* Pods-voxGuru.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-voxGuru.release.xcconfig"; path = "Pods/Target Support Files/Pods-voxGuru/Pods-voxGuru.release.xcconfig"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		AF0C45C3B67D6BFD13770D51 /* libPods-voxGuru-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-voxGuru-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		B6F9E76DB0FFEA73066D61B1 /* Pods-voxGuruTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-voxGuruTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-voxGuruTests/Pods-voxGuruTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B7286E3C124B46599759348E /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		B82F54308701B0375F267B66 /* Pods-voxGuru.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-voxGuru.debug.xcconfig"; path = "Pods/Target Support Files/Pods-voxGuru/Pods-voxGuru.debug.xcconfig"; sourceTree = "<group>"; };
 		BCFA5CE2705F4FF0AD1D9156 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		BE93B09F172E4531A6A55E70 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
-		C0E447561DE17BC8AF3BEAEF /* Pods-voxGuru-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-voxGuru-tvOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-voxGuru-tvOSTests/Pods-voxGuru-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F0AA48216FBA49FD95144879 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		F16C0DFB4BF97F0744834EA1 /* Pods-voxGuru-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-voxGuru-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-voxGuru-tvOS/Pods-voxGuru-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		F2A47C3DFBBDD999F9B51C79 /* libPods-voxGuru-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-voxGuru-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F91FBD182227C96F00553977 /* libBranch-SDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libBranch-SDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F91FBD452227C9DC00553977 /* libreact-native-branch.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libreact-native-branch.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -459,7 +450,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				0F08F7766B4E05E8A0F682A5 /* libPods-voxGuruTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,7 +492,6 @@
 				2D02E4C71E0B4AEC006451C7 /* libRCTText-tvOS.a in Frameworks */,
 				2D02E4C81E0B4AEC006451C7 /* libRCTWebSocket-tvOS.a in Frameworks */,
 				60DC157BDDFB411E86F8DB63 /* libRNRandomBytes-tvOS.a in Frameworks */,
-				CB61F036EA8C3539F2C41F9A /* libPods-voxGuru-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,7 +500,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */,
-				BE6D666D11CC2F0AC097BDFC /* libPods-voxGuru-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,12 +628,6 @@
 			children = (
 				B82F54308701B0375F267B66 /* Pods-voxGuru.debug.xcconfig */,
 				A544671A237F7ED718B1A38E /* Pods-voxGuru.release.xcconfig */,
-				F16C0DFB4BF97F0744834EA1 /* Pods-voxGuru-tvOS.debug.xcconfig */,
-				29B62C6056F8E9716CE0EEA4 /* Pods-voxGuru-tvOS.release.xcconfig */,
-				C0E447561DE17BC8AF3BEAEF /* Pods-voxGuru-tvOSTests.debug.xcconfig */,
-				57C62DD4DBFF82CC34E11B8F /* Pods-voxGuru-tvOSTests.release.xcconfig */,
-				B6F9E76DB0FFEA73066D61B1 /* Pods-voxGuruTests.debug.xcconfig */,
-				916873DA5651665479966AE0 /* Pods-voxGuruTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -834,7 +816,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "voxGuruTests" */;
 			buildPhases = (
-				1C01E9B27879B306FF62D0B6 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -858,7 +839,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				00DE761AB6B31F67EA623A78 /* [CP] Copy Pods Resources */,
+				65060ABFDC4B96E02C7F9C97 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -873,7 +854,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "voxGuru-tvOS" */;
 			buildPhases = (
-				DE2A74935B6610EEC9A5A688 /* [CP] Check Pods Manifest.lock */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
 				2D02E4791E0B4A5D006451C7 /* Resources */,
@@ -892,7 +872,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "voxGuru-tvOSTests" */;
 			buildPhases = (
-				207552482CD9E60031EE34D7 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -1373,61 +1352,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
-		};
-		00DE761AB6B31F67EA623A78 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-voxGuru/Pods-voxGuru-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC/gRPCCertificates.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-voxGuru/Pods-voxGuru-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1C01E9B27879B306FF62D0B6 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-voxGuruTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		207552482CD9E60031EE34D7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-voxGuru-tvOSTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "export NODE_BINARY=node \n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1443,22 +1368,26 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		DE2A74935B6610EEC9A5A688 /* [CP] Check Pods Manifest.lock */ = {
+		65060ABFDC4B96E02C7F9C97 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+			inputFileListPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-voxGuru/Pods-voxGuru-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/gRPC-C++/gRPCCertificates.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-voxGuru-tvOS-checkManifestLockResult.txt",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/gRPCCertificates.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-voxGuru/Pods-voxGuru-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E05396FD5826017A731BD620 /* [CP] Check Pods Manifest.lock */ = {
@@ -1546,7 +1475,6 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B6F9E76DB0FFEA73066D61B1 /* Pods-voxGuruTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1582,7 +1510,6 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 916873DA5651665479966AE0 /* Pods-voxGuruTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -1680,7 +1607,6 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F16C0DFB4BF97F0744834EA1 /* Pods-voxGuru-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1721,7 +1647,6 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 29B62C6056F8E9716CE0EEA4 /* Pods-voxGuru-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1762,7 +1687,6 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0E447561DE17BC8AF3BEAEF /* Pods-voxGuru-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1802,7 +1726,6 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 57C62DD4DBFF82CC34E11B8F /* Pods-voxGuru-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;

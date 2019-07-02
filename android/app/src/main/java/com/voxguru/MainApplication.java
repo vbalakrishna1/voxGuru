@@ -3,20 +3,16 @@ package com.voxguru;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.oblador.vectoricons.VectorIconsPackage;
+import com.bitgo.randombytes.RandomBytesPackage;
 import io.branch.rnbranch.RNBranchPackage;
-import io.invertase.firebase.RNFirebasePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.learnta.clear.ClearCachePackage;
 import com.smixx.fabric.FabricPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.bitgo.randombytes.RandomBytesPackage;
-import io.branch.rnbranch.RNBranchPackage;
 import io.branch.referral.Branch;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.ianlin.RNCarrierInfo.RNCarrierInfoPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
-import com.brentvatne.react.ReactVideoPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
@@ -59,6 +55,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RandomBytesPackage(),
             new VectorIconsPackage(),
             new RNBranchPackage(),
             new RNFirebasePackage(),
@@ -66,12 +63,9 @@ public class MainApplication extends Application implements ReactApplication {
             new ClearCachePackage(),
             new FabricPackage(),
             new RNGestureHandlerPackage(),
-            new RandomBytesPackage(),
-            new RNBranchPackage(),
             new FBSDKPackage(mCallbackManager),
-            new ReactVideoPackage(),
+
             new LottiePackage(),
-            new RNFirebasePackage(),
             new RNFirebaseMessagingPackage(),
             new RNFirebaseNotificationsPackage(),
             new RNFirebaseAuthPackage(),
@@ -79,7 +73,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFirebaseFirestorePackage(),
             new RNFirebaseDatabasePackage(),
             new RNFirebaseLinksPackage(),   
-            new VectorIconsPackage(),
             new KCKeepAwakePackage(),
             new RNCarrierInfoPackage()
       );

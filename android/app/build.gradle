@@ -91,39 +91,59 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
+
 def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.voxguru"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true 
-        versionCode 21
-        versionName "4.1"
+        versionCode 22
+        versionName "5.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
     }
 
-     signingConfigs {
+signingConfigs {
         release {
-                storeFile file("voxGuru-release-key.keystore")
-                storePassword "voxGuru"
-                keyAlias "voxGuru-key-alias"
-                keyPassword "voxGuru"
-                }
+            if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
     }
+
+// signingConfigs {
+//         release {
+//             // if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
+//             //     storeFile file(MYAPP_RELEASE_STORE_FILE)
+//             //     storePassword MYAPP_RELEASE_STORE_PASSWORD
+//             //     keyAlias MYAPP_RELEASE_KEY_ALIAS
+//             //     keyPassword MYAPP_RELEASE_KEY_PASSWORD
+
+//             keyAlias 'key-alias'
+//             keyPassword 'voxGuru'
+//             storeFile file('release-key.keystore')
+//             storePassword 'voxGuru'
+//             // }
+//         }
+//     }
 
     splits {
         abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            // include "armeabi-v7a", "x86"
+            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
     
@@ -150,17 +170,19 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-branch')
-    compile project(':react-native-firebase')
-    compile project(':react-native-linear-gradient')
-    compile project(':react-native-clear-app-cache')
-    compile project(':react-native-fabric')
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+    compile project(':react-native-randombytes')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-branch')
+    implementation "io.branch.sdk.android:library:3.+"
+    implementation project(':react-native-firebase')
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-clear-app-cache')
+    implementation project(':react-native-fabric')
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
          transitive = true;
      }
-    compile project(':react-native-gesture-handler')
-    compile project(':react-native-randombytes')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-randombytes')
     implementation project(':react-native-branch')
     implementation project(':react-native-fbsdk')
     implementation project(':lottie-react-native')
@@ -177,16 +199,16 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics:16.0.4"
     implementation "com.google.firebase:firebase-auth:16.0.4"
     implementation "com.google.firebase:firebase-database:16.0.3"
-    implementation "com.google.firebase:firebase-firestore:17.1.1"
+    implementation "com.google.firebase:firebase-firestore:17.1.1"      
     implementation "com.google.firebase:firebase-invites:16.0.4"
     implementation "com.google.firebase:firebase-messaging:17.3.3"
 
     implementation project(':react-native-carrier-info')
 
     implementation project(':react-native-keep-awake')
-    implementation (project(':react-native-video-exoplayer')){
-        exclude group: "com.google.android.gms"
-    }
+//    implementation (project(':react-native-video-exoplayer')){
+//        exclude group: "com.google.android.gms"
+//    }
     implementation project(':react-native-vector-icons')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"

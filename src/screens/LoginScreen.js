@@ -56,7 +56,7 @@ class LScreen extends React.Component {
           this.props.onLogin();
         })
         .catch((err) => {
-          Alert.alert('Check mail!', 'Incorrent SignIn Credentials');
+          Alert.alert('Oops!', 'Incorrect login details. Please try again.');
         });
     } else {
       Alert.alert("Oops!", "Please check your username/password.")
@@ -67,9 +67,10 @@ class LScreen extends React.Component {
     if (email != '') {
 
       firebase.auth().sendPasswordResetEmail(email).then((msg) => {
-        ToastAndroid.show(`Please check your mail to reset your password`, ToastAndroid.LONG);
+        Alert.alert('Check email!', 'We have sent you the password reset link.');
+        // ToastAndroid.show(`Please check your mail to reset your password`, ToastAndroid.LONG);
       }).catch((err) => {
-        Alert.alert('Error', 'Mail Not Sent');
+        Alert.alert('Oops!', 'Please check your username');
       })
 
 
@@ -180,23 +181,17 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onRegister: () => {
-    dispatch(
-      NavigationActions.reset({
-        index: 1,
-        actions: [NavigationActions.navigate({ routeName: 'HomeScreen' }),
-        NavigationActions.navigate({ routeName: 'RegisterScreen' })],
-      })
-    );
+   dispatch(NavigationActions.navigate({ routeName: 'RegisterScreen'}));
   },
 
   onTerms: () => {
-    dispatch(NavigationActions.navigate({ routeName: 'TermScreen' }));
+    dispatch(NavigationActions.navigate({ routeName: 'TermScreen'}));
   },
 
   onLogin: () => {
     dispatch(NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'HomeScreen' })],
+      actions: [NavigationActions.navigate({ routeName: 'HomeScreen'})],
     }))
   }
 });

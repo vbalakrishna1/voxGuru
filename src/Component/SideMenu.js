@@ -22,6 +22,7 @@ import Icons from 'react-native-vector-icons/FontAwesome';
 import firebase from 'react-native-firebase';
 import { NavigationActions } from 'react-navigation';
 import { StyledText, AlignedText, StyledHeader } from '../UI';
+// import { StyledText, StyledHeader } from '../UI';
 
 const FBSDK = require('react-native-fbsdk');
 const {
@@ -45,7 +46,11 @@ export class SideMenu extends Component {
     };
 
     onLogout = () => {
-        LoginManager.logOut();
+    
+        // LoginManager.logOut();
+
+
+
         firebase.auth().signOut()
             .then(() => {
                 // this.props.dispatch(NavigationActions.navigate({ routeName: 'LoginModal' }));
@@ -180,7 +185,7 @@ export class SideMenu extends Component {
                     <AlignedText>My Account </AlignedText>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => this.props.onNav('AboutUs')}
+                <TouchableOpacity onPress={() => this.props.onNav('AboutUsScreen')}
                     style={{
                         minHeight: 30,
                         marginTop: 10,

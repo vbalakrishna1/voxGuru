@@ -1,9 +1,9 @@
 package com.voxguru;
 
-import com.facebook.react.ReactActivity;
-import io.branch.rnbranch.*;
+import android.content.Context;
 import android.content.Intent;
-
+import android.support.multidex.MultiDex;
+import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
 
@@ -13,24 +13,23 @@ public class MainActivity extends ReactActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "DrawerNavigation";
+        return "voxguru";
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        RNBranchModule.setDebug();
-        RNBranchModule.initSession(getIntent().getData(), this);
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-        setIntent(intent);
-    }
-    
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data);
-}
+        super.onActivityResult(requestCode, resultCode, data);
+        MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data);
+    }
+
+//   public void onCreate() {
+//               super.onCreate();
+//               Fabric.with(this, new Crashlytics());
+//           }
+
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(base);
+//        MultiDex.install(this);
+//    }
 }

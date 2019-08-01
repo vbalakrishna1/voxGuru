@@ -1,100 +1,80 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.voxguru"
-    android:versionCode="23"		
-    android:versionName="5.1">
+    package="com.voxguru">
 
-     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
 
+
+
+
+
     <application
-      android:name=".MainApplication"
+    android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
+      android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="true"
-      android:theme="@style/AppTheme">
-      <service		
-	            android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService"		
-	            android:enabled="true"		
-	            android:exported="true">		
-	            <intent-filter>		
-	                <action android:name="com.google.firebase.MESSAGING_EVENT" />		
-	            </intent-filter>		
-	        </service>		
-	        <service android:name="io.invertase.firebase.messaging.RNFirebaseInstanceIdService" android:exported="false">		
-	            <intent-filter>		
-	            <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>		
-	            </intent-filter>		
-	        </service>
-			<service android:name="io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService" />
+      android:theme="@style/AppTheme"
+        >
+
+
+
+        <!--<meta-data-->
+                 <!--android:name="io.fabric.ApiKey"-->
+                 <!--android:value=[YOUR API KEY]-->
+               <!--/>-->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="33a5f160359b77515ce785dbe39688f11a1e5052" />
+
+
+        <!--<meta-data-->
+            <!--android:name="io.fabric.ApiKey"-->
+            <!--android:value="AIzaSyArm9wf6hcR4pFUB1MxNfbeE2IfXNyQtAg"-->
+            <!--/>-->
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
-        android:launchMode="singleTask"	
         android:configChanges="keyboard|keyboardHidden|orientation|screenSize"
         android:windowSoftInputMode="adjustResize">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-        <!-- Branch URI Scheme -->		
-	            <intent-filter>		
-	                <data android:scheme="voxguru" />		
-	                <action android:name="android.intent.action.VIEW" />		
-	                <category android:name="android.intent.category.DEFAULT" />		
-	                <category android:name="android.intent.category.BROWSABLE" />		
-	            </intent-filter>		
-			
-	            <!-- Branch App Links (optional) -->		
-	            <intent-filter android:autoVerify="true">		
-	                <action android:name="android.intent.action.VIEW" />		
-	                <category android:name="android.intent.category.DEFAULT" />		
-	                <category android:name="android.intent.category.BROWSABLE" />		
-	                <data android:scheme="https" android:host="8ux2.test-app.link" />		
-	                <data android:scheme="https" android:host="8ux2.app.link" />		
-	                <data android:scheme="voxguru" android:host="open" />		
-	            </intent-filter>
       </activity>
-       <!-- Branch init -->		
-	        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_opC4Bx781Wq8vOUOcEBCqpojCDgIV5BI" />		
-	        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="key_test_jcr9qqWZ9YF4xKNKetC1JdndxwcNH0s5" />		
-			
-	        <!-- Branch testing (TestMode "true" to simulate fresh installs on dev environment) -->		
-	        <meta-data android:name="io.branch.sdk.TestMode" android:value="true" />		
-			
-			
-	        <!-- Branch install referrer tracking (optional) -->		
-	        <receiver android:name="io.branch.referral.InstallListener" android:exported="true">		
-	            <intent-filter>		
-	                <action android:name="com.android.vending.INSTALL_REFERRER" />		
-	            </intent-filter>		
-	        </receiver>		
-		
-      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-    <meta-data android:name="com.facebook.sdk.ApplicationId" 		
-	        android:value="@string/facebook_app_id"/>		
-	    		
-	    <activity android:name="com.facebook.FacebookActivity"		
-	        android:configChanges=		
-	                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"		
-	        android:label="@string/app_name" />		
-	    <activity		
-	        android:name="com.facebook.CustomTabActivity"		
-	        android:exported="true">		
-	        <intent-filter>		
-	            <action android:name="android.intent.action.VIEW" />		
-	            <category android:name="android.intent.category.DEFAULT" />		
-	            <category android:name="android.intent.category.BROWSABLE" />		
-	            <data android:scheme="@string/fb_login_protocol_scheme" />		
-	        </intent-filter>		
-	    </activity>
 
-		<meta-data
-          android:name="io.fabric.ApiKey"
-          android:value="e7b36991aa23598263ee8c9c8e71836395e24dce"
-      />
+
+      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+
+        <!--<service android:name=".service.MyFirebaseMessagingService"></service>-->
+
+        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_opC4Bx781Wq8vOUOcEBCqpojCDgIV5BI" />
+        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="key_test_jcr9qqWZ9YF4xKNKetC1JdndxwcNH0s5" />
+
+        <!-- Branch testing (TestMode "true" to simulate fresh installs on dev environment) -->
+        <meta-data android:name="io.branch.sdk.TestMode" android:value="true" />
+
     </application>
+
+
+     <!--Branch init -->
+
+
+
+    <!--&lt;!&ndash; Branch install referrer tracking (optional) &ndash;&gt;-->
+    <!--<receiver android:name="io.branch.referral.InstallListener" android:exported="true">-->
+        <!--<intent-filter>-->
+            <!--<action android:name="com.android.vending.INSTALL_REFERRER" />-->
+        <!--</intent-filter>-->
+    <!--</receiver>-->
+
 
 </manifest>

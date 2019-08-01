@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "179641853215-udbrtcjjddifaunj79otrvok9fdpj10t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voxguru",
+            "certificate_hash": "b19d3b052c4e7fe0bb8f0231320c227b9a67c631"
+          }
+        },
+        {
+          "client_id": "179641853215-5qi1agcaojrovsouicvo0frc18hadvd3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.voxguru",
+            "certificate_hash": "4a6ddad384f0d61f40db78e4df25a79096386542"
+          }
+        },
+        {
           "client_id": "179641853215-atlrhbss3vkdh2iatkdmjnrch44826t6.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -25,15 +41,21 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179641853215-atlrhbss3vkdh2iatkdmjnrch44826t6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "179641853215-ht573vj1tm4lk7foraidhemenrn7jfub.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.voxGuru1234",
+                "app_store_id": "1299389665"
+              }
+            }
+          ]
         }
       }
     }

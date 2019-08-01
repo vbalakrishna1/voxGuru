@@ -4,7 +4,7 @@
 import React from 'react'
 import {
    Modal, View, Text, Button, Alert, ActivityIndicator,
-   TouchableOpacity, ToastAndroid, NetInfo
+   TouchableOpacity, ToastAndroid, NetInfo, StyleSheet
 } from 'react-native'
 //Redux
 import { connect } from 'react-redux';
@@ -16,10 +16,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { StyledFloatIcon } from '../UI';
 import { NavigationActions } from 'react-navigation';
 import clear from 'react-native-clear-app-cache'
-
+import Video from 'react-native-af-video-player'
 import { checkInternetConnection, offlineActionTypes } from 'react-native-offline';
 
 
+var videourl = ''
 
 
 const mapStateToProps = (state) => {
@@ -41,6 +42,7 @@ class VideoModalNavigation extends React.Component {
 
       this.state = {
          modalVisible: false,
+         fullscreenstatus: true,
          videoId: (() => {
             let val = props.video.play
             console.log(videoId);
@@ -56,8 +58,8 @@ class VideoModalNavigation extends React.Component {
          resetAction: null,
          isNoConnected: true,
          isNoConnectedStart: true,
-         paused:true,
-         displayPoster:true
+         paused: true,
+         displayPoster: true
       };
 
    }
@@ -80,7 +82,7 @@ class VideoModalNavigation extends React.Component {
          .then(function (snapshot) {
             if (snapshot.val()) {
                let info = snapshot.val() || {};
-               // console.log(snapshot.val());
+               console.log('snapshot.val()', snapshot.val());
                self.setState({ info });
             } else {
                self.setState({ info: null });
@@ -95,6 +97,7 @@ class VideoModalNavigation extends React.Component {
       if (nextProps.video !== this.props.video) {
          if (nextProps.video.modalVisible) {
             this.setState({ modalVisible: true, loaded: false });
+
          } else {
             this.setState({ modalVisible: false });
          }
@@ -126,6 +129,7 @@ class VideoModalNavigation extends React.Component {
 
    componentDidMount() {
       // loads at app launch
+
    }
 
    closeModal = () => {
@@ -143,8 +147,8 @@ class VideoModalNavigation extends React.Component {
    onPlayPress = () => {
       console.log("On Play press");
       this.setState(prevState => { loaded: !prevState.loaded });
-      this.setState({ isNoConnected: true ,paused:false});
-      this.setState({displayPoster:false});
+      this.setState({ isNoConnected: true, paused: false });
+      this.setState({ displayPoster: false });
       checkInternetConnection().then(isConnected => {
          if (isConnected) {
             // ToastAndroid.show('Connected', ToastAndroid.SHORT);
@@ -173,7 +177,7 @@ class VideoModalNavigation extends React.Component {
    onStart = () => {
       console.log("onStart");
 
-      this.setState({ isNoConnectedStart: true ,displayPoster:false});
+      this.setState({ isNoConnectedStart: true, displayPoster: false });
 
       checkInternetConnection().then(isConnected => {
          if (isConnected) {
@@ -209,12 +213,17 @@ class VideoModalNavigation extends React.Component {
                if (this.props.user.user.LessonStatus[this.state.info.levelId]) {
                   if (this.state.info.videoType == "Lesson_video") {
                      if (this.props.user.user.LessonStatus[this.state.info.levelId].currentStatusLevel <= 0.1) {
+                        console.log(this.state.info)
                         console.log("user subscribed to this course, lesson video started");
                         // lesson status to 0.3 Lesson in progress
                         let params = {}
                         let object = this.props.user.user.LessonStatus[this.state.info.levelId];
-                        params[this.state.info.levelId] = { ...object, currentStatusLevel: 0.3, currentStatus: "Lesson in progress." }
-                        this.props.dispatch({ type: "USER_LESSONSTATUS_UPDATE", params });
+                        console.log('info lession id===============', this.state.info.lessonId)
+                        console.log('object lession id===============', object.currentLessonId)
+                        if(this.state.info.lessonId == object.currentLessonId){
+                           params[this.state.info.levelId] = { ...object, currentStatusLevel: 0.3, currentStatus: "Lesson in progress." }
+                           this.props.dispatch({ type: "USER_LESSONSTATUS_UPDATE", params });
+                        }
                      }
                   } else {
                      if (this.props.user.user.LessonStatus[this.state.info.levelId].currentStatusLevel <= 0.7) {
@@ -222,8 +231,12 @@ class VideoModalNavigation extends React.Component {
                         // lesson status to 0.85 practice in progress
                         let params = {}
                         let object = this.props.user.user.LessonStatus[this.state.info.levelId];
-                        params[this.state.info.levelId] = { ...object, currentStatusLevel: 0.85, currentStatus: "Practice in progress" }
-                        this.props.dispatch({ type: "USER_LESSONSTATUS_UPDATE", params });
+                        console.log('info lession id===============', this.state.info.lessonId)
+                        console.log('object lession id===============', object.currentLessonId)
+                        if(this.state.info.lessonId == object.currentLessonId){
+                           params[this.state.info.levelId] = { ...object, currentStatusLevel: 0.85, currentStatus: "Practice in progress" }
+                           this.props.dispatch({ type: "USER_LESSONSTATUS_UPDATE", params });
+                        }
                      }
                   }
                }
@@ -258,14 +271,14 @@ class VideoModalNavigation extends React.Component {
                      // lesson status to 0.7 start practice
                      let params = {}
                      let object = this.props.user.user.LessonStatus[this.state.info.levelId];
-                     params[this.state.info.levelId] = { ...object, currentStatusLevel: 0.7, currentStatus: "Lesson completed. Practice ready to start." }
-                     this.props.dispatch({ type: "USER_LESSONSTATUS_UPDATE", params });
-                  }
 
+                     if(this.state.info.lessonId == object.currentLessonId){
+                        params[this.state.info.levelId] = { ...object, currentStatusLevel: 0.7, currentStatus: "Lesson completed. Practice ready to start." }
+                        this.props.dispatch({ type: "USER_LESSONSTATUS_UPDATE", params });
+                     }
+                  }
                } else {
                   console.log("user subscribed to this course, practice video end");
-                  // need to update to new lesson info and set lesson status to 0.1
-
                   let object = {}
                   var self = this
                   let myRe = new RegExp('[1-9][0-9]?$', 'g');
@@ -335,53 +348,103 @@ class VideoModalNavigation extends React.Component {
       //ToastAndroid.show('onLoad', ToastAndroid.SHORT)  
    }
 
+   funloaddata() {
+      // global.fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
+      //   .then(res => res.json())
+      //   .then(res => {
+      //     videourl = res.request.files.progressive[2].url
+      //   });
+
+      global.fetch(`https://player.vimeo.com/video/${this.state.videoId}/config`)
+         .then(res => res.json())
+         .then(res => {
+            console.log("---------------------->", res);
+            videourl = res.request.files.progressive[2].url
+            //  this.setState({
+            //    thumbnailUrl: res.video.thumbs['640'],
+            //    videoUrl: res.request.files.progressive[2].url,
+            //    video: res.video,
+
+            //  })
+         });
+
+      //   Alert.alert("call")
+
+
+   }
+
+   onFullScreen(status) {
+      // Set the params to pass in fullscreen status to navigationOptions
+      // this.props.navigation.setParams({
+      //   fullscreen: !status
+      // })
+      if (status == false) {
+         this.setState({ fullscreenstatus: true })
+      }
+      else {
+         this.setState({ fullscreenstatus: false })
+      }
+      console.log("full screen ", status)
+   }
+
+
+   onPlayPress(playing) {
+      console.log("-----", playing)
+   }
+
    render() {
       // console.log("video:", this.state);
+      //  this.funloaddata()
+
       return (
-         <Modal
-            visible={this.state.modalVisible}
-            animationType={'slide'}
-            onRequestClose={() => this.onLearnMore()}>
-            <View style={{ flex: 1, justifyContent: 'center', backgroundColor: 'black' }}>
+         <View >
 
 
-               <TouchableOpacity style={{ padding: 5 }} onPress={this.onLearnMore}>
+            {this.state.modalVisible ?
+
+               <View style={styles.container}>
+                  {/* {this.state.fullscreenstatus ?  <TouchableOpacity style={{ padding: 5 }} onPress={this.onLearnMore}>
                   <Icon name="close" size={24} color="white" />
-               </TouchableOpacity>
+                </TouchableOpacity> : null} */}
 
-               <Voxplayer videoId={this.state.videoId}
-                  onEnd={this.onEnd}
-                  onProgress={this.onProgress}
-                  onPlayPress={this.onPlayPress}
-                  getVideoInfo={this.getVideoInfo}
-                  onLoad={this.onLoad}
-                  onStart={this.onStart}
-                  paused={this.state.paused}
-                  loaded = {this.state.loaded}
-                  displayPoster = {this.state.displayPoster}
-               />
-               {/*  {this.state.loading && <ActivityIndicator style={{ position: 'absolute',
-             alignItems: 'center',
-             left: 0,
-             right: 0,
-             top: 0,
-             bottom: 0,
-             justifyContent: 'center'
-             }}
-             size={'large'} color={'purple'}/>} */}
-               {/*  <ActivityIndicator animating={!this.state.loaded} size={'large'} color={'purple'}/> */}
-               <KeepAwake />
-            </View>
-         </Modal>
+                  {/* {this.funloaddata()} */}
+                  {/* <Video url={videourl} 
+        rotateToFullScreen = {true}
+        onFullScreen={status => this.onFullScreen(status)}
+        onPlayPress = {playing => this.onPlayPress(playing)}
+        /> */}
+
+
+                  <Voxplayer videoId={this.state.videoId}
+                     onEnd={this.onEnd}
+                     onProgress={this.onProgress}
+                     onPlayPress={this.onPlayPress}
+                     getVideoInfo={this.getVideoInfo}
+                     onLoad={this.onLoad}
+                     onStart={this.onStart}
+                     paused={this.state.paused}
+                     loaded={this.state.loaded}
+                     displayPoster={this.state.displayPoster}
+                     onFullScreen={status => this.onFullScreen(status)}
+                  />
+
+
+               </View>
+
+               : null}
+
+         </View>
       )
    }
 }
+
 export const VideoModal = connect(mapStateToProps)(VideoModalNavigation);
 
 
 export const videoReducer = (state, action) => {
    switch (action.type) {
       case 'OPEN_VIDEO':
+
          return { ...state, modalVisible: true, play: action.params }
          break;
       case 'CLOSE_VIDEO':
@@ -399,7 +462,19 @@ export const videoReducer = (state, action) => {
       case 'CHANGE_VIDEO':
          return { ...state, play: action.params }
          break;
+      case 'CLOSE_VIDEO_NEW':
+         return { ...state, modalVisible: false }
+         break;
       default:
          return { ...state, modalVisible: false, play: null };
    }
 }
+
+const styles = StyleSheet.create({
+   container: {
+      //   flex: 1,
+      height: '100%',
+      backgroundColor: '#000',
+      justifyContent: 'center',
+   }
+})

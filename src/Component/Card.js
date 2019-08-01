@@ -27,17 +27,13 @@ export default class Card extends React.PureComponent {
     this.ImageURI = props.item.courseThumbnail1;
     this.params = props.id;
   }
-
+  
   render() {
     return (
-      <View style={{ width: '50%', aspectRatio: this.state.ViewRatio,flexDirection: 'row'}}>
-
-        <Image source={{ uri: this.ImageURI }} style={{ width: this.props.width * 0.16, aspectRatio: this.state.AspectRatio, alignSelf: 'center',marginRight: 10,marginLeft: 10}} />
-        <AlignedText  color={"Light"} selfalign={"Center"} padding={"0px"}>{this.props.item.courseTitile}</AlignedText>
-
+      <View style={{ width: '50%', aspectRatio: this.state.ViewRatio, flexDirection: 'row' }}>
+        <Image source={{ uri: this.ImageURI }} style={{ width: this.props.width * 0.16, aspectRatio: this.state.AspectRatio, alignSelf: 'center', marginRight: 10, marginLeft: 10 }} />
+        <AlignedText color={"Light"} selfalign={"Center"} padding={"0px"}>{this.props.item.courseTitile}</AlignedText>
       </View>
-
-
     );
   }
 };

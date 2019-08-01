@@ -106,7 +106,7 @@ class BookLiveScreen extends Component {
     return (
     <StyledContainer>
     <Header title={"Book Live Class"} leftNavMenu={true} leftNavFunc={() => this.props.navigation.navigate("DrawerOpen")}/>
-         <StyledBox>
+         <View style={{flex:1}}>
        <ChatBot
       handleEnd={this.handleEnd}
         steps={[
@@ -298,7 +298,7 @@ class BookLiveScreen extends Component {
           },
         ]}
       />
-      </StyledBox>
+      </View>
     </StyledContainer>
       
     );

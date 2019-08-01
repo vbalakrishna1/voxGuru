@@ -1,2 +1,0 @@
-# voxguru-android-internal
-

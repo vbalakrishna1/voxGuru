@@ -1,7 +1,7 @@
 import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { View, Alert, StatusBar, ToastAndroid,BackHandler, ScrollView, FlatList, StyleSheet, Image, TouchableOpacity, Dimensions, Button, Text } from 'react-native';
+import { View, Alert, StatusBar, ToastAndroid, BackHandler, ScrollView, FlatList, StyleSheet, Image, TouchableOpacity, Dimensions, Button, Text } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import {
    StyledContainer,
@@ -20,6 +20,12 @@ import Header from '../Component/Header';
 import TopCard from '../Component/TopCard';
 import Card from '../Component/Card';
 import * as Progress from 'react-native-progress';
+
+// var Fabric = require('react-native-fabric');
+
+// var { Crashlytics } = Fabric;
+
+
 
 
 // const debounce = require('lodash.debounce');
@@ -47,7 +53,6 @@ const styles = StyleSheet.create({
 const { height, width } = Dimensions.get('window');
 
 let backCounter = 3;
-
 
 export class HomeScreen extends PureComponent {
    constructor(props) {
@@ -148,7 +153,7 @@ export class HomeScreen extends PureComponent {
    componentWillUnmount() {
       Dimensions.addEventListener('change', this._handleChange);
    }
-   
+
    _handleChange = (change) => {
       this.setState({ width: change.window.width, TopCardAspectRatio: (change.window.width > change.window.height ? 2 : 1.8) });
    }
@@ -211,7 +216,7 @@ export class HomeScreen extends PureComponent {
       if (progressState < 1 && progressState > 0) {
          return (
             <View style={{ paddingLeft: 2, paddingBottom: 5 }}>
-               <Progress.Bar color={'rgba(107, 56, 165, 1.0)'} borderRadius={6} progress={progressState} width={this.props.width * 0.5} height={10} animated={true} />
+               <Progress.Bar color={'rgba(107, 56, 165, 1.0)'} borderRadius={6} progress={progressState} width={width * 0.5} height={10} animated={true} />
             </View>
          );
       } else {
@@ -379,9 +384,7 @@ const mapDispatchToProps = dispatch => ({
    //   console.log(params);
    //   dispatch({type:"USER_LESSONSTATUS_UPDATE", params});
    // },
-
    openPay: (val) => {
-
       console.log(val);
       firebase.database().ref().child('levels').child(val).once('value')
          .then(function (snapshot) {
@@ -400,14 +403,14 @@ const mapDispatchToProps = dispatch => ({
                )
             }
          });
-
    },
-
    openMenu: () => {
       dispatch(NavigationActions.navigate({ routeName: 'DrawerOpen' }))
    },
 
    openCourse: (params, courseTitile) => {
+      // Crashlytics.crash();
+
 
       firebase.database().ref().child('courses').child(params).once('value')
          .then(function (snapshot) {
@@ -427,9 +430,7 @@ const mapDispatchToProps = dispatch => ({
                )
             }
          });
-
    },
-
    onViewAll: (val) => {
       console.log(val);
       firebase.database().ref().child('lessons').child(val).once('value')
@@ -450,7 +451,6 @@ const mapDispatchToProps = dispatch => ({
             }
          });
    },
-
    openVideo: (params) => {
       dispatch({ type: 'OPEN_VIDEO', params })
    },

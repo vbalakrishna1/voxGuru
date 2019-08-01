@@ -123,7 +123,19 @@ class StackNavigationState extends React.Component {
 export const StackState = connect(mapStateToProps)(StackNavigationState);
 
 
+// const secondRouteConfiguration = {
+//    AboutUsScreen: {
+//       screen: AboutUsScreen,
+//    },
+//    AboutAllScreen: {
+//       screen: AboutAllScreen,
+//    },
+//    AboutGuruScreen: {
+//       screen: AboutGuruScreen,
+//    },
+// }
 const secondRouteConfiguration = {
+   
    AboutUsScreen: {
       screen: AboutUsScreen,
    },
@@ -133,6 +145,10 @@ const secondRouteConfiguration = {
    AboutGuruScreen: {
       screen: AboutGuruScreen,
    },
+   HomeScreen : {
+      screen : HomeScreen
+   },
+  
 }
 
 // // going to disable the header for now

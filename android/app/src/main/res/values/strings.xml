@@ -1,5 +1,8 @@
+<!--<resources>-->
+    <!--<string name="app_name">voxguru</string>-->
+<!--</resources>-->
 <resources>
-  <string name="facebook_app_id">114747599232232</string>
-    <string name="fb_login_protocol_scheme">fb114747599232232</string>
-    <string name="app_name">voxGuru</string>
-    </resources>
+    <string name="facebook_app_id">2072579726378963</string>
+    <string name="fb_login_protocol_scheme">fb2072579726378963</string>
+    <string name="app_name">VoxGuru</string>
+</resources>

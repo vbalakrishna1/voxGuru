@@ -119,8 +119,6 @@ export const StyledTouchableOpacity = styled.TouchableOpacity`
     align-self: center;
 `
 
-
-
 export const Button = styled.TouchableOpacity`
     padding: 5px;
     align-self: center;

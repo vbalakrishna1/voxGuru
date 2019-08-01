@@ -105,12 +105,9 @@ class LScreen extends React.Component {
             // implement practice video open.
             this.props.openVideo(this.props.navigation.state.params.lessonPracticeGuideVideo);
          }
-
       } else {
          this.props.openPay(this.state.params.levelId);
       }
-
-
    }
 
    onLesson = () => {
@@ -159,7 +156,6 @@ class LScreen extends React.Component {
                   backgroundColor: "white", elevation: 4, margin: 5,
                   padding: 5, borderRadius: 4, width: "90%"
                }}>
-
                   <TouchableOpacity onPress={this.onLesson}>
                      <View style={{ borderRadius: 2, flexDirection: "row", margin: 5 }}>
                         <View style={{ padding: 5, margin: 5, width: 100, height: 100, alignItems: "center", justifyContent: "center", borderRadius: 2, borderColor: "#d3d3d3", borderWidth: 1 }}>
@@ -192,6 +188,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
    openVideo: (params) => {
+      console.log('-------open video---------');
       dispatch({ type: 'OPEN_VIDEO', params })
    },
 
@@ -200,8 +197,7 @@ const mapDispatchToProps = dispatch => ({
    },
 
    openPay: (val) => {
-
-      //console.log(val);
+      console.log('-------open pay---------');
       firebase.database().ref().child('levels').child(val).once('value')
          .then(function (snapshot) {
             if (snapshot.val()) {
@@ -219,15 +215,13 @@ const mapDispatchToProps = dispatch => ({
                )
             }
          });
-
    },
-
 });
 
 export default LessonScreen = connect(mapStateToProps, mapDispatchToProps)(LScreen);
 
 // Need to complete
 // add touchables to  lesson notes and practice video
-// create lesson notes page in home stack.
+// create lesson notes page in home stack
 // add user subscribe state
 // if not subscribed add lock to page and show subscribe modal

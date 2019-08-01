@@ -82,14 +82,8 @@ class WVScreen extends React.Component {
   }
 
  
-
-
 _renderCard = ({item}) =>{
-  // console.log(this.props.navigation.state.params);
-  // console.log(this.state.lessonName)
-  // console.log(this.state.courseActive)
-  // console.log(this.state.currentLessonNum)
-
+  console.log('----------------',this.props.navigation.state.params);
   return(
     <LessonCard item={item} params={this.props.navigation.state.params} onViewAll={this.props.onViewAll}
       lessonName={this.state.lessonName} courseActive={this.state.courseActive} currentLessonNum={this.state.currentLessonNum}
@@ -192,7 +186,7 @@ _onclick = (arrowRotate) => {
                   flex: 0.1,
                   flexDirection: 'row',
                   position: 'absolute',
-                  left: this.state.width*0.25,
+                  // left: this.state.width*0.25,
                   bottom:0,
                   opacity: 1,
                   padding: 5,

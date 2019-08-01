@@ -17,7 +17,10 @@ import store from './src/store';
 import { Provider } from 'react-redux';
 import CarrierInfo from 'react-native-carrier-info';
 import HomeScreen from './src/screens/HomeScreen'
-import './shim.js'
+import './shim.js';
+
+
+
 
 const FN = firebase.notifications();
 const FCM = firebase.messaging();
@@ -25,6 +28,9 @@ const ref = firebase.firestore().collection('app');
 
 let backCounter = 3;
 var loginVar = 0;
+var unsubscribeLink;
+var unsubscribe;
+
 export default class MyApp extends React.Component {
 
    constructor(props) {
@@ -43,7 +49,7 @@ export default class MyApp extends React.Component {
             'Alert..No Internet!',
             'Do you want to exit',
             [
-               { text: 'OK', onPress: () => BackHandler.exitApp() },
+               { text: 'OK', onPress: () => this.exitApp() },
                { text: 'Keep waiting', onPress: () => console.log('fine') },
                { text: 'Cancel', onPress: () => this.setState({ isLoading: false }), style: 'cancel' },
             ],
@@ -57,21 +63,25 @@ export default class MyApp extends React.Component {
    componentWillMount() {
       store.dispatch({ type: "IS_LOADING" });
       // console.log(store.getState()); // logs intiall state
-      const unsubscribe = store.subscribe(() => {
+
+      unsubscribe = store.subscribe(() => {
          let state = store.getState();
          // console.log(state);
          if (state.appUi.isLoading) {
-            console.log('reached here');
+            console.log('2222@@@@@@@4$$$$$$^^^^----state.appUi.isLoading-----^^^^^reached here');
             this.setState({ isLoading: true })
             this.animation.play();
          } else {
             if (this.animation) {
+               console.log('2222@@@@@@@4$$$$$$^^------this.animation------^^^^^^^reached here');
                this.animation.reset();
             }
             this.setState({ isLoading: false })
          }
       }
       );
+
+      
       NetInfo.addEventListener(
          'connectionChange',
          this.handleFirstConnectivityChange
@@ -79,6 +89,11 @@ export default class MyApp extends React.Component {
    }
 
    componentDidMount() {
+      // firebase.crashlytics()
+      // firebase.crashlytics().log('Test Message!');
+    
+
+
       firebase.database().ref().child('Screens').once('value')
          .then(function (snapshot) {
             if (snapshot.val()) {
@@ -185,7 +200,7 @@ export default class MyApp extends React.Component {
             }
          });
 
-      const unsubscribeLink = firebase.links().onLink((url) => {
+      unsubscribeLink = firebase.links().onLink((url) => {
          // ...
          console.log(url);
       });
@@ -193,15 +208,20 @@ export default class MyApp extends React.Component {
    componentWillUpdate() {
    }
    componentWillUnmount() {
+     
       BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
-
+      console.log('----------reached hardwareBackPress here--------');
+// console.log("****unsubscribe*****",unsubscribe())
       unsubscribe();
       unsubscribeLink();
-      this.unsubscribeFireStore();
+      // this.unsubscribeFireStore();
+      this.unsubscribeFireStore = null;
+
       NetInfo.removeEventListener(
          'connectionChange',
          this.handleFirstConnectivityChange
       );
+     
    }
    onBackPress = () => {
       let state = store.getState();
@@ -219,7 +239,7 @@ export default class MyApp extends React.Component {
             'Are you sure?',
             'Do you want to exit?',
             [
-               { text: 'OK', onPress: () => BackHandler.exitApp() },
+               { text: 'OK', onPress: () => this.exitApp() },
                { text: 'Ask me later', onPress: () => { backCounter = 3; this.setState({ isLoading: false }) } },
                { text: 'Cancel', onPress: () => { backCounter++; this.setState({ isLoading: false }) }, style: 'cancel' },
             ],
@@ -230,6 +250,11 @@ export default class MyApp extends React.Component {
       return true;
    };
 
+
+
+   exitApp(){
+      BackHandler.exitApp()
+   }
    render() {
       return (
          <Provider store={store}>

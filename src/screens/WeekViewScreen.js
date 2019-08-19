@@ -213,11 +213,11 @@ _onclick = (arrowRotate) => {
               height: 1,
               width: 0.3,}
              }}>
-             <Icon size={20} color="#ffbc00" name="subscriptions"/>
+             <Icon size={20} color="#ffffff" name="subscriptions"/>
              <Text
             style={{
               textAlign: 'center',
-            color:'#ffbc00',
+            color:'#ffffff',
             fontSize: 18,
             }}> Subscribe</Text> 
              </View>

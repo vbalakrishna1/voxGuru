@@ -59,69 +59,72 @@ class CScreen extends React.Component {
 
    _renderCustomSegmentElementChild(val) {
       if (this.state.Levels[val].status) {
-         return (
-            <View>
-               <View style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'column', paddingHorizontal: 10, paddingVertical: 5, }}>
-                  <View style={{
-                     flexWrap: 'nowrap',
-                     flexDirection: 'row',
-                     padding: 10,
-                     borderColor: "#e0e0e0",
-                     borderWidth: 1, borderRadius: 3
-                  }}>
-                     <TouchableOpacity onPress={debounce(() => this.check(this.state.Levels[val].levelId, this.state.Levels[val]), 1000, { leading: true, trailing: false })}>
-                        <Image
-                           style={{
-                              width: this.state.width * 30.1 / 90, aspectRatio: 1.1,
-                              paddingTop: 15,
-                              borderRadius: 6,
-                              borderColor: 'grey',
-                           }}
-                           source={{ uri: this.state.Levels[val].levelThumbNoPlayIcon }}
-                        />
-                     </TouchableOpacity>
+         if (this.state.Levels[val].hideCourse != 1) {
+            return (
+               <View>
+                  <View style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'column', paddingHorizontal: 10, paddingVertical: 5, }}>
                      <View style={{
-                        flex: 1,
-                        flexWrap: 'wrap',
-                        flexDirection: 'column',
-                        paddingLeft: 10,
-                        paddingRight: 5,
-                        justifyContent: "space-between",
+                        flexWrap: 'nowrap',
+                        flexDirection: 'row',
+                        padding: 10,
+                        borderColor: "#e0e0e0",
+                        borderWidth: 1, borderRadius: 3
                      }}>
-                        <View style={{ paddingLeft: 2.5 }}>
-                           <StyledText weight={"SemiBold"}>
-                              {this.state.Levels[val].LevelTitleNew}
-                           </StyledText>
-                           <StyledText size={"Medium"}>
-                              {this.state.Levels[val].LevelDescNew}
-                           </StyledText>
-                        </View>
-                        <View
-                           style={{
-                              flexDirection: 'row',
-                              backgroundColor: '#6b38a5',
-                              borderRadius: 4,
-                           }}>
-                           <TouchableOpacity onPress={debounce(() => this.check(this.state.Levels[val].levelId, this.state.Levels[val]), 1000, { leading: true, trailing: false })}
-                              // this.onViewAll(this.state.Levels[val].levelId,this.state.Levels[val])
+                        <TouchableOpacity onPress={debounce(() => this.check(this.state.Levels[val].levelId, this.state.Levels[val]), 1000, { leading: true, trailing: false })}>
+                           <Image
+                              style={{
+                                 width: this.state.width * 30.1 / 90, aspectRatio: 1.1,
+                                 paddingTop: 15,
+                                 borderRadius: 6,
+                                 borderColor: 'grey',
+                              }}
+                              source={{ uri: this.state.Levels[val].levelThumbNoPlayIcon }}
+                           />
+                        </TouchableOpacity>
+                        <View style={{
+                           flex: 1,
+                           flexWrap: 'wrap',
+                           flexDirection: 'column',
+                           paddingLeft: 10,
+                           paddingRight: 5,
+                           justifyContent: "space-between",
+                        }}>
+                           <View style={{ paddingLeft: 2.5 }}>
+                              <StyledText weight={"SemiBold"}>
+                                 {this.state.Levels[val].LevelTitleNew}
+                              </StyledText>
+                              <StyledText size={"Medium"}>
+                                 {this.state.Levels[val].LevelDescNew}
+                              </StyledText>
+                           </View>
+                           <View
                               style={{
                                  flexDirection: 'row',
-                                 flexGrow: 1,
-                                 alignItems: "center",
-                                 justifyContent: "center",
-                                 alignContent: "space-between",
-                                 paddingVertical: 10,
+                                 backgroundColor: '#6b38a5',
+                                 borderRadius: 4,
                               }}>
-                              <Text style={{ color: '#ffbc00', marginRight: 5 }} >
-                                 View full course</Text>
-                              <Icon size={18} name="md-arrow-forward" color='#ffbc00' />
-                           </TouchableOpacity>
+                              <TouchableOpacity onPress={debounce(() => this.check(this.state.Levels[val].levelId, this.state.Levels[val]), 1000, { leading: true, trailing: false })}
+                                 // this.onViewAll(this.state.Levels[val].levelId,this.state.Levels[val])
+                                 style={{
+                                    flexDirection: 'row',
+                                    flexGrow: 1,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    alignContent: "space-between",
+                                    paddingVertical: 10,
+                                 }}>
+                                 <Text style={{ color: '#ffffff', marginRight: 5,fontFamily:'Nunito-Bold' }} >
+                                    View full course</Text>
+                                 <Icon size={18} name="md-arrow-forward" color='#ffffff' />
+                              </TouchableOpacity>
+                           </View>
                         </View>
                      </View>
                   </View>
                </View>
-            </View>
-         );
+            );
+         }
+
       } else {
          return (
             <View>
@@ -144,13 +147,12 @@ class CScreen extends React.Component {
       buttonsListArr = [];
       levelsArray = Object.values(this.state.Levels)
       const tempKeyArray = new Array()
-      const finalLevelsArray = new Array()
       tempPriority = 0
       for (let i = 0; i < levelsArray.length; i++) {
          for (let i = 0; i < levelsArray.length; i++) {
             if (tempPriority == levelsArray[i].priority) {
                for (let j = 0; j < keys.length; j++) {
-                  if(i == j){
+                  if (i == j) {
                      tempKeyArray.push(keys[j])
                   }
                }
@@ -158,7 +160,26 @@ class CScreen extends React.Component {
             }
          }
       }
-      console.log("Temp Key Array>>",tempKeyArray)
+      const HideArray = new Array()
+      const notHideArray = new Array()
+      for (let i = 0; i < levelsArray.length; i++) {
+         if (levelsArray[i].status) {
+            if (levelsArray[i].hideCourse == 1) {
+               HideArray.push(levelsArray[i])
+            } else {
+               notHideArray.push(levelsArray[i])
+            }
+         }
+      }
+
+      notHideComponent = [];
+      if (notHideArray.length == 0) {
+         notHideComponent.push(
+            <View style={{ height: '100%', padding: 10, alignItems: 'center', justifyContent: 'center' }}>
+               <Text style={{ textAlign: 'center' ,color: 'grey', fontFamily: "Nunito-Regular", }}>No modules available at this time. Please choose another course.</Text>
+            </View>
+         )
+      }
       for (let i = 0; i < tempKeyArray.length; i++) {
          buttonsListArr.push(
             <View>
@@ -177,8 +198,11 @@ class CScreen extends React.Component {
                   <View style={{ backgroundColor: "#fefefe" }}>
                      {buttonsListArr}
                   </View>
+
                </StyledImageContainer>
             </StyledBox>
+
+            <View>{notHideComponent}</View>
          </StyledContainer>
       );
    }

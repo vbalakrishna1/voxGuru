@@ -68,12 +68,10 @@ export default class MyApp extends React.Component {
          let state = store.getState();
          // console.log(state);
          if (state.appUi.isLoading) {
-            console.log('2222@@@@@@@4$$$$$$^^^^----state.appUi.isLoading-----^^^^^reached here');
             this.setState({ isLoading: true })
             this.animation.play();
          } else {
             if (this.animation) {
-               console.log('2222@@@@@@@4$$$$$$^^------this.animation------^^^^^^^reached here');
                this.animation.reset();
             }
             this.setState({ isLoading: false })
@@ -164,7 +162,6 @@ export default class MyApp extends React.Component {
          const LessonStatus = {};
          querySnapshot.forEach((doc) => { LessonStatus[doc.id] = doc.data() })
          store.dispatch({ type: 'USER_UPDATE', params: { LessonStatus } });
-         console.log(LessonStatus);
       }
 
 

@@ -72,10 +72,10 @@ const AboutUsScreen = ({ openMenu, MainPage, openList }) => (
           alignContent: "space-between",
           paddingVertical: 10,
         }}> 
-        <StyledText color={'HighLight'} >  
+        <StyledText color={'Light'} weight={'Bold'}>  
             Meet All VoxGurus 
         </StyledText>
-        <Icon size={18} name="arrow-forward" color='#ffbc00' />
+        <Icon size={18} name="arrow-forward" color='#ffffff' />
         </TouchableOpacity>
         </View>
       </View>

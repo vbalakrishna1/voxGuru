@@ -46,25 +46,14 @@ export class SideMenu extends Component {
     };
 
     onLogout = () => {
-    
+
         // LoginManager.logOut();
-
-
 
         firebase.auth().signOut()
             .then(() => {
                 // this.props.dispatch(NavigationActions.navigate({ routeName: 'LoginModal' }));
                 this.props.onNavTo('LoginModal')
                 ToastAndroid.show(`Log out success`, ToastAndroid.LONG);
-
-
-
-
-
-
-
-
-
 
             }).catch((error) => {
                 console.log(error);
@@ -84,7 +73,7 @@ export class SideMenu extends Component {
         }
 
     }
-    onNavToHome= (data) => {
+    onNavToHome = (data) => {
         if (data != "") {
             if (this.props.user.userLogin) {
                 this.props.onNavTo(data);
@@ -146,9 +135,9 @@ export class SideMenu extends Component {
                         paddingHorizontal: 15,
                     }}>
                     <View style={{ flex: -1, justifyContent: 'flex-start', alignItems: "center", flexDirection: 'row' }}>
-                        <Icon name="subscriptions" color='#ffbc00' size={24}
+                        <Icon name="subscriptions" color='#ffffff' size={24}
                         />
-                        <AlignedText color={'HighLight'} padding={'0px 10px'}>Subscribe</AlignedText>
+                        <AlignedText color={'Light'} padding={'0px 10px'} weight={'Bold'}>My Courses</AlignedText>
                     </View>
                 </TouchableOpacity>
 
@@ -166,9 +155,9 @@ export class SideMenu extends Component {
                         paddingHorizontal: 15,
                     }}>
                     <View style={{ flex: -1, alignItems: "center", justifyContent: 'flex-start', flexDirection: 'row' }}>
-                        <Icon name="videocam" color='#ffbc00' size={24}
+                        <Icon name="videocam" color='#ffffff' size={24}
                         />
-                        <AlignedText color={'HighLight'} padding={'0px 10px'}>Book Live Class</AlignedText>
+                        <AlignedText color={'Light'} padding={'0px 10px'} weight={'Bold'}>Book Live Class</AlignedText>
                     </View>
                 </TouchableOpacity>
 

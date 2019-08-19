@@ -122,8 +122,8 @@ class HelpCenterScreen extends React.Component {
                   <TouchableOpacity onPress={() => Linking.openURL('mailto:voxguru@pratibhamusic.com?subject=VoxGuru Help Request').catch(err => console.error('An error occurred', err))}>
                      <View style={styles.bigButton}>
                         <View style={{ flex: 1, justifyContent: 'flex-start', flexDirection: 'row', alignItems: "center" }}>
-                           <Icon name="email" color='#ffbb00' size={24} />
-                           <StyledText size={"Large"} color={"HighLight"}>Email Us.</StyledText>
+                           <Icon name="email" color='#ffffff' size={24} />
+                           <StyledText size={"Large"} weight={'Bold'} color={"Light"}>Email Us.</StyledText>
                         </View>
                      </View>
                   </TouchableOpacity>

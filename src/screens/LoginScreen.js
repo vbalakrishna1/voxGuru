@@ -153,7 +153,7 @@ class LScreen extends React.Component {
                 margin: 10,
               }}
             >
-              <StyledText color={"HighLight"}> Login </StyledText>
+              <StyledText color={"Light"}> Login </StyledText>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.onTerms}>
               {/* <TouchableOpacity  onPress={this.onLogout}>  */}

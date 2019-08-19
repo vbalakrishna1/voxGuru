@@ -117,7 +117,7 @@ class RScreen extends React.Component {
                 margin: 10,
               }}
             >
-              <StyledText color={"HighLight"}> Register </StyledText>
+              <StyledText color={"Light"}> Register </StyledText>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.onTerms}>
               <View

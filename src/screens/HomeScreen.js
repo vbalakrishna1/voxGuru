@@ -57,6 +57,7 @@ let backCounter = 3;
 export class HomeScreen extends PureComponent {
    constructor(props) {
       super(props);
+      console.log(props);
       let sub = function () {
          if (props.user.userLogin) {
             if (props.user.user.LessonStatus !== null) {
@@ -87,7 +88,7 @@ export class HomeScreen extends PureComponent {
          }
          return false
       }()
-      console.log(sub);
+     
       this.state = {
          user: props.user.user || {},
          ui: props.appUi.HomeScreen || {},
@@ -97,6 +98,7 @@ export class HomeScreen extends PureComponent {
          userLogin: props.user.userLogin,
          isSubscriber: sub
       }
+      console.log(this.state.ui)
    }
 
    componentWillReceiveProps(nextProps) {
@@ -159,18 +161,19 @@ export class HomeScreen extends PureComponent {
    }
    renderItem = ({ item, index }) => {
       // console.log(item,index );
-      return (
-         <StyledImageCard id={item.courseId} >
-
-            <TouchableOpacity onPress={
-               debounce(() => this.props.openCourse(item.courseId, item.courseTitile), 1000, { leading: true, trailing: false })}>
-               <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={item.gradients} style={styles.linearGradient}>
-                  <Card id={item.courseId} item={item} width={this.state.width} />
-               </LinearGradient>
-            </TouchableOpacity>
-
-         </StyledImageCard>
-      )
+         return (
+            <StyledImageCard id={item.courseId} >
+   
+               <TouchableOpacity onPress={
+                  debounce(() => this.props.openCourse(item.courseId, item.courseTitile), 1000, { leading: true, trailing: false })}>
+                  <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={item.gradients} style={styles.linearGradient}>
+                     <Card id={item.courseId} item={item} width={this.state.width} />
+                  </LinearGradient>
+               </TouchableOpacity>
+   
+            </StyledImageCard>
+         )
+      
    }
 
    onLogout = (email, password) => {
@@ -310,14 +313,15 @@ export class HomeScreen extends PureComponent {
       }
    }
    render() {
-      console.log(this.state);
+      console.log(this.state,this.state.ui.SECTIONS);
+       
       return (
          <StyledContainer>
             <Header title={"Home"} leftNavMenu={true} leftNavFunc={this.props.openMenu} />
             <StyledBox contentContainerStyle={{ alignItems: "center" }}>
-               {this.props.appUi.HomeScreen && !this.state.isSubscriber ? (
+               {this.state.ui.CARD ? (
                   <StyledImageContainer>
-                     <TopCard img={this.props.appUi.HomeScreen.CARD}
+                     <TopCard img={this.state.ui.CARD}
                         openVideo={this.props.openVideo} width={this.state.width}
                         TopCardAspectRatio={this.state.TopCardAspectRatio} />
                      <StyledVideoBar>
@@ -325,8 +329,8 @@ export class HomeScreen extends PureComponent {
                         <StyledText color={"Light"} weight={"SemiBold"}>{this.props.appUi.HomeScreen.CARD.courseVideoLength}</StyledText>
                      </StyledVideoBar>
                   </StyledImageContainer>
-               ) : null}
-               {this.state.isSubscriber ? (
+                ) : null} 
+               {/* {this.state.isSubscriber ? (
                   <StyledFullWidthContainer>
                      <FlatList
                         keyExtractor={item => item.currentLevelId}
@@ -336,7 +340,7 @@ export class HomeScreen extends PureComponent {
                      />
                   </StyledFullWidthContainer>
                ) : null
-               }
+               } */}
                <StyledListContainer>
                   <AlignedText padding={"0px 10px"} weight={"SemiBold"}>Our Courses</AlignedText>
                   <FlatList

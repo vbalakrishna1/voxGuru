@@ -88,23 +88,23 @@ class LScreen extends React.Component {
          var levelId = this.props.navigation.state.params.levelId;
 
          var currentStatusLevel = this.props.user.user.LessonStatus[levelId].currentStatusLevel;
+         this.props.openVideo(this.props.navigation.state.params.lessonPracticeGuideVideo);
+         // if (this.props.user.user.LessonStatus[levelId].currentStatusLevel < 0.5 &&
+         //    this.props.user.user.LessonStatus[levelId].currentLessonId
+         //    == this.state.params.lessonId) {
+         //    Alert.alert(
+         //       'Not just yet! :-)',
+         //       'Please complete the main lesson before practice!',
+         //       [
+         //          { text: 'OK', onPress: () => console.log("Error"), style: 'cancel' },
+         //       ],
+         //       { cancelable: true }
+         //    )
 
-         if (this.props.user.user.LessonStatus[levelId].currentStatusLevel < 0.5 &&
-            this.props.user.user.LessonStatus[levelId].currentLessonId
-            == this.state.params.lessonId) {
-            Alert.alert(
-               'Not just yet! :-)',
-               'Please complete the main lesson before practice!',
-               [
-                  { text: 'OK', onPress: () => console.log("Error"), style: 'cancel' },
-               ],
-               { cancelable: true }
-            )
-
-         } else {
-            // implement practice video open.
-            this.props.openVideo(this.props.navigation.state.params.lessonPracticeGuideVideo);
-         }
+         // } else {
+         //    // implement practice video open.
+         //    this.props.openVideo(this.props.navigation.state.params.lessonPracticeGuideVideo);
+         // }
       } else {
          this.props.openPay(this.state.params.levelId);
       }

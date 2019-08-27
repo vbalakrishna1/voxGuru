@@ -68,7 +68,7 @@ class MyAccountScreen extends Component {
     });
     console.log(this.state.info)
     if (this.props.user.user.LessonStatus) {
-      console.log('reached here MYAC1');
+      console.log('-----reached here MYAC1',this.props.user.user.TransactionHistory);
       
 
       this.setState({
@@ -191,20 +191,20 @@ class MyAccountScreen extends Component {
   _renderTransaction(val) {
     // console.log(this.state[val]);
 
-console.log('----',this.state.transactionHistory.length)
+console.log('----',this.state.transactionHistory)
     if (this.state.transactionHistory == undefined) {
       return (
-        <View style={{
-          flex: 1,
-          padding: 10,
-        }}>
 
-          <FlatList
-            data={Object.values(this.state.transactionHistory)}
-            renderItem={({ item, index }) => this._renderTransactionRow(item)}
-            keyExtractor={item => item.txnid}
-          />
+
+
+        <View style={{
+          paddingHorizontal:10,
+          paddingVertical: 20,
+          alignItems: "center",
+        }}>
+          <Text> Once you subscribe to a course, you can view your Transactions' here </Text>
         </View>
+        
       )
     } else if (this.state.transactionHistory == []){
       return (
@@ -220,11 +220,15 @@ console.log('----',this.state.transactionHistory.length)
      else {
       return (
         <View style={{
-          paddingHorizontal:10,
-          paddingVertical: 20,
-          alignItems: "center",
+          flex: 1,
+          padding: 10,
         }}>
-          <Text> Once you subscribe to a course, you can view your Transactions' here </Text>
+
+          <FlatList
+            data={Object.values(this.state.transactionHistory)}
+            renderItem={({ item, index }) => this._renderTransactionRow(item)}
+            keyExtractor={item => item.txnid}
+          />
         </View>
       )
     }

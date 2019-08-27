@@ -69,9 +69,6 @@ export class LessonCard extends Component {
         progressState, progressStatus, isActive
       });
     }
-
-
-
   }
 
   _renderProgress = (progressState, progressStatus) => {
@@ -100,20 +97,25 @@ export class LessonCard extends Component {
           <TouchableOpacity onPress={debounce(() =>
             this.props.onViewAll(this.props.item.lessonId, this.state.isActive, this.state.progressState, this.props.lessonName,
               this.props.courseActive, this.props.params), 1000, { leading: true, trailing: false })}
-            style={{ padding: 5, elevation: 5, margin: 5, }}>
-            <View style={{ elevation: 1, borderRadius: 2, flexDirection: "row" }}>
-              {(this.state.progressState < 1 && this.state.progressState > 0) ?
-                (
-                  <Image source={{ uri: this.props.item.activeImg }} style={{ width: 100, aspectRatio: 1, borderTopLeftRadius: 2, borderBottomLeftRadius: 2 }} />
-
-                ) : (
-                  <Image source={{ uri: this.props.item.img }} style={{ width: 100, aspectRatio: 1, borderTopLeftRadius: 2, borderBottomLeftRadius: 2 }} />
-                )}
+            style={{ marginVertical: 3, marginHorizontal: 6, backgroundColor: '#fff' }}>
+            <View style={{ padding: 4, borderRadius: 2, flexDirection: "row" }}>
+              <View>
+                <Image source={{ uri: this.props.item.img }} style={{ width: 100, aspectRatio: 1, borderRadius: 10 }} />
+                <View style={{ position: 'absolute', width: 100, aspectRatio: 1, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+                  <Image source={require('../images/playIcon.png')} style={{ height: 35, width: 35, resizeMode: 'contain' }}></Image>
+                </View>
+              </View>
               <View style={{ justifyContent: "center", padding: 5, flexWrap: "wrap", flex: 1 }}>
-                <AlignedText size={"Large"} weight={"SemiBold"}>{this.props.item.title}</AlignedText>
-                <AlignedText size={"Medium"} textalign={"Justify"}>{this.props.item.content}</AlignedText>
+                <StyledText weight={"SemiBold"}>
+                  {this.props.item.title}
+                </StyledText>
+                <StyledText size={"Medium"}>
+                  {this.props.item.content}
+                </StyledText>
+                {/* <AlignedText size={"Large"} weight={"SemiBold"}>{this.props.item.title}</AlignedText>
+                <AlignedText size={"Medium"} textalign={"Justify"}>{this.props.item.content}</AlignedText> */}
 
-                <View style={{ flex: -1, paddingVertical: 5, marginLeft: -2 }}>
+                {/* <View style={{ flex: -1, paddingVertical: 5, marginLeft: -2 }}>
                   {this._renderProgress(this.state.progressState, this.state.progressStatus)}
                 </View>
                 <View style={{
@@ -124,21 +126,31 @@ export class LessonCard extends Component {
                   top: 0,
                 }}>
                   {this._renderCheck(this.state.progressState)}
-                </View>
+                </View> */}
               </View>
             </View>
-
           </TouchableOpacity>
         ) : (
             <TouchableOpacity onPress={debounce(() =>
               this.props.onViewAll(this.props.item.lessonId, this.state.isActive, this.state.progressState, this.props.lessonName,
                 this.props.courseActive, this.props.params), 1000, { leading: true, trailing: false })}
-              style={{ padding: 5, elevation: 5, margin: 5, }}>
-              <View style={{ elevation: 1, borderRadius: 2, flexDirection: "row" }}>
-                <Image source={{ uri: this.props.item.img }} style={{ width: 100, aspectRatio: 1, borderTopLeftRadius: 2, borderBottomLeftRadius: 2 }} />
+              style={{ marginVertical: 3, marginHorizontal: 6, backgroundColor: '#fff' }}>
+              <View style={{ padding: 4, borderRadius: 2, flexDirection: "row" }}>
+                <View>
+                  <Image source={{ uri: this.props.item.img }} style={{ width: 100, aspectRatio: 1, borderRadius: 10 }} />
+                  <View style={{ position: 'absolute', backgroundColor: 'rgba(0, 0, 0, 0.5)', width: 100, aspectRatio: 1, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+                    <Image source={require('../images/lock.png')} style={{ height: 28, width: 28, resizeMode: 'contain' }}></Image>
+                  </View>
+                </View>
+
+
                 <View style={{ justifyContent: "center", padding: 5, flexWrap: "wrap", flex: 1 }}>
-                  <AlignedText size={"Large"} weight={"SemiBold"}>{this.props.item.title}</AlignedText>
-                  <AlignedText size={"Medium"} textalign={"Justify"}>{this.props.item.content}</AlignedText>
+                  <StyledText weight={"SemiBold"}>
+                    {this.props.item.title}
+                  </StyledText>
+                  <StyledText size={"Medium"}>
+                    {this.props.item.content}
+                  </StyledText>
                 </View>
               </View>
 

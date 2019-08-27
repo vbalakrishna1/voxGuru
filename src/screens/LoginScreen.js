@@ -53,7 +53,9 @@ class LScreen extends React.Component {
       firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
         .then((user) => {
           ToastAndroid.show(`Log in success`, ToastAndroid.LONG);
+          
           this.props.onLogin();
+
         })
         .catch((err) => {
           Alert.alert('Oops!', 'Incorrect login details. Please try again.');

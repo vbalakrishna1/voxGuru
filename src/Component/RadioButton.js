@@ -70,11 +70,15 @@ class RadioButton extends Component {
             {
             this.state.button > -1 && 
             <View style={{paddingHorizontal:5}}>
-            <Button onPress={()=>this.props.planSubmit(this.state.cost[this.state.button])}
+              <TouchableOpacity onPress={()=>this.props.planSubmit(this.state.cost[this.state.button])} style={{backgroundColor:'#6b38a5',alignItems:'center',justifyContent:'center',paddingVertical:15}}>
+                <Text style={{color:'#ffffff',fontWeight:'bold'}}>PAY NOW</Text>
+              </TouchableOpacity>
+            {/* <Button onPress={()=>this.props.planSubmit(this.state.cost[this.state.button])}
                 title="Pay Now"
                 color="#6b38a5"
                 accessibilityLabel="Submit Plan Choice"
-            />
+                style={{margin:20}}
+            /> */}
             </View>
             }    
             </View>

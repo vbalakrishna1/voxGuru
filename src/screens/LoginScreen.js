@@ -49,13 +49,22 @@ class LScreen extends React.Component {
   }
 
   onLogin = (email, password) => {
+    var self = this
     if (email != '' && password != '') {
       firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
         .then((user) => {
-          ToastAndroid.show(`Log in success`, ToastAndroid.LONG);
-          
-          this.props.onLogin();
-
+          console.log('----user----', user)
+          firebase.database().ref().child('users').child(user.user._user.uid).once('value')
+            .then(function (snapshot) {
+              let val = snapshot.val();
+              // write to firestore and also update redux store.
+              if (val) {
+                Alert.alert('Oops!', 'This account is associated with an iOS device. Please login using iOS or create a new account in your Android device.')
+              } else {
+                ToastAndroid.show(`Log in success`, ToastAndroid.LONG);
+                self.props.onLogin()
+              }
+            })
         })
         .catch((err) => {
           Alert.alert('Oops!', 'Incorrect login details. Please try again.');
@@ -183,17 +192,17 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onRegister: () => {
-   dispatch(NavigationActions.navigate({ routeName: 'RegisterScreen'}));
+    dispatch(NavigationActions.navigate({ routeName: 'RegisterScreen' }));
   },
 
   onTerms: () => {
-    dispatch(NavigationActions.navigate({ routeName: 'TermScreen'}));
+    dispatch(NavigationActions.navigate({ routeName: 'TermScreen' }));
   },
 
   onLogin: () => {
     dispatch(NavigationActions.reset({
       index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'HomeScreen'})],
+      actions: [NavigationActions.navigate({ routeName: 'HomeScreen' })],
     }))
   }
 });

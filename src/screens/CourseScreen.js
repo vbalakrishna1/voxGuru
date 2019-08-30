@@ -217,7 +217,7 @@ const mapDispatchToProps = dispatch => ({
       dispatch({ type: 'OPEN_VIDEO', params })
    },
    onViewAll: (val, zero) => {
-      //console.log(val);
+      console.log('------',val,zero);
       //console.log(zero);
       firebase.database().ref().child('levels').child(val).once('value')
          .then(function (snapshot) {

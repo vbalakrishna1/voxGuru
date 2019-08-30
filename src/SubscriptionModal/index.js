@@ -129,14 +129,14 @@ class SubscriptionModalNavigation extends React.Component {
                 if (snapshot.val()) {
                     let dataSource = snapshot.val() || {};
                     // console.log(snapshot.val());
-                    let resetAction = NavigationActions.reset({
-                        index: 1,
-                        actions: [
-                            NavigationActions.navigate({ routeName: 'HomeScreen' }),
-                            NavigationActions.navigate({ routeName: 'LessonScreen', params: dataSource, })
-                        ],
-                    });
-                    self.props.dispatch(resetAction);
+                    // let resetAction = NavigationActions.reset({
+                    //     index: 1,
+                    //     actions: [
+                    //         NavigationActions.navigate({ routeName: 'HomeScreen' }),
+                    //         // NavigationActions.navigate({ routeName: 'HomeScreen', params: dataSource, })
+                    //     ],
+                    // });
+                    // self.props.dispatch(resetAction);
                     self.closeModal();
                 } else {
                     console.log("error");
@@ -225,6 +225,12 @@ class SubscriptionModalNavigation extends React.Component {
             this.setState({ executed: false, showWebpage: false });
             console.log("success:", data);
             this.writeToDB({ params, lessonDetails: this.props.params.info, isSuccess: true, lesnId });
+            if(this.state.isSuccess){
+                this.setState({showWebpage:false})
+                this.closeSuccess()
+            }
+            
+
         }
     }
 
@@ -362,7 +368,9 @@ class SubscriptionModalNavigation extends React.Component {
             ToastAndroid.show(`Completed Course buy`, ToastAndroid.LONG)
             self.props.dispatch({ type: "USER_COURSE_BUY", params, lessonDetails, isSuccess, lesnId });
             self.props.dispatch({ type: "USER_UPDATE", params });
+
         })
+
     }
 
 
@@ -409,14 +417,17 @@ class SubscriptionModalNavigation extends React.Component {
 
 
                         {(this.state.isSuccess)
-                            && (<StyledImageCard>
-                                <AlignedText> Payment Success!! </AlignedText>
-                                <AlignedText>{this.state.data.txnid}</AlignedText>
-                                <SmallButton onPress={debounce(() => this.closeSuccess(), 1000, { leading: true, trailing: false })}>
-                                    <AlignedText color={"Light"} weight={"SemiBold"} padding={"2.5px 5px"}>Start Course</AlignedText>
-                                </SmallButton>
-                            </StyledImageCard>
-                            )}
+                        && (
+                            this.closeSuccess()
+                        )
+                            // <StyledImageCard>
+                            //     <AlignedText> Payment Success!! </AlignedText>
+                            //     <AlignedText>{this.state.data.txnid}</AlignedText>
+                            //     <SmallButton onPress={debounce(() => this.closeSuccess(), 1000, { leading: true, trailing: false })}>
+                            //         <AlignedText color={"Light"} weight={"SemiBold"} padding={"2.5px 5px"}>Start Course</AlignedText>
+                            //     </SmallButton>
+                            // </StyledImageCard>
+                            }
 
                     </View>
                 </StyledContainer>

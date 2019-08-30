@@ -66,7 +66,7 @@ class MyAccountScreen extends Component {
       info: this.props.user.user.info,
       animating: false
     });
-    console.log(this.state.info)
+    console.log('---info',this.state.info)
     if (this.props.user.user.LessonStatus) {
       console.log('-----reached here MYAC1',this.props.user.user.TransactionHistory);
       

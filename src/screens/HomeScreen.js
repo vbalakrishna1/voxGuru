@@ -413,7 +413,6 @@ const mapDispatchToProps = dispatch => ({
 
    openCourse: (params, courseTitile) => {
       // Crashlytics.crash();
-      firebase.analytics().logEvent(`Page_HelpCenter`);
       firebase.database().ref().child('courses').child(params).once('value')
          .then(function (snapshot) {
             if (snapshot.val()) {

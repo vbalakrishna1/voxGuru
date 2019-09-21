@@ -63,8 +63,6 @@ export class LessonCard extends Component {
       if (nextProps.user.user.LessonStatus[nextProps.params.info.currentLevelId]) {
         isActive = true;
       }
-
-      console.log(progressStatus);
       this.setState({
         progressState, progressStatus, isActive
       });

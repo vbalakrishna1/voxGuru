@@ -7,17 +7,17 @@ import thunk from 'redux-thunk';
 
 import firebase from 'react-native-firebase';
 
-import {AppNavigationReducer, StackNavigationReducer, AboutStackNavigationReducer} from '../route';
-import {appUiReducer} from '../AppUiReducer';
-import {loginReducer} from '../LoginModal';
-import {videoReducer} from '../VideoModal';
-import {subscriptionReducer} from '../SubscriptionModal';
-import {userReducer} from '../UserReducer';
-import {navMiddleWare} from '../utils';
+import { AppNavigationReducer, StackNavigationReducer, AboutStackNavigationReducer } from '../route';
+import { appUiReducer } from '../AppUiReducer';
+import { loginReducer } from '../LoginModal';
+import { videoReducer } from '../VideoModal';
+import { subscriptionReducer } from '../SubscriptionModal';
+import { userReducer } from '../UserReducer';
+import { navMiddleWare } from '../utils';
 // import { screenTracking } from '../screenTracking';
 
 import { NavigationActions } from 'react-navigation';
-import {ToastAndroid} from 'react-native';
+import { ToastAndroid } from 'react-native';
 
 
 const executeIfFunction = f =>
@@ -33,59 +33,59 @@ var backTracking = 0;
 const reactNavigationMiddleware = store => dispatch => action => {
 
   const days = ['Navigation/NAVIGATE', 'Navigation/BACK',
-               'Navigation/COMPLETE_TRANSITION', 'USER_UPDATE',
-               'USER_FIRESTORE_CREATE', 'USER_LESSONSTATUS_UPDATE', 
-               ,'OPEN_PAY','USER_PRACTICE_END', 'OPEN_VIDEO',
-               'USER_LOGGED']
+    'Navigation/COMPLETE_TRANSITION', 'USER_UPDATE',
+    'USER_FIRESTORE_CREATE', 'USER_LESSONSTATUS_UPDATE',
+    , 'OPEN_PAY', 'USER_PRACTICE_END', 'OPEN_VIDEO',
+    'USER_LOGGED']
 
   const getDay = switchcaseF(
-  days.reduce((acc, value) =>
-    (acc[value] = true, acc), {})
+    days.reduce((acc, value) =>
+      (acc[value] = true, acc), {})
   )(false)
 
-    if(getDay(action.type)){
-    if(action.type=='Navigation/NAVIGATE'){
-        console.log(action.routeName);
-        // course screen
-        if(action.routeName =="CourseScreen"){
-          console.log( action.params.courseId)
-          firebase.analytics().setCurrentScreen(`CourseScreen ${action.params.courseId}`, "CourseScreen" );
-          firebase.analytics().logEvent(`Page_CourseScreen`, {id: action.params.courseId});
-        }     
-        if(action.routeName =="WeekViewScreen"){
-          console.log( action.params.zero.levelId)
-          firebase.analytics().setCurrentScreen(`WeekViewScreen ${action.params.zero.levelId}`, "WeekViewScreen" );
-          firebase.analytics().logEvent(`Page_WeekViewScreen`, {id: action.params.zero.levelId});
-        }   
-        if(action.routeName =="LessonScreen"){
-          console.log(action.params.lessonId)
-          firebase.analytics().setCurrentScreen(`LessonScreen ${action.params.lessonId}`, "LessonScreen" );
-          firebase.analytics().logEvent(`Page_LessonScreen`, {id: action.params.lessonId});
-        }  
+  if (getDay(action.type)) {
+    if (action.type == 'Navigation/NAVIGATE') {
+      console.log(action.routeName);
+      // course screen
+      if (action.routeName == "CourseScreen") {
+        console.log(action.params.courseId)
+        firebase.analytics().setCurrentScreen(`CourseScreen ${action.params.courseId}`, "CourseScreen");
+        firebase.analytics().logEvent(`Page_CourseScreen`, { id: action.params.courseId });
+      }
+      if (action.routeName == "WeekViewScreen") {
+        console.log(action.params.zero.levelId)
+        firebase.analytics().setCurrentScreen(`WeekViewScreen ${action.params.zero.levelId}`, "WeekViewScreen");
+        firebase.analytics().logEvent(`Page_WeekViewScreen`, { id: action.params.zero.levelId });
+      }
+      if (action.routeName == "LessonScreen") {
+        console.log(action.params.lessonId)
+        firebase.analytics().setCurrentScreen(`LessonScreen ${action.params.lessonId}`, "LessonScreen");
+        firebase.analytics().logEvent(`Page_LessonScreen`, { id: action.params.lessonId });
+      }
 
-        if(action.routeName =="BookLiveClass" || action.routeName =="Subscribe"|| 
-        action.routeName =="MyAccount"|| action.routeName =="HelpCenter"|| 
-        action.routeName =="AboutUs"|| action.routeName =="PrivacyPolicy"){
-          // console.log("ran");
-          firebase.analytics().setCurrentScreen(`Page_${action.routeName}`, action.routeName );
-          firebase.analytics().logEvent(`Page_${action.routeName}`);
-        }
+      if (action.routeName == "BookLiveClass" || action.routeName == "Subscribe" ||
+        action.routeName == "MyAccount" || action.routeName == "HelpCenter" ||
+        action.routeName == "AboutUs" || action.routeName == "PrivacyPolicy") {
+        // console.log("ran");
+        firebase.analytics().setCurrentScreen(`Page_${action.routeName}`, action.routeName);
+        firebase.analytics().logEvent(`Page_${action.routeName}`);
+      }
     }
 
-    if(action.type=='OPEN_PAY'){
-      firebase.analytics().logEvent(`Open_Pay`, {id:action.params.info.currentLevelId});
+    if (action.type == 'OPEN_PAY') {
+      firebase.analytics().logEvent(`Open_Pay`, { id: action.params.info.currentLevelId });
     }
 
 
 
-    if(action.type=='USER_LOGGED'){
-      firebase.analytics().setUserProperty( 'emailId', action.params.email);
+    if (action.type == 'USER_LOGGED') {
+      firebase.analytics().setUserProperty('emailId', action.params.email);
     }
 
-    if(action.type == 'USER_FIRESTORE_CREATE' && store.getState().user.user.uid){
-
-      firebase.firestore().doc(`users/${store.getState().user.user.uid}`).set(action.params.info).then(function(docRef) {
-        console.log("wrote successfully");
+    if (action.type == 'USER_FIRESTORE_CREATE' && store.getState().user.user.uid) {
+      console.log('------action.params.info', action.params.info)
+      firebase.firestore().doc(`users/${store.getState().user.user.uid}`).set(action.params.info).then(function (docRef) {
+        console.log("-----------------wrote successfully");
 
         // firebase.firestore().collection(`users/${store.getState().user.user.uid}/LessonStatus`).add(action.params.LessonStatus)
         //   .then(function(docRef) { })
@@ -97,29 +97,29 @@ const reactNavigationMiddleware = store => dispatch => action => {
 
         for (var key in action.params.LessonStatus) {
           var lessonRef = lessons.doc(key);
-          batch.set(lessonRef,action.params.LessonStatus[key]);
+          batch.set(lessonRef, action.params.LessonStatus[key]);
         }
 
-        for (var key in action.params.TransactionHistory) { 
+        for (var key in action.params.TransactionHistory) {
           var userTranRef = userTran.doc(key);
-          batch.set(userTranRef,action.params.TransactionHistory[key]);
+          batch.set(userTranRef, action.params.TransactionHistory[key]);
         }
 
-        for (var key in action.params.TransactionHistory) { 
+        for (var key in action.params.TransactionHistory) {
           var globalTranRef = globalTran.doc(action.params.TransactionHistory[key].txnid);
-          batch.set(globalTranRef,action.params.TransactionHistory[key]);
+          batch.set(globalTranRef, action.params.TransactionHistory[key]);
         }
-        
-        batch.commit().then(function(){
+
+        batch.commit().then(function () {
           console.log("batch wrote successfully");
         })
-      }).catch(function(error) {
-          console.log("Error getting document:", error);
+      }).catch(function (error) {
+        console.log("Error getting document:", error);
       });
 
     }
 
-    if(action.type == 'USER_LESSONSTATUS_UPDATE' && store.getState().user.user.uid){
+    if (action.type == 'USER_LESSONSTATUS_UPDATE' && store.getState().user.user.uid) {
 
       let batch = firebase.firestore().batch();
       let lessons = firebase.firestore().collection(`users/${store.getState().user.user.uid}/LessonStatus`)
@@ -127,31 +127,30 @@ const reactNavigationMiddleware = store => dispatch => action => {
       for (var key in action.params) {
         console.log('update', action.params[key])
         var lessonRef = lessons.doc(key);
-        batch.set(lessonRef,action.params[key]);
+        batch.set(lessonRef, action.params[key]);
       }
-      
-      batch.commit().then(function(){
+
+      batch.commit().then(function () {
         console.log("batch wrote successfully");
-      }).catch(function(error) {
+      }).catch(function (error) {
         console.log("Error writing batch:", error);
-    });
+      });
     }
   }
 
-  if(action.type == 'OPEN_VIDEO'){ 
-    firebase.analytics().logEvent(`Open_Video`, {id:action.params});
+  if (action.type == 'OPEN_VIDEO') {
+    firebase.analytics().logEvent(`Open_Video`, { id: action.params });
   }
-  
+
   dispatch(action);
 }
 
-const screenTracking = store => ({dispatch}) => action => {
-  if(action.routeName) {
+const screenTracking = store => ({ dispatch }) => action => {
+  if (action.routeName) {
     console.log(action.routeName);
   }
-    dispatch(action)
+  dispatch(action)
 };
-
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const enhancer = composeEnhancers(
@@ -163,8 +162,6 @@ const enhancer = composeEnhancers(
   // other store enhancers if any
 );
 
-
-
 const reducer = combineReducers({
   nav: AppNavigationReducer,
   home: StackNavigationReducer,
@@ -175,9 +172,7 @@ const reducer = combineReducers({
   appUi: appUiReducer,
   user: userReducer,
 });
- 
 
-
-  export default createStore(    
-    reducer,
-    enhancer);
+export default createStore(
+  reducer,
+  enhancer);

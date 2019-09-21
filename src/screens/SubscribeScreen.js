@@ -524,8 +524,7 @@ class Subscribe extends Component {
                   }}>
 
 
-                     {Coursemodule.hideCourse == 1 ?
-                        <View >
+                     
                            <Image
                               style={{
                                  width: this.state.width * 30.1 / 90,
@@ -537,22 +536,7 @@ class Subscribe extends Component {
                               }}
                               source={{ uri: Coursemodule.levelThumbNoPlayIcon }}
                            />
-                        </View>
-                        :
-                        <TouchableOpacity onPress={debounce(() => this.props.openPay(item.currentLevelId), 1000, { leading: true, trailing: false })}>
-                           <Image
-                              style={{
-                                 width: this.state.width * 30.1 / 90,
-                                 // height: this.state.height* 25/139,
-                                 aspectRatio: 1.1,
-                                 paddingTop: 15,
-                                 borderRadius: 6,
-                                 borderColor: 'grey',
-                              }}
-                              source={{ uri: Coursemodule.levelThumbNoPlayIcon }}
-                           />
-                        </TouchableOpacity>
-                     }
+                      
 
 
 
@@ -589,7 +573,7 @@ class Subscribe extends Component {
                         </View>
 
 
-                        {Coursemodule.hideCourse == 1 ?
+                        {/* {Coursemodule.hideCourse == 1 ?
                            <View
                               style={{
                                  marginTop: 5,
@@ -607,7 +591,7 @@ class Subscribe extends Component {
                                  backgroundColor: '#6b38a5',
                                  borderRadius: 4,
                               }}>
-                              <TouchableOpacity onPress={debounce(() => this.props.openPay(item.currentLevelId), 1000, { leading: true, trailing: false })}
+                              {/* <TouchableOpacity onPress={debounce(() => this.props.openPay(item.currentLevelId), 1000, { leading: true, trailing: false })}
                                  // this.onViewAll(this.state.Levels[val].levelId,this.state.Levels[val])
                                  style={{
                                     flexDirection: 'row',
@@ -620,10 +604,32 @@ class Subscribe extends Component {
                                  <Text style={{ color: '#ffffff', marginRight: 5, fontFamily: 'Nunito-Bold' }} >
                                     Renew</Text>
                                  <Ionicons size={18} name="md-arrow-forward" color='#ffffff' />
-                              </TouchableOpacity>
-                           </View>
-                        }
+                              </TouchableOpacity> */}
+                           {/* </View> */}
+                        {/* } */} 
 
+   <View
+      style={{
+         flexDirection: 'row',
+         backgroundColor: '#6b38a5',
+         borderRadius: 4,
+      }}>
+
+      {/* <TouchableOpacity onPress={debounce(() => this.props.openPay(item.currentLevelId), 1000, { leading: true, trailing: false })}
+         // this.onViewAll(this.state.Levels[val].levelId,this.state.Levels[val])
+         style={{
+            flexDirection: 'row',
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            alignContent: "space-between",
+            paddingVertical: 10,
+         }}>
+         <Text style={{ color: '#ffffff', marginRight: 5, fontFamily: 'Nunito-Bold' }} >
+            Renew</Text>
+         <Ionicons size={18} name="md-arrow-forward" color='#ffffff' />
+      </TouchableOpacity> */}
+   </View>
 
 
                         {/* <View
@@ -843,13 +849,11 @@ class Subscribe extends Component {
                unSubscribedCourse.sort(function (a, b) {
                   return new Date(parseInt(b.startDate)) - new Date(parseInt(a.startDate));
                });
-               console.log('sorted unSubscribedCourse----', unSubscribedCourse)
             } else {
                SubscribedCourse.push(tempArray[i])
                SubscribedCourse.sort(function (a, b) {
                   return new Date(parseInt(b.startDate)) - new Date(parseInt(a.startDate));
                });
-               console.log('sorted SubscribedCourse----', SubscribedCourse)
             }
          }
       }

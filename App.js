@@ -18,7 +18,7 @@ import { Provider } from 'react-redux';
 import CarrierInfo from 'react-native-carrier-info';
 import HomeScreen from './src/screens/HomeScreen'
 import './shim.js';
-
+import DeviceInfo from 'react-native-device-info'
 
 
 
@@ -56,7 +56,13 @@ export default class MyApp extends React.Component {
             { cancelable: true }
          )
       } else {
-         ToastAndroid.show(`Internet Connection type ${connectionInfo.type}`, ToastAndroid.LONG)
+         if (connectionInfo.type == 'cellular') {
+            ToastAndroid.show(`Connected to mobile data`, ToastAndroid.LONG)
+
+         } else {
+            ToastAndroid.show(`Connected to ${connectionInfo.type}`, ToastAndroid.LONG)
+
+         }
       }
    }
 
@@ -79,7 +85,7 @@ export default class MyApp extends React.Component {
       }
       );
 
-      
+
       NetInfo.addEventListener(
          'connectionChange',
          this.handleFirstConnectivityChange
@@ -89,7 +95,6 @@ export default class MyApp extends React.Component {
    componentDidMount() {
       // firebase.crashlytics()
       // firebase.crashlytics().log('Test Message!');
-    
 
 
       firebase.database().ref().child('Screens').once('value')
@@ -109,7 +114,6 @@ export default class MyApp extends React.Component {
             firebase.firestore().collection("users").doc(user._user.uid).get().then(function (doc) {
                if (doc.exists) {
                   var info = doc.data();
-                  console.log('!!!!!info', info);
                   store.dispatch({ type: 'USER_UPDATE', params: { info, LessonStatus, TransactionHistory } });
                   var LessonStatus = {};
                   this.ref = firebase.firestore().collection("users").doc(user._user.uid).collection("LessonStatus");
@@ -118,7 +122,7 @@ export default class MyApp extends React.Component {
                   // TransactionHistory
                   firebase.firestore().collection("users").doc(user._user.uid).collection("TransactionHistory").get().then((querySnapshot) => {
                      querySnapshot.forEach((collection) => {
-                        console.log("collection: ", collection.data());
+                        // console.log("collection: ", collection.data());
                         TransactionHistory[collection.id] = collection.data();
                      });
                      store.dispatch({ type: 'USER_UPDATE', params: { TransactionHistory } });
@@ -129,7 +133,6 @@ export default class MyApp extends React.Component {
                   // extract data from real time db.
                   firebase.database().ref().child('users').child(user._user.uid).once('value')
                      .then(function (snapshot) {
-                        console.log(snapshot.val());
                         let val = snapshot.val();
                         // write to firestore and also update redux store.
                         if (val) {
@@ -137,7 +140,24 @@ export default class MyApp extends React.Component {
                         } else {
                            let { email, displayName, photoURL } = user._user
                            let temp = {};
-                           temp["info"] = { email, userName: displayName, profileThumbnail: photoURL, phone: "", genderText: "", ageText: "" }
+                           temp["info"] = {
+                              email,
+                              userName: displayName,
+                              profileThumbnail: photoURL,
+                              mobile_number: "",
+                              genderText: "",
+                              ageText: "",
+                              first_name: "",
+                              last_name: "",
+                              country: "",
+                              udid: DeviceInfo.getUniqueID(),
+                              os: "android",
+                              subscription_status: false,
+                              date_of_registration: new Date(),
+
+                           }
+
+                           console.log('------temp',temp)
                            store.dispatch({ type: 'USER_FIRESTORE_CREATE', params: temp });
                         }
                      })
@@ -172,9 +192,7 @@ export default class MyApp extends React.Component {
          .then((result) => {
             if (result === "in") store.dispatch({ type: 'USER_INDIA_SIM' })
          });
-
-
-
+         
       FCM.getToken().then(token => {
          console.log(token);
       });
@@ -205,10 +223,10 @@ export default class MyApp extends React.Component {
    componentWillUpdate() {
    }
    componentWillUnmount() {
-     
+
       BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
       console.log('----------reached hardwareBackPress here--------');
-// console.log("****unsubscribe*****",unsubscribe())
+      // console.log("****unsubscribe*****",unsubscribe())
       unsubscribe();
       unsubscribeLink();
       // this.unsubscribeFireStore();
@@ -218,7 +236,7 @@ export default class MyApp extends React.Component {
          'connectionChange',
          this.handleFirstConnectivityChange
       );
-     
+
    }
    onBackPress = () => {
       let state = store.getState();
@@ -249,7 +267,7 @@ export default class MyApp extends React.Component {
 
 
 
-   exitApp(){
+   exitApp() {
       BackHandler.exitApp()
    }
    render() {

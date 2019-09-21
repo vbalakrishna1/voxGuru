@@ -179,7 +179,7 @@ export class HomeScreen extends PureComponent {
    onLogout = (email, password) => {
       firebase.auth().signOut()
          .then(() => {
-            ToastAndroid.show(`Log out success`, ToastAndroid.LONG);
+            ToastAndroid.show(`Logged out!`, ToastAndroid.LONG);
          }).catch((error) => {
             console.log(error);
             ToastAndroid.show("error", ToastAndroid.LONG);
@@ -313,7 +313,6 @@ export class HomeScreen extends PureComponent {
       }
    }
    render() {
-      console.log(this.state,this.state.ui.SECTIONS);
        
       return (
          <StyledContainer>
@@ -414,8 +413,7 @@ const mapDispatchToProps = dispatch => ({
 
    openCourse: (params, courseTitile) => {
       // Crashlytics.crash();
-
-
+      firebase.analytics().logEvent(`Page_HelpCenter`);
       firebase.database().ref().child('courses').child(params).once('value')
          .then(function (snapshot) {
             if (snapshot.val()) {
@@ -436,6 +434,8 @@ const mapDispatchToProps = dispatch => ({
          });
    },
    onViewAll: (val) => {
+
+
       console.log(val);
       firebase.database().ref().child('lessons').child(val).once('value')
          .then(function (snapshot) {

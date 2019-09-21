@@ -53,7 +53,7 @@ export class SideMenu extends Component {
             .then(() => {
                 // this.props.dispatch(NavigationActions.navigate({ routeName: 'LoginModal' }));
                 this.props.onNavTo('LoginModal')
-                ToastAndroid.show(`Log out success`, ToastAndroid.LONG);
+                ToastAndroid.show(`Logged out!`, ToastAndroid.LONG);
 
             }).catch((error) => {
                 console.log(error);
@@ -64,7 +64,8 @@ export class SideMenu extends Component {
     onNavigate = (data) => {
         if (data != "") {
             if (this.props.user.userLogin) {
-                this.props.onNav(data);
+               
+                this.props.onNav(data,this.props.user.user.uid);
             } else {
                 this.props.onNavTo('LoginModal')
             }
@@ -124,9 +125,7 @@ export class SideMenu extends Component {
                 <TouchableOpacity onPress={() => this.onNavigate('Subscribe')}
                     style={{
                         backgroundColor: '#6b38a5',
-                        borderWidth: 1,
                         borderRadius: 4,
-                        borderColor: 'grey',
                         minHeight: 30,
                         marginTop: 10,
                         marginHorizontal: 5,
@@ -144,9 +143,7 @@ export class SideMenu extends Component {
                 <TouchableOpacity onPress={() => this.onNavigate('BookLiveClass')}
                     style={{
                         backgroundColor: '#6b38a5',
-                        borderWidth: 1,
                         borderRadius: 4,
-                        borderColor: 'grey',
                         minHeight: 30,
                         marginTop: 10,
                         marginHorizontal: 5,
@@ -248,8 +245,14 @@ mapStateToProps = state => ({
 
 mapDispatchToProps = dispatch => ({
 
-    onNav: (routeName) => {
-        dispatch(NavigationActions.navigate({ routeName }));
+    onNav: (routeName,userId) => {
+        console.log('----id',userId)
+        if(routeName == 'BookLiveClass'){
+            dispatch(NavigationActions.navigate({ routeName : routeName ,params:{id:userId}}));
+        } else {
+            dispatch(NavigationActions.navigate({ routeName }));
+        }
+       
     },
 
     openLogin: () => {

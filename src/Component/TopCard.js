@@ -15,7 +15,6 @@ class TopCard extends Component {
       }
 
     render() {
-        console.log("Video id ", String(this.params));
         return (
             <View>
                 <TouchableOpacity onPress={()=>this.props.openVideo(this.params)}>                  

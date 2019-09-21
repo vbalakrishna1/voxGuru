@@ -323,7 +323,7 @@ import {
   Text,
   FlatList,
   Alert,
-  ScrollView,Dimensions
+  ScrollView, Dimensions
 } from 'react-native';
 import Header from '../Component/Header';
 import { StyledText, StyledImageCard, StyledContainer, StyledBox, StyledImageContainer, StyledListContainer, StyledVideoBar, AlignedText } from '../UI';
@@ -401,7 +401,6 @@ class WVScreen extends React.Component {
 
 
   _renderCard = ({ item }) => {
-    console.log('----------------', this.props.navigation.state.params);
     return (
       <LessonCard item={item} params={this.props.navigation.state.params} onViewAll={this.props.onViewAll}
         lessonName={this.state.lessonName} courseActive={this.state.courseActive} currentLessonNum={this.state.currentLessonNum}
@@ -473,34 +472,34 @@ class WVScreen extends React.Component {
     // 
 
     var courseCount = 0
-      for (let i = 0; i < this.props.navigation.state.params.SECTIONS.length; i++) {
-        for (let j = 0; j < this.props.navigation.state.params.SECTIONS[i].content.length; j++) {
-          courseCount = courseCount + 1
-        }
+    for (let i = 0; i < this.props.navigation.state.params.SECTIONS.length; i++) {
+      for (let j = 0; j < this.props.navigation.state.params.SECTIONS[i].content.length; j++) {
+        courseCount = courseCount + 1
       }
+    }
     return (
       <View style={{ flex: 1, }}>
-        <Header title={"Course Plan ( " + courseCount +" Lessons )"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
+        <Header title={"Course Plan ( " + (courseCount + 1) + " Lessons )"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
 
 
 
 
-        <ScrollView style={{ backgroundColor: 'grey' }} style={{marginBottom:!this.state.courseActive ? 50 : 0}}>
+        <ScrollView style={{ backgroundColor: 'grey' }} style={{ marginBottom: !this.state.courseActive ? 50 : 0 }}>
           {this.props.navigation.state.params.zero && (
             <View >
-              <View style={{ marginTop: 6,marginBottom:3, marginHorizontal: 6,backgroundColor:'#fff' }}>
-                <View style={{ padding: 4,borderRadius: 2, flexDirection: "row", }}>
+              <View style={{ marginTop: 6, marginBottom: 3, marginHorizontal: 6, backgroundColor: '#fff' }}>
+                <View style={{ padding: 4, borderRadius: 2, flexDirection: "row", }}>
                   <TouchableOpacity onPress={() => this.props.openVideo(this.props.navigation.state.params.zero.videoId)}>
                     <Image style={{ width: 100, aspectRatio: 1, borderRadius: 10 }}
                       source={{ uri: this.props.navigation.state.params.zero.levelThumbnail }} />
                   </TouchableOpacity>
                   <View style={{ justifyContent: "center", paddingHorizontal: 5, flexWrap: "nowrap", flex: 1 }}>
-                  <StyledText weight={"SemiBold"}>
-                  {this.props.navigation.state.params.zero.levelTitle}
-                              </StyledText>
-                              <StyledText size={"Medium"}>
-                              {this.props.navigation.state.params.zero.levelDesc}
-                              </StyledText>
+                    <StyledText weight={"SemiBold"}>
+                      {this.props.navigation.state.params.zero.levelTitle}
+                    </StyledText>
+                    <StyledText size={"Medium"}>
+                      {this.props.navigation.state.params.zero.levelDesc}
+                    </StyledText>
                     {/* <AlignedText size={"Large"} weight={"SemiBold"}>
                       {this.props.navigation.state.params.zero.levelTitle}
                     </AlignedText>
@@ -538,10 +537,10 @@ class WVScreen extends React.Component {
             <TouchableOpacity onPress={() => this.props.openPay(this.props.navigation.state.params)}>
               <View
                 style={{
-                  width:Dimensions.get('window').width,
+                  width: Dimensions.get('window').width,
                   flex: 1,
-                  alignItems:'center',
-                  justifyContent:'center',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   backgroundColor: '#6b38a5',
                   flexDirection: 'row',
                   paddingHorizontal: 30,
@@ -573,76 +572,71 @@ const mapDispatchToProps = dispatch => ({
   onViewAll: (val, isActive, progressState, lessonName, courseActive, params) => {
 
 
-if(!courseActive){
-  dispatch({ type: 'OPEN_PAY', params });
-} else {
-  if (courseActive || !isActive) {
-    if (isActive && progressState > 0 && progressState <= 1) {
-      firebase.database().ref().child('lessons').child(val).once('value')
-        .then(function (snapshot) {
-          if (snapshot.val()) {
-            let dataSource = snapshot.val() || {};
-            // console.log(snapshot.val());
-
-            dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: dataSource }));
-          } else {
-            Alert.alert(
-              'Error..! Server did not respond',
-              'Try again',
-              [
-                { text: 'OK', onPress: () => console.log("Error"), style: 'cancel' },
-              ],
-              { cancelable: true }
-            )
-          }
-        });
+    if (!courseActive) {
+      dispatch({ type: 'OPEN_PAY', params });
     } else {
-      // if (!isActive) {
-        firebase.database().ref().child('lessons').child(val).once('value')
-          .then(function (snapshot) {
-            if (snapshot.val()) {
-              let dataSource = snapshot.val() || {};
-              // console.log(snapshot.val());
+      if (courseActive || !isActive) {
+        if (isActive && progressState > 0 && progressState <= 1) {
+          firebase.database().ref().child('lessons').child(val).once('value')
+            .then(function (snapshot) {
+              if (snapshot.val()) {
+                let dataSource = snapshot.val() || {};
+                // console.log(snapshot.val());
 
-              dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: dataSource }));
-            } else {
-              Alert.alert(
-                'Error..! Server did not respond',
-                'Try again',
-                [
-                  { text: 'OK', onPress: () => console.log("Error"), style: 'cancel' },
-                ],
-                { cancelable: true }
-              )
-            }
-          });
-      // } else {
-      //   Alert.alert(
-      //     `Not just yet! :-) `,
-      //     `Please complete ${lessonName}`,
-      //     [
-      //       { text: 'OK', onPress: () => console.log("User Error"), style: 'cancel' },
-      //     ],
-      //     { cancelable: true }
-      //   )
-      // }
+                dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: dataSource }));
+              } else {
+                Alert.alert(
+                  'Error..! Server did not respond',
+                  'Try again',
+                  [
+                    { text: 'OK', onPress: () => console.log("Error"), style: 'cancel' },
+                  ],
+                  { cancelable: true }
+                )
+              }
+            });
+        } else {
+          // if (!isActive) {
+          firebase.database().ref().child('lessons').child(val).once('value')
+            .then(function (snapshot) {
+              if (snapshot.val()) {
+                let dataSource = snapshot.val() || {};
+                // console.log(snapshot.val());
+
+                dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: dataSource }));
+              } else {
+                Alert.alert(
+                  'Error..! Server did not respond',
+                  'Try again',
+                  [
+                    { text: 'OK', onPress: () => console.log("Error"), style: 'cancel' },
+                  ],
+                  { cancelable: true }
+                )
+              }
+            });
+          // } else {
+          //   Alert.alert(
+          //     `Not just yet! :-) `,
+          //     `Please complete ${lessonName}`,
+          //     [
+          //       { text: 'OK', onPress: () => console.log("User Error"), style: 'cancel' },
+          //     ],
+          //     { cancelable: true }
+          //   )
+          // }
+        }
+      } else {
+        Alert.alert(
+          `Alert! Course has expired.`,
+          'Do you want to re-subscribe',
+          [
+            { text: 'OK', onPress: () => dispatch({ type: 'OPEN_PAY', params }), style: 'cancel' },
+          ],
+          { cancelable: true }
+        )
+      }
     }
-  } else {
-    Alert.alert(
-      `Alert! Course has expired.`,
-      'Do you want to re-subscribe',
-      [
-        { text: 'OK', onPress: () => dispatch({ type: 'OPEN_PAY', params }), style: 'cancel' },
-      ],
-      { cancelable: true }
-    )
-  }
-}
-
-
-
-    
-
   },
   openPay: (params) => {
     // dispatch({type:'OPEN_LOGIN', params})

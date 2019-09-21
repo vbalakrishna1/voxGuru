@@ -2,7 +2,7 @@
 
 // React
 import React from 'react'
-import { Modal, View, Alert, StatusBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
+import { Modal, View, Alert, StatuÍsBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
 
 import {
     StyledContainer,
@@ -142,8 +142,6 @@ class SubscriptionModalNavigation extends React.Component {
                     console.log("error");
                 }
             });
-
-
     }
 
     onLearnMore = () => {
@@ -225,14 +223,82 @@ class SubscriptionModalNavigation extends React.Component {
             this.setState({ executed: false, showWebpage: false });
             console.log("success:", data);
             this.writeToDB({ params, lessonDetails: this.props.params.info, isSuccess: true, lesnId });
-            if(this.state.isSuccess){
-                this.setState({showWebpage:false})
+
+
+            this.writeToRealtimeDatabase(params, update, CURRENCY)
+
+            if (this.state.isSuccess) {
+                this.setState({ showWebpage: false })
                 this.closeSuccess()
             }
-            
-
         }
     }
+    writeToRealtimeDatabase(params, purchasedLesson, CURRENCY) {
+        var self = this
+
+
+        firebase.firestore().collection("users").doc(self.props.user.user.uid).get().then(function (doc) {
+            if (doc.exists) {
+                var info = doc.data();
+
+                console.log('---info', info)
+
+
+                let temp = {};
+                temp["info"] = {
+                    email: info.email,
+                    userName: info.userName,
+                    profileThumbnail: info.profileThumbnail,
+                    mobile_number: info.mobile_number,
+                    genderText: info.genderText,
+                    ageText: info.ageText,
+                    first_name: info.first_name,
+                    last_name: info.last_name,
+                    country: info.country,
+                    udid: info.udid,
+                    os: info.os,
+                    subscription_status: true,
+                    date_of_registration: info.date_of_registration,
+
+                }
+                self.props.dispatch({ type: 'USER_FIRESTORE_CREATE', params: temp });
+
+            }
+        })
+        // firebase.firestore().collection(`users/${self.props.user.user.uid}/info`).set({
+        //     subscription_status: true,
+        // },{merge: true})
+
+
+        let transHistoryArray = Object.values(params.TransactionHistory)
+        var sId = firebase.database().ref().push().key
+        console.log("subscription_id---", sId);
+
+        firebase.database().ref('/user_subscription').child(sId).set({
+            subscription_id: sId,
+            email: self.props.user.user.email,
+            product_id: purchasedLesson.currentLevelId,
+            purchase_date_pst: purchasedLesson.startDate,
+            is_trial_period: false,
+            subscription_type: 'Fresh',
+            subscription_start_date_time: purchasedLesson.startDate,
+            subscription_end_date_time: purchasedLesson.endDate,
+            course_fee_amount_paid: transHistoryArray[0].amount
+        });
+
+        var stId = firebase.database().ref().push().key
+        firebase.database().ref('/user_subscription_transactions').child(stId).set({
+            subscription_transaction_id: stId,
+            subscription_id: sId,
+            email: transHistoryArray[0].email,
+            transaction_reference_id: transHistoryArray[0].txnid,
+            transaction_date: purchasedLesson.startDate,
+            transaction_status: 'success',
+            amount: transHistoryArray[0].amount,
+            currency: CURRENCY,
+        });
+    }
+
 
     onNavigationStateChange = (data) => {
         if (this.state.showWebpage) {
@@ -278,22 +344,19 @@ class SubscriptionModalNavigation extends React.Component {
         // processing payment
 
         //for live account payU
-          newOrder.Create({amount: this.state.planSelected.value,
-             productinfo: this.state.params.info.currentLevelName,
-             firstname: params.name,
-             email: params.email,
-             phone: params.phone,
-             surl: 'https://www.google.com/_success',
-             furl: 'https://www.google.com/_failure',
-             service_provider: 'payuBiz',
-             txnid: uuid.v4(),
-             key : this.props.user.userIN ? "7dr1rA" : "fDBTdB",
-             salt : this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
-             }, true); 
-
-
-
-
+        newOrder.Create({
+            amount: this.state.planSelected.value,
+            productinfo: this.state.params.info.currentLevelName,
+            firstname: params.name,
+            email: params.email,
+            phone: params.phone,
+            surl: 'https://www.google.com/_success',
+            furl: 'https://www.google.com/_failure',
+            service_provider: 'payuBiz',
+            txnid: uuid.v4(),
+            key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
+            salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
+        }, true);
 
 
         //for test account payU
@@ -309,7 +372,7 @@ class SubscriptionModalNavigation extends React.Component {
         //     txnid: uuid.v4(),
         // }, false);
 
-        
+
         newOrder.sendReq()
             .then(Response => {
                 console.log(Response);
@@ -370,7 +433,6 @@ class SubscriptionModalNavigation extends React.Component {
             self.props.dispatch({ type: "USER_UPDATE", params });
 
         })
-
     }
 
 
@@ -417,9 +479,9 @@ class SubscriptionModalNavigation extends React.Component {
 
 
                         {(this.state.isSuccess)
-                        && (
-                            this.closeSuccess()
-                        )
+                            && (
+                                this.closeSuccess()
+                            )
                             // <StyledImageCard>
                             //     <AlignedText> Payment Success!! </AlignedText>
                             //     <AlignedText>{this.state.data.txnid}</AlignedText>
@@ -427,7 +489,7 @@ class SubscriptionModalNavigation extends React.Component {
                             //         <AlignedText color={"Light"} weight={"SemiBold"} padding={"2.5px 5px"}>Start Course</AlignedText>
                             //     </SmallButton>
                             // </StyledImageCard>
-                            }
+                        }
 
                     </View>
                 </StyledContainer>
@@ -437,12 +499,7 @@ class SubscriptionModalNavigation extends React.Component {
 }
 
 // const mapDispatchToProps = dispatch => ({
-
 //     onLessonUpdate: (object, key, update) =>{
-
-
-
-
 
 //     }
 // });
@@ -454,7 +511,6 @@ export const SubscriptionModal = connect(mapStateToProps)(SubscriptionModalNavig
 // Todo: url correct then transition to webpage.
 // Todo: on success, show success pop up and update redux store and firestore.
 // Todo: on failure, show faliure pop up.
-
 
 export const subscriptionReducer = (state, action) => {
     switch (action.type) {

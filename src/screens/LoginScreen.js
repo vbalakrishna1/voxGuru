@@ -5,11 +5,9 @@ import { connect } from 'react-redux';
 import WebPage from '../Component/WebPage';
 import Header from '../Component/Header';
 import { StyledText, AlignedText, StyledContainer, StyledBox } from '../UI';
-
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { TextField } from 'react-native-material-textfield';
 import firebase from 'react-native-firebase';
-
 
 class LScreen extends React.Component {
 
@@ -49,30 +47,23 @@ class LScreen extends React.Component {
   }
 
   onLogin = (email, password) => {
-    var self = this
     if (email != '' && password != '') {
       firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
         .then((user) => {
-          console.log('----user----', user)
-          firebase.database().ref().child('users').child(user.user._user.uid).once('value')
-            .then(function (snapshot) {
-              let val = snapshot.val();
-              // write to firestore and also update redux store.
-              if (val) {
-                Alert.alert('Oops!', 'This account is associated with an iOS device. Please login using iOS or create a new account in your Android device.')
-              } else {
-                ToastAndroid.show(`Log in success`, ToastAndroid.LONG);
-                self.props.onLogin()
-              }
-            })
+          ToastAndroid.show(`Logged in!`, ToastAndroid.LONG);
+          
+          this.props.onLogin();
+
         })
         .catch((err) => {
+          console.log('error log in login screen', err)
           Alert.alert('Oops!', 'Incorrect login details. Please try again.');
         });
     } else {
       Alert.alert("Oops!", "Please check your username/password.")
     }
   }
+
 
   onResetPassword = (email) => {
     if (email != '') {
@@ -96,7 +87,7 @@ class LScreen extends React.Component {
     if (email != '' && password != '') {
       firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
         .then((user) => {
-          ToastAndroid.show(`Log in success`, ToastAndroid.LONG);
+          ToastAndroid.show(`Logged in!`, ToastAndroid.LONG);
           this.props.onLogin();
         })
         .catch((err) => {
@@ -111,7 +102,7 @@ class LScreen extends React.Component {
     let { email, secureTextEntry, password } = this.state;
     return (
       <StyledContainer>
-        <Header title={"Login Screen"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
+        <Header title={"Login with Email"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
         <View style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}>
           <View style={{ width: " 90%" }}>
             <TextField
@@ -164,7 +155,7 @@ class LScreen extends React.Component {
                 margin: 10,
               }}
             >
-              <StyledText color={"Light"}> Login </StyledText>
+              <StyledText color={"Light"} weight={'Bold'}> Login </StyledText>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.onTerms}>
               {/* <TouchableOpacity  onPress={this.onLogout}>  */}

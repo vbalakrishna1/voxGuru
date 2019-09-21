@@ -55,11 +55,13 @@ class RScreen extends React.Component {
       if (password.length >= 8) {
         firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
           .then((user) => {
-            ToastAndroid.show(`user created and login success`, ToastAndroid.LONG);
+            // ToastAndroid.show(`user created and login success`, ToastAndroid.LONG);
+            ToastAndroid.show(`Logged in!`, ToastAndroid.LONG);
+           
             this.props.onRegister();
           })
           .catch((err) => {
-            console.log(err);
+            console.log('error of login',err);
             Alert.alert('This account already exists.', 'Login as existing user or create a new account.');
           });
       } else {
@@ -77,7 +79,7 @@ class RScreen extends React.Component {
     let { email, secureTextEntry, password } = this.state;
     return (
       <StyledContainer>
-        <Header title={"Register through Email"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
+        <Header title={"Register with Email"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
         <View style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}>
           <View style={{ width: " 90%" }}>
             <TextField
@@ -117,7 +119,7 @@ class RScreen extends React.Component {
                 margin: 10,
               }}
             >
-              <StyledText color={"Light"}> Register </StyledText>
+              <StyledText color={"Light"} weight={'Bold'}> Register </StyledText>
             </TouchableOpacity>
             <TouchableOpacity onPress={this.props.onTerms}>
               <View

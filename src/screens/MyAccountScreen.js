@@ -1,20 +1,5 @@
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  TouchableHighlight,
-  ScrollView,
-  Image,
-  ActivityIndicator,
-  ListView,
-  Modal,
-  Linking,
-  Alert,
-  FlatList
-} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, ScrollView, Image, ActivityIndicator, ListView, Modal, Linking, Alert, FlatList } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import firebase from 'react-native-firebase';
@@ -23,19 +8,7 @@ import Header from '../Component/Header';
 import { connect } from 'react-redux'
 import UserAvatar from 'react-native-user-avatar'
 import gravatar from 'gravatar';
-
-import {
-  StyledContainer,
-  StyledImageContainer,
-  StyledListContainer,
-  StyledVideoBar,
-  StyledText,
-  StyledButton,
-  StyledBox,
-  StyledFloatBar,
-  SmallButton,
-  AlignedText, StyledImageCard, Button
-} from '../UI';
+import { StyledContainer, StyledImageContainer, StyledListContainer, StyledVideoBar, StyledText, StyledButton, StyledBox, StyledFloatBar, SmallButton, AlignedText, StyledImageCard, Button } from '../UI';
 
 
 class MyAccountScreen extends Component {
@@ -54,36 +27,35 @@ class MyAccountScreen extends Component {
       lessonStatus: null,
       transactionHistory: [],
       animating: true,
-      allCourse:[]
+      allCourse: []
     }
   }
 
 
   componentDidMount() {
-   
+
     this.setState({
       user: this.props.user,
       info: this.props.user.user.info,
       animating: false
     });
-    console.log('---info',this.state.info)
-    if (this.props.user.user.LessonStatus) {
-      console.log('-----reached here MYAC1',this.props.user.user.TransactionHistory);
-      
+    console.log('---info', this.props.user)
+    if (this.props.user.user.LessonStatus != {}) {
+
 
       this.setState({
         lessonStatus: this.props.user.user.LessonStatus,
         transactionHistory: this.props.user.user.TransactionHistory,
       });
     }
-    
+
   };
 
-  componentWillMount(){
+  componentWillMount() {
     var self = this;
 
     firebase.database().ref().child('courses').on('value', this.handleUpdate);
-      
+
   }
   componentWillUnmount() {
     // Remember to remove listener
@@ -94,13 +66,11 @@ class MyAccountScreen extends Component {
   handleUpdate = (snapshot) => {
     if (snapshot.val()) {
       this.dataSource = snapshot.val() || {};
-      this.setState({allCourse:this.dataSource})
+      this.setState({ allCourse: this.dataSource })
     } else {
       // this.setState({email:" ", phone:" " });
     }
   }
-
-
 
   _renderUserInfo() {
     let Img;
@@ -154,7 +124,6 @@ class MyAccountScreen extends Component {
                 {this.state.info.email}
               </Text>
             </View>
-
           </View>
         </View>
       </View>
@@ -191,47 +160,64 @@ class MyAccountScreen extends Component {
   _renderTransaction(val) {
     // console.log(this.state[val]);
 
-console.log('----',this.state.transactionHistory)
-    if (this.state.transactionHistory == undefined) {
-      return (
-
-
-
-        <View style={{
-          paddingHorizontal:10,
-          paddingVertical: 20,
-          alignItems: "center",
-        }}>
-          <Text> Once you subscribe to a course, you can view your Transactions' here </Text>
-        </View>
-        
-      )
-    } else if (this.state.transactionHistory == []){
-      return (
-        <View style={{
-          paddingHorizontal:10,
-          paddingVertical: 20,
-          alignItems: "center",
-        }}>
-          <Text>Once you subscribe to a course, you can view your Transactions' here </Text>
-        </View>
-      )
-    }
-     else {
-      return (
-        <View style={{
-          flex: 1,
-          padding: 10,
-        }}>
-
-          <FlatList
-            data={Object.values(this.state.transactionHistory)}
-            renderItem={({ item, index }) => this._renderTransactionRow(item)}
-            keyExtractor={item => item.txnid}
-          />
-        </View>
-      )
-    }
+    return (
+      <View>
+        {this.state.transactionHistory.length === 0 ?
+          <View style={{
+            paddingHorizontal: 10,
+            paddingVertical: 20,
+            alignItems: "center",
+          }}>
+            <Text> No transactions yet. </Text>
+          </View>
+          :
+          <View style={{
+            flex: 1,
+            padding: 10,
+          }}>
+            <FlatList
+              data={Object.values(this.state.transactionHistory)}
+              renderItem={({ item, index }) => this._renderTransactionRow(item)}
+              keyExtractor={item => item.txnid}
+            />
+          </View>
+        }
+      </View>
+    )
+    // if (this.state.transactionHistory == undefined) {
+    //   return (
+    //     <View style={{
+    //       paddingHorizontal:10,
+    //       paddingVertical: 20,
+    //       alignItems: "center",
+    //     }}>
+    //       <Text> No transactions yet. </Text>
+    //     </View>
+    //   )
+    // } else if (this.state.transactionHistory == []){
+    //   return (
+    //     <View style={{
+    //       flex: 1,
+    //       padding: 10,
+    //     }}>
+    //       <Text>No transactions yet. </Text>
+    //     </View>
+    //   )
+    //   }
+    //  else {
+    //   return (
+    //     <View style={{
+    //       flex: 1,
+    //       padding: 10,
+    //     }}>
+    //       <FlatList
+    //         data={Object.values(this.state.transactionHistory)}
+    //         renderItem={({ item, index }) => this._renderTransactionRow(item)}
+    //         keyExtractor={item => item.txnid}
+    //       />
+    //     </View>
+    //   )
+    // }
   }
 
   _renderTransactionRow = (rowData, sectionID, rowID) => {
@@ -306,24 +292,23 @@ console.log('----',this.state.transactionHistory)
 
   } // var rowHash = Math.abs(hashCode(rowData));
   getCoursemodule = (courseId) => {
-    if(this.dataSource.length != 0) {
-for (let i = 0; i < this.dataSource.length; i++) {
-      var levels = Object.values(this.dataSource[i].Levels)
-      for (let j = 0; j < levels.length; j++) {
-        if (courseId == levels[j].levelId) {
-          return levels[j]
+    if (this.dataSource.length != 0) {
+      for (let i = 0; i < this.dataSource.length; i++) {
+        var levels = Object.values(this.dataSource[i].Levels)
+        for (let j = 0; j < levels.length; j++) {
+          if (courseId == levels[j].levelId) {
+            return levels[j]
+          }
         }
       }
     }
-    }
-    
   }
   _renderCourseRow = (rowData, sectionID, rowID) => {
     let Coursemodule = this.getCoursemodule(rowData.currentLevelId)
     var CurrentDate = new Date();
-    if(Coursemodule){
-      if(Coursemodule.hideCourse == 1){
-        return(
+    if (Coursemodule) {
+      if (Coursemodule.hideCourse == 1) {
+        return (
           <View style={{
             flexWrap: 'wrap',
             flexDirection: 'row',
@@ -382,23 +367,8 @@ for (let i = 0; i < this.dataSource.length; i++) {
         if (rowData.endDate - CurrentDate <= 0) {
           return (
             <TouchableHighlight onPress={() => this.props.openPay(rowData.currentLevelId)} underlayColor={'yellow'}>
-              
-              <View style={{
-                flexWrap: 'wrap',
-                flexDirection: 'row',
-                alignContent: 'space-between',
-                backgroundColor: '#fefefe',
-                margin: 5,
-                borderColor: '#e5e5e5',
-                borderWidth: 1,
-                borderRadius: 4,
-                shadowColor: "#000000",
-                shadowOpacity: 0.3,
-                shadowOffset: {
-                  height: 1,
-                  width: 0.3,
-                }
-              }}>
+
+              <View style={{ flexWrap: 'wrap', flexDirection: 'row', alignContent: 'space-between', backgroundColor: '#fefefe', margin: 5, borderColor: '#e5e5e5', borderWidth: 1, borderRadius: 4, shadowColor: "#000000", shadowOpacity: 0.3, shadowOffset: { height: 1, width: 0.3, } }}>
                 <View style={{
                   flex: 1,
                   flexWrap: 'wrap',
@@ -427,13 +397,13 @@ for (let i = 0; i < this.dataSource.length; i++) {
                     alignSelf: 'center',
                     paddingHorizontal: 10
                   }}>
-  
+
                     <Text style={{ textAlign: 'left', flexWrap: 'wrap' }}>
                       <Text>
                         {rowData.currentLevelName}
                       </Text>
                     </Text>
-  
+
                     <View style={{
                       borderRadius: 4,
                       borderColor: '#e5e5e5',
@@ -457,70 +427,70 @@ for (let i = 0; i < this.dataSource.length; i++) {
           );
         } else {
           return (
+            <View style={{
+              flexWrap: 'wrap',
+              flexDirection: 'row',
+              alignContent: 'space-between',
+              backgroundColor: '#fefefe',
+              margin: 5,
+              borderColor: '#e5e5e5',
+              borderWidth: 1,
+              borderRadius: 4,
+              shadowColor: "#000000",
+              shadowOpacity: 0.3,
+              shadowOffset: {
+                height: 1,
+                width: 0.3,
+              }
+            }}>
               <View style={{
+                flex: 1,
                 flexWrap: 'wrap',
                 flexDirection: 'row',
                 alignContent: 'space-between',
-                backgroundColor: '#fefefe',
-                margin: 5,
-                borderColor: '#e5e5e5',
-                borderWidth: 1,
-                borderRadius: 4,
-                shadowColor: "#000000",
-                shadowOpacity: 0.3,
-                shadowOffset: {
-                  height: 1,
-                  width: 0.3,
-                }
               }}>
+                <Image
+                  style={{
+                    width: 100, height: 100, resizeMode: 'cover',
+                    borderRadius: 2,
+                    borderColor: 'grey',
+                    shadowColor: "#000000",
+                    shadowOpacity: 0.3,
+                    shadowOffset: {
+                      height: 1,
+                      width: 0.3,
+                    }
+                  }}
+                  source={{ uri: rowData.currentLessonPHI }}
+                />
                 <View style={{
                   flex: 1,
                   flexWrap: 'wrap',
-                  flexDirection: 'row',
-                  alignContent: 'space-between',
+                  flexDirection: 'column',
+                  alignContent: 'center',
+                  alignSelf: 'center',
+                  paddingHorizontal: 10
                 }}>
-                  <Image
-                    style={{
-                      width: 100, height: 100, resizeMode: 'cover',
-                      borderRadius: 2,
-                      borderColor: 'grey',
-                      shadowColor: "#000000",
-                      shadowOpacity: 0.3,
-                      shadowOffset: {
-                        height: 1,
-                        width: 0.3,
-                      }
-                    }}
-                    source={{ uri: rowData.currentLessonPHI }}
-                  />
-                  <View style={{
-                    flex: 1,
-                    flexWrap: 'wrap',
-                    flexDirection: 'column',
-                    alignContent: 'center',
-                    alignSelf: 'center',
-                    paddingHorizontal: 10
-                  }}>
-  
-                    <Text style={{ color: "black", textAlign: 'left', flexWrap: 'wrap' }}>
-                      <Text>
-                        {rowData.currentLevelName}
-                      </Text>
+
+                  <Text style={{ color: "black", textAlign: 'left', flexWrap: 'wrap' }}>
+                    <Text>
+                      {rowData.currentLevelName}
                     </Text>
-                  </View>
+                  </Text>
                 </View>
               </View>
-  
+            </View>
+
           );
         }
-      
+
       }
-      
-       
+
+
     }
-    
-    
-      
+
+
+
 
   }
 
@@ -538,7 +508,6 @@ for (let i = 0; i < this.dataSource.length; i++) {
 
 
   _renderCourses(val) {
-    console.log(this.state.lessonStatus);
 
     if (this.state.lessonStatus) {
       return (
@@ -595,11 +564,10 @@ for (let i = 0; i < this.dataSource.length; i++) {
 
 
   render() {
-    console.log(this.state);
     return (
       <View style={{ flex: 1 }}>
         <Header title={"My Account"} leftNavMenu={true} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'DrawerOpen' }))} />
-<ScrollView style={{ backgroundColor: "#fefefe" }}>
+        <ScrollView style={{ backgroundColor: "#fefefe" }}>
           {this._renderUserInfo()}
           <View style={{ height: 10 }} />
           <ActivityIndicator animating={this.state.animating} />
@@ -633,7 +601,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => ({
   openPay: (val) => {
 
-    console.log(val);
+
     firebase.database().ref().child('levels').child(val).once('value')
       .then(function (snapshot) {
         if (snapshot.val()) {

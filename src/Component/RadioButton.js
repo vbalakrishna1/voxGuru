@@ -45,7 +45,6 @@ class RadioButton extends Component {
         )
       }
       render() {
-        //   console.log(this.state.button);
         return (
         this.props.params ? (
             <View style={{paddingHorizontal: 5}}>
@@ -56,7 +55,7 @@ class RadioButton extends Component {
                 borderRadius: 4,
                 }}>
             <AlignedText  selfalign={"Center"} textalign={"Center"}>Please Subscribe</AlignedText>
-            <AlignedText weight={'SemiBold'} selfalign={"Center"} textalign={"Center"} size={"Large"}>Course: {this.props.params.info.currentLevelName}</AlignedText>
+            <AlignedText weight={'SemiBold'} selfalign={"Center"} textalign={"Center"} size={"Large"}>{this.props.params.info.currentLevelName}</AlignedText>
             <AlignedText selfalign={"Center"} textalign={"Center"}>Choose your plan</AlignedText>          
             </View>
             <View style={{paddingVertical: 5}}>
@@ -71,7 +70,7 @@ class RadioButton extends Component {
             this.state.button > -1 && 
             <View style={{paddingHorizontal:5}}>
               <TouchableOpacity onPress={()=>this.props.planSubmit(this.state.cost[this.state.button])} style={{backgroundColor:'#6b38a5',alignItems:'center',justifyContent:'center',paddingVertical:15}}>
-                <Text style={{color:'#ffffff',fontWeight:'bold'}}>PAY NOW</Text>
+                <Text style={{color:'#ffffff',fontWeight:'bold' ,fontSize:18}}>Pay Now</Text>
               </TouchableOpacity>
             {/* <Button onPress={()=>this.props.planSubmit(this.state.cost[this.state.button])}
                 title="Pay Now"

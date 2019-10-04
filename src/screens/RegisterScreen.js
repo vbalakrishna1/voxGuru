@@ -25,7 +25,6 @@ class RScreen extends React.Component {
   }
 
   componentDidMount() {
-
   }
 
   onAccessoryPress = () => {
@@ -57,11 +56,11 @@ class RScreen extends React.Component {
           .then((user) => {
             // ToastAndroid.show(`user created and login success`, ToastAndroid.LONG);
             ToastAndroid.show(`Logged in!`, ToastAndroid.LONG);
-           
+
             this.props.onRegister();
           })
           .catch((err) => {
-            console.log('error of login',err);
+            console.log('error of login', err);
             Alert.alert('This account already exists.', 'Login as existing user or create a new account.');
           });
       } else {

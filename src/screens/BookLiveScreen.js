@@ -125,7 +125,7 @@ class BookLiveScreen extends Component {
                 ageText: steps.age.value,
                 first_name: steps.name.value,
                 last_name: info.last_name,
-                country: steps.country.value,
+                country: info.country,
                 udid: info.udid,
                 os: "android",
                 subscription_status: lessonStatus,

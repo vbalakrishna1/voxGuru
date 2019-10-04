@@ -156,7 +156,7 @@ class LScreen extends React.Component {
                   backgroundColor: "white", elevation: 4, margin: 5,
                   padding: 5, borderRadius: 4, width: "90%"
                }}>
-                  <TouchableOpacity onPress={this.onLesson}>
+                  {/* <TouchableOpacity onPress={this.onLesson}>
                      <View style={{ borderRadius: 2, flexDirection: "row", margin: 5 }}>
                         <View style={{ padding: 5, margin: 5, width: 100, height: 100, alignItems: "center", justifyContent: "center", borderRadius: 2, borderColor: "#d3d3d3", borderWidth: 1 }}>
                            <Icon name="music-note" color="goldenrod" size={70} />
@@ -165,8 +165,8 @@ class LScreen extends React.Component {
                            <AlignedText size={"Large"} color={"Grey"} weight={"SemiBold"} textalign={"Right"}>Lesson Notes</AlignedText>
                         </View>
                      </View>
-                  </TouchableOpacity>
-                  <View style={{ backgroundColor: "lightgrey", height: 1, width: "100%" }} />
+                  </TouchableOpacity> */}
+                  {/* <View style={{ backgroundColor: "lightgrey", height: 1, width: "100%" }} /> */}
                   <TouchableOpacity onPress={this.onPractice}>
                      <View style={{ borderRadius: 2, flexDirection: "row", margin: 5 }}>
                         <View style={{ justifyContent: "center", padding: 5, flexWrap: "nowrap", flex: 1 }}>
@@ -202,7 +202,7 @@ const mapDispatchToProps = dispatch => ({
          .then(function (snapshot) {
             if (snapshot.val()) {
                let dataSource = snapshot.val() || {};
-               // console.log(snapshot.val());
+               console.log('---------------------',snapshot.val());
                dispatch({ type: 'OPEN_PAY', params: dataSource });
             } else {
                Alert.alert(

@@ -113,7 +113,7 @@ class CScreen extends React.Component {
                                     alignContent: "space-between",
                                     paddingVertical: 10,
                                  }}>
-                                 <Text style={{ color: '#ffffff', marginRight: 5,fontFamily:'Nunito-Bold' }} >
+                                 <Text style={{ color: '#ffffff', marginRight: 5, fontFamily: 'Nunito-Bold' }} >
                                     View full course</Text>
                                  <Icon size={18} name="md-arrow-forward" color='#ffffff' />
                               </TouchableOpacity>
@@ -176,7 +176,7 @@ class CScreen extends React.Component {
       if (notHideArray.length == 0) {
          notHideComponent.push(
             <View style={{ height: '100%', padding: 10, alignItems: 'center', justifyContent: 'center' }}>
-               <Text style={{ textAlign: 'center' ,color: 'grey', fontFamily: "Nunito-Regular", }}>No modules available at this time. Please choose another course.</Text>
+               <Text style={{ textAlign: 'center', color: 'grey', fontFamily: "Nunito-Regular", }}>No modules available at this time. Please choose another course.</Text>
             </View>
          )
       }
@@ -198,10 +198,8 @@ class CScreen extends React.Component {
                   <View style={{ backgroundColor: "#fefefe" }}>
                      {buttonsListArr}
                   </View>
-
                </StyledImageContainer>
             </StyledBox>
-
             <View>{notHideComponent}</View>
          </StyledContainer>
       );
@@ -217,7 +215,7 @@ const mapDispatchToProps = dispatch => ({
       dispatch({ type: 'OPEN_VIDEO', params })
    },
    onViewAll: (val, zero) => {
-      console.log('------',val,zero);
+      console.log('------', val, zero);
       //console.log(zero);
       firebase.database().ref().child('levels').child(val).once('value')
          .then(function (snapshot) {

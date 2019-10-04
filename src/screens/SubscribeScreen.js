@@ -468,7 +468,6 @@ class Subscribe extends Component {
       this.props.onViewWeekViewScreen(val, zero)
    }
 
-
    renderCourseCard = ({ item }) => {
       let Coursemodule = this.getCoursemodule(item.currentLevelId)
       let mainCourse = this.getCourseName(item.currentLevelId)
@@ -522,9 +521,6 @@ class Subscribe extends Component {
                      borderColor: "#e0e0e0",
                      borderWidth: 1, borderRadius: 3
                   }}>
-
-
-                     
                            <Image
                               style={{
                                  width: this.state.width * 30.1 / 90,
@@ -777,7 +773,6 @@ class Subscribe extends Component {
 
             }
          });
-
       this.ref.child('QuickSub').once('value')
          .then(function (dataSnapshot) {
             if (dataSnapshot.val()) {

@@ -6,15 +6,7 @@ import { Modal, View, Alert, StatuÍsBar, ActivityIndicator, ToastAndroid, Touch
 
 import {
     StyledContainer,
-    StyledImageContainer,
-    StyledListContainer,
-    StyledVideoBar,
-    StyledText,
-    StyledButton,
-    StyledBox,
-    StyledFloatBar,
-    SmallButton,
-    AlignedText, StyledImageCard, Button
+    AlignedText,
 } from '../UI';
 import firebase from 'react-native-firebase';
 import Header from '../Component/Header';
@@ -22,7 +14,6 @@ import RadioButton from '../Component/RadioButton';
 import UserInfo from '../Component/UserInfo';
 import { NavigationActions } from 'react-navigation';
 import branch from 'react-native-branch'
-
 import WebPage from '../Component/WebPage';
 //Redux
 import { connect } from 'react-redux';
@@ -192,17 +183,13 @@ class SubscriptionModalNavigation extends React.Component {
                 } else {
                     update = { ...this.props.params.info, endDate, startDate }
                 }
-
             } else {
                 update = { ...this.props.params.info, endDate, startDate }
             }
-
-
             let object = this.props.user.user.LessonStatus || {};
             let transition = {};
             transition[this.state.data.txnid] = { ...this.state.data, uid: this.props.user.uid, createDate: new Date() };
             var params = { LessonStatus: object, TransactionHistory: transition };
-
             let myRe = new RegExp('[INR]');
             let myArray = myRe.exec(this.state.planSelected.label);
             var CURRENCY = "USD";
@@ -235,15 +222,10 @@ class SubscriptionModalNavigation extends React.Component {
     }
     writeToRealtimeDatabase(params, purchasedLesson, CURRENCY) {
         var self = this
-
-
         firebase.firestore().collection("users").doc(self.props.user.user.uid).get().then(function (doc) {
             if (doc.exists) {
                 var info = doc.data();
-
                 console.log('---info', info)
-
-
                 let temp = {};
                 temp["info"] = {
                     email: info.email,
@@ -259,21 +241,13 @@ class SubscriptionModalNavigation extends React.Component {
                     os: info.os,
                     subscription_status: true,
                     date_of_registration: info.date_of_registration,
-
                 }
                 self.props.dispatch({ type: 'USER_FIRESTORE_CREATE', params: temp });
-
             }
         })
-        // firebase.firestore().collection(`users/${self.props.user.user.uid}/info`).set({
-        //     subscription_status: true,
-        // },{merge: true})
-
-
         let transHistoryArray = Object.values(params.TransactionHistory)
         var sId = firebase.database().ref().push().key
         console.log("subscription_id---", sId);
-
         firebase.database().ref('/user_subscription').child(sId).set({
             subscription_id: sId,
             email: self.props.user.user.email,
@@ -285,7 +259,6 @@ class SubscriptionModalNavigation extends React.Component {
             subscription_end_date_time: purchasedLesson.endDate,
             course_fee_amount_paid: transHistoryArray[0].amount
         });
-
         var stId = firebase.database().ref().push().key
         firebase.database().ref('/user_subscription_transactions').child(stId).set({
             subscription_transaction_id: stId,
@@ -298,7 +271,6 @@ class SubscriptionModalNavigation extends React.Component {
             currency: CURRENCY,
         });
     }
-
 
     onNavigationStateChange = (data) => {
         if (this.state.showWebpage) {
@@ -334,6 +306,7 @@ class SubscriptionModalNavigation extends React.Component {
     }
 
     planSubmit = (params) => {
+
         console.log(params);
         this.setState({ planSelected: params });
     };
@@ -358,7 +331,6 @@ class SubscriptionModalNavigation extends React.Component {
             salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
         }, true);
 
-
         //for test account payU
         // newOrder.Create({
         //     amount: this.state.planSelected.value,
@@ -372,7 +344,6 @@ class SubscriptionModalNavigation extends React.Component {
         //     txnid: uuid.v4(),
         // }, false);
 
-
         newOrder.sendReq()
             .then(Response => {
                 console.log(Response);
@@ -385,21 +356,16 @@ class SubscriptionModalNavigation extends React.Component {
                     ToastAndroid.show('Payment Request Success!!', ToastAndroid.SHORT);
                     // showWebpage
                     this.setState({ showWebpage: true, });
-
                 } else {
                     ToastAndroid.show('Payment Request Failed!!', ToastAndroid.SHORT);
                     this.setState({ userInfoConfirm: false });
                     this.closeModal();
                 }
-
             })
             .catch(err => {
                 console.log(err);
             });
-
     };
-
-
 
     writeToDB = ({ params, lessonDetails, isSuccess, lesnId }) => {
         var self = this;
@@ -434,19 +400,15 @@ class SubscriptionModalNavigation extends React.Component {
 
         })
     }
-
-
-
-
     render() {
+
+
 
         return (
             <Modal
                 visible={this.state.modalVisible}
                 animationType={'slide'}
                 onRequestClose={() => this.onLearnMore()}>
-
-
                 <StyledContainer>
                     <Header title={this.state.showWebpage ? "Payment Gateway" : !this.state.userInfoConfirm && this.state.planSelected ? "Confirm Details" : "Payment"} leftNavMenu={false} leftNavFunc={this.onLearnMore} />
 
@@ -472,11 +434,9 @@ class SubscriptionModalNavigation extends React.Component {
                                     selfalign={'Center'}> ...Loading Payment Gateway </AlignedText>}
                         </View>
 
-
                         {this.state.showWebpage
                             && (<WebPage link={this.state.url}
                                 onNavigationStateChange={this.onNavigationStateChange} />)}
-
 
                         {(this.state.isSuccess)
                             && (

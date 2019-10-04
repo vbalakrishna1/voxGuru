@@ -20,19 +20,10 @@ import Header from '../Component/Header';
 import TopCard from '../Component/TopCard';
 import Card from '../Component/Card';
 import * as Progress from 'react-native-progress';
-
 // var Fabric = require('react-native-fabric');
-
 // var { Crashlytics } = Fabric;
-
-
-
-
 // const debounce = require('lodash.debounce');
-
 import debounce from 'lodash.debounce'
-
-
 import { newOrder } from '../payU';
 import { fail } from 'assert';
 const uuid = require('react-native-uuid');
@@ -88,7 +79,6 @@ export class HomeScreen extends PureComponent {
          }
          return false
       }()
-     
       this.state = {
          user: props.user.user || {},
          ui: props.appUi.HomeScreen || {},
@@ -161,19 +151,19 @@ export class HomeScreen extends PureComponent {
    }
    renderItem = ({ item, index }) => {
       // console.log(item,index );
-         return (
-            <StyledImageCard id={item.courseId} >
-   
-               <TouchableOpacity onPress={
-                  debounce(() => this.props.openCourse(item.courseId, item.courseTitile), 1000, { leading: true, trailing: false })}>
-                  <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={item.gradients} style={styles.linearGradient}>
-                     <Card id={item.courseId} item={item} width={this.state.width} />
-                  </LinearGradient>
-               </TouchableOpacity>
-   
-            </StyledImageCard>
-         )
-      
+      return (
+         <StyledImageCard id={item.courseId} >
+
+            <TouchableOpacity onPress={
+               debounce(() => this.props.openCourse(item.courseId, item.courseTitile), 1000, { leading: true, trailing: false })}>
+               <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={item.gradients} style={styles.linearGradient}>
+                  <Card id={item.courseId} item={item} width={this.state.width} />
+               </LinearGradient>
+            </TouchableOpacity>
+
+         </StyledImageCard>
+      )
+
    }
 
    onLogout = (email, password) => {
@@ -236,12 +226,9 @@ export class HomeScreen extends PureComponent {
          if (item.endDate - CurrentDate >= -86400000) {
             // console.log("expired but less than a day");
             return (
-               <View style={{
-                  flex: 1, justifyContent: "space-between", flexWrap: "nowrap", backgroundColor: "white", elevation: 4, margin: 7.25
-               }}>
+               <View style={{ flex: 1, justifyContent: "space-between", flexWrap: "nowrap", backgroundColor: "white", elevation: 4, margin: 7.25 }}>
                   <AlignedText size={"Large"} padding={"0px 10px"} weight={"SemiBold"}>{item.currentLevelName}</AlignedText>
-                  <TouchableOpacity onPress={debounce(() => this.props.onViewAll(item.currentLessonId), 1000, { leading: true, trailing: false })}
-                     style={{ padding: 5, elevation: 5, margin: 5, }}>
+                  <TouchableOpacity onPress={debounce(() => this.props.onViewAll(item.currentLessonId), 1000, { leading: true, trailing: false })} style={{ padding: 5, elevation: 5, margin: 5, }}>
                      <View style={{ elevation: 1, width: '100%', borderRadius: 2, flexDirection: "row" }}>
                         <Image source={{ uri: item.currentLessonPHI }} style={{ width: 100, aspectRatio: 1, borderTopLeftRadius: 2, borderBottomLeftRadius: 2 }} />
                         <View style={{ justifyContent: "center", padding: 5, flexWrap: "wrap", flex: 1 }}>
@@ -255,15 +242,7 @@ export class HomeScreen extends PureComponent {
                   </TouchableOpacity>
                   <View style={{ flexDirection: "row", flexWrap: "nowrap", flex: 1, alignItems: 'center', justifyContent: "space-between", marginHorizontal: 5 }}>
                      <AlignedText size={"Medium"} padding={"5px"}>Your course has expired</AlignedText>
-                     <TouchableOpacity style={{
-                        borderRadius: 4,
-                        borderColor: '#e5e5e5',
-                        backgroundColor: '#6b38a5',
-                        borderWidth: 1,
-                        flex: 0.4,
-                        padding: 5, margin: 5,
-                        maxHeight: 30, justifyContent: "center", flexWrap: "nowrap",
-                     }} onPress={debounce(() => this.props.openPay(item.currentLevelId), 1000, { leading: true, trailing: false })}>
+                     <TouchableOpacity style={{ borderRadius: 4, borderColor: '#e5e5e5', backgroundColor: '#6b38a5', borderWidth: 1, flex: 0.4, padding: 5, margin: 5, maxHeight: 30, justifyContent: "center", flexWrap: "nowrap", }} onPress={debounce(() => this.props.openPay(item.currentLevelId), 1000, { leading: true, trailing: false })}>
                         <AlignedText color={"HighLight"} weight={"SemiBold"} textalign={"Center"} padding={"2.5px 5px"}>Renew</AlignedText>
                      </TouchableOpacity>
                   </View>
@@ -276,12 +255,9 @@ export class HomeScreen extends PureComponent {
       } else {
          // console.log("not expired"); 
          return (
-            <View style={{
-               flex: 1, justifyContent: "space-between", flexWrap: "nowrap", backgroundColor: "white", elevation: 4, margin: 7.25
-            }}>
+            <View style={{ flex: 1, justifyContent: "space-between", flexWrap: "nowrap", backgroundColor: "white", elevation: 4, margin: 7.25 }}>
                <AlignedText size={"Large"} padding={"0px 10px"} weight={"SemiBold"}>{item.currentLevelName}</AlignedText>
-               <TouchableOpacity onPress={debounce(() => this.props.onViewAll(item.currentLessonId), 1000, { leading: true, trailing: false })}
-                  style={{ padding: 5, elevation: 5, margin: 5, }}>
+               <TouchableOpacity onPress={debounce(() => this.props.onViewAll(item.currentLessonId), 1000, { leading: true, trailing: false })} style={{ padding: 5, elevation: 5, margin: 5, }}>
                   <View style={{ elevation: 1, width: '100%', borderRadius: 2, flexDirection: "row" }}>
                      <Image source={{ uri: item.currentLessonPHI }} style={{ width: 100, aspectRatio: 1, borderTopLeftRadius: 2, borderBottomLeftRadius: 2 }} />
                      <View style={{ justifyContent: "center", padding: 5, flexWrap: "wrap", flex: 1 }}>
@@ -297,14 +273,7 @@ export class HomeScreen extends PureComponent {
                   <View style={{ flex: -1 }}>
                      <AlignedText size={"Medium"} padding={"1px 5px 5px 5px"}>{dateDiff} left.</AlignedText>
                   </View>
-                  <TouchableOpacity style={{
-                     borderRadius: 4,
-                     borderColor: '#e5e5e5',
-                     backgroundColor: '#6b38a5',
-                     borderWidth: 1,
-                     padding: 5, margin: 5,
-                     maxHeight: 30, justifyContent: "center", minWidth: '20%',
-                  }} onPress={debounce(() => this.props.openPay(item.currentLevelId), 1000, { leading: true, trailing: false })}>
+                  <TouchableOpacity style={{ borderRadius: 4, borderColor: '#e5e5e5', backgroundColor: '#6b38a5', borderWidth: 1, padding: 5, margin: 5, maxHeight: 30, justifyContent: "center", minWidth: '20%', }} onPress={debounce(() => this.props.openPay(item.currentLevelId), 1000, { leading: true, trailing: false })}>
                      <AlignedText color={"HighLight"} weight={"SemiBold"} textalign={"Center"} padding={"2.5px 5px"}>Extend</AlignedText>
                   </TouchableOpacity>
                </View>
@@ -313,7 +282,7 @@ export class HomeScreen extends PureComponent {
       }
    }
    render() {
-       
+
       return (
          <StyledContainer>
             <Header title={"Home"} leftNavMenu={true} leftNavFunc={this.props.openMenu} />
@@ -328,7 +297,7 @@ export class HomeScreen extends PureComponent {
                         <StyledText color={"Light"} weight={"SemiBold"}>{this.props.appUi.HomeScreen.CARD.courseVideoLength}</StyledText>
                      </StyledVideoBar>
                   </StyledImageContainer>
-                ) : null} 
+               ) : null}
                {/* {this.state.isSubscriber ? (
                   <StyledFullWidthContainer>
                      <FlatList
@@ -433,8 +402,6 @@ const mapDispatchToProps = dispatch => ({
          });
    },
    onViewAll: (val) => {
-
-
       console.log(val);
       firebase.database().ref().child('lessons').child(val).once('value')
          .then(function (snapshot) {

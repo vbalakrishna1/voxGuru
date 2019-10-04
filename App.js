@@ -30,6 +30,7 @@ let backCounter = 3;
 var loginVar = 0;
 var unsubscribeLink;
 var unsubscribe;
+var countryVar
 
 export default class MyApp extends React.Component {
 
@@ -96,6 +97,10 @@ export default class MyApp extends React.Component {
       // firebase.crashlytics()
       // firebase.crashlytics().log('Test Message!');
 
+      CarrierInfo.isoCountryCode()
+         .then((result) => {
+            if (result === "in") store.dispatch({ type: 'USER_INDIA_SIM' })
+         });
 
       firebase.database().ref().child('Screens').once('value')
          .then(function (snapshot) {
@@ -108,73 +113,75 @@ export default class MyApp extends React.Component {
          });
 
       firebase.auth().onAuthStateChanged(function (user) {
-         if (user) {
-            loginVar = 1;
-            console.log(user);
-            firebase.firestore().collection("users").doc(user._user.uid).get().then(function (doc) {
-               if (doc.exists) {
-                  var info = doc.data();
-                  store.dispatch({ type: 'USER_UPDATE', params: { info, LessonStatus, TransactionHistory } });
-                  var LessonStatus = {};
-                  this.ref = firebase.firestore().collection("users").doc(user._user.uid).collection("LessonStatus");
-                  this.unsubscribeFireStore = this.ref.onSnapshot(this.onCollectionUpdate)
-                  var TransactionHistory = {};
-                  // TransactionHistory
-                  firebase.firestore().collection("users").doc(user._user.uid).collection("TransactionHistory").get().then((querySnapshot) => {
-                     querySnapshot.forEach((collection) => {
-                        // console.log("collection: ", collection.data());
-                        TransactionHistory[collection.id] = collection.data();
-                     });
-                     store.dispatch({ type: 'USER_UPDATE', params: { TransactionHistory } });
+         CarrierInfo.isoCountryCode()
+            .then((result) => {
+               countryVar = result
+               if (user) {
+                  loginVar = 1;
+                  console.log(user);
+                  firebase.firestore().collection("users").doc(user._user.uid).get().then(function (doc) {
+                     if (doc.exists) {
+                        var info = doc.data();
+                        store.dispatch({ type: 'USER_UPDATE', params: { info, LessonStatus, TransactionHistory } });
+                        var LessonStatus = {};
+                        this.ref = firebase.firestore().collection("users").doc(user._user.uid).collection("LessonStatus");
+                        this.unsubscribeFireStore = this.ref.onSnapshot(this.onCollectionUpdate)
+                        var TransactionHistory = {};
+                        // TransactionHistory
+                        firebase.firestore().collection("users").doc(user._user.uid).collection("TransactionHistory").get().then((querySnapshot) => {
+                           querySnapshot.forEach((collection) => {
+                              // console.log("collection: ", collection.data());
+                              TransactionHistory[collection.id] = collection.data();
+                           });
+                           store.dispatch({ type: 'USER_UPDATE', params: { TransactionHistory } });
+                        });
+                     } else {
+                        // doc.data() will be undefined in this case
+                        console.log("No such document!");
+                        // extract data from real time db.
+                        firebase.database().ref().child('users').child(user._user.uid).once('value')
+                           .then(function (snapshot) {
+                              let val = snapshot.val();
+                              // write to firestore and also update redux store.
+                              if (val) {
+                                 store.dispatch({ type: 'USER_FIRESTORE_CREATE', params: snapshot.val() })
+                              } else {
+                                 let { email, displayName, photoURL } = user._user
+                                 let temp = {};
+                                 temp["info"] = {
+                                    email,
+                                    userName: displayName,
+                                    profileThumbnail: photoURL,
+                                    mobile_number: "",
+                                    genderText: "",
+                                    ageText: "",
+                                    first_name: "",
+                                    last_name: "",
+                                    country: countryVar,
+                                    udid: DeviceInfo.getUniqueID(),
+                                    os: "android",
+                                    subscription_status: false,
+                                    date_of_registration: new Date(),
+                                 }
+                                 console.log('------temp', temp)
+                                 store.dispatch({ type: 'USER_FIRESTORE_CREATE', params: temp });
+                              }
+                           })
+                           .catch((error) => {
+                              console.log("Error getting document:", error);
+                           });
+                     }
+                  }).catch(function (error) {
+                     console.log("Error getting document:", error);
                   });
+                  store.dispatch({ type: 'USER_LOGGED', params: user._user })
                } else {
-                  // doc.data() will be undefined in this case
-                  console.log("No such document!");
-                  // extract data from real time db.
-                  firebase.database().ref().child('users').child(user._user.uid).once('value')
-                     .then(function (snapshot) {
-                        let val = snapshot.val();
-                        // write to firestore and also update redux store.
-                        if (val) {
-                           store.dispatch({ type: 'USER_FIRESTORE_CREATE', params: snapshot.val() })
-                        } else {
-                           let { email, displayName, photoURL } = user._user
-                           let temp = {};
-                           temp["info"] = {
-                              email,
-                              userName: displayName,
-                              profileThumbnail: photoURL,
-                              mobile_number: "",
-                              genderText: "",
-                              ageText: "",
-                              first_name: "",
-                              last_name: "",
-                              country: "",
-                              udid: DeviceInfo.getUniqueID(),
-                              os: "android",
-                              subscription_status: false,
-                              date_of_registration: new Date(),
-
-                           }
-
-                           console.log('------temp',temp)
-                           store.dispatch({ type: 'USER_FIRESTORE_CREATE', params: temp });
-                        }
-                     })
-                     .catch((error) => {
-                        console.log("Error getting document:", error);
-                     });
+                  // User is signed out.
+                  // ...
+                  loginVar = 0;
+                  store.dispatch({ type: 'USER_NOT_LOGGED' })
                }
-            }).catch(function (error) {
-               console.log("Error getting document:", error);
             });
-            store.dispatch({ type: 'USER_LOGGED', params: user._user })
-         } else {
-            // User is signed out.
-            // ...
-            loginVar = 0;
-            store.dispatch({ type: 'USER_NOT_LOGGED' })
-         }
       });
 
 
@@ -188,11 +195,8 @@ export default class MyApp extends React.Component {
 
       BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
 
-      CarrierInfo.isoCountryCode()
-         .then((result) => {
-            if (result === "in") store.dispatch({ type: 'USER_INDIA_SIM' })
-         });
-         
+
+
       FCM.getToken().then(token => {
          console.log(token);
       });

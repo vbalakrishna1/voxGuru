@@ -68,6 +68,7 @@ export default class MyApp extends React.Component {
    }
 
    componentWillMount() {
+      firebase.analytics().logEvent('APP_OPEN')
       store.dispatch({ type: "IS_LOADING" });
       // console.log(store.getState()); // logs intiall state
 
@@ -190,13 +191,7 @@ export default class MyApp extends React.Component {
          querySnapshot.forEach((doc) => { LessonStatus[doc.id] = doc.data() })
          store.dispatch({ type: 'USER_UPDATE', params: { LessonStatus } });
       }
-
-
-
       BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
-
-
-
       FCM.getToken().then(token => {
          console.log(token);
       });
@@ -206,7 +201,6 @@ export default class MyApp extends React.Component {
       FCM.onMessage(message => {
          console.log('message received', message);
       });
-
       firebase.links()
          .getInitialLink()
          .then((url) => {
@@ -218,7 +212,6 @@ export default class MyApp extends React.Component {
                console.log("did not work");
             }
          });
-
       unsubscribeLink = firebase.links().onLink((url) => {
          // ...
          console.log(url);
@@ -227,7 +220,6 @@ export default class MyApp extends React.Component {
    componentWillUpdate() {
    }
    componentWillUnmount() {
-
       BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
       console.log('----------reached hardwareBackPress here--------');
       // console.log("****unsubscribe*****",unsubscribe())
@@ -235,12 +227,10 @@ export default class MyApp extends React.Component {
       unsubscribeLink();
       // this.unsubscribeFireStore();
       this.unsubscribeFireStore = null;
-
       NetInfo.removeEventListener(
          'connectionChange',
          this.handleFirstConnectivityChange
       );
-
    }
    onBackPress = () => {
       let state = store.getState();

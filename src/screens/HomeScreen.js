@@ -387,7 +387,12 @@ const mapDispatchToProps = dispatch => ({
             if (snapshot.val()) {
                let dataSource = snapshot.val() || {};
                // console.log(snapshot.val());
-               dispatch(NavigationActions.navigate({ routeName: 'CourseScreen', params: { ...dataSource, courseName: courseTitile } }));
+               courseTitleString = courseTitile.replace(/[- )(]/g,'');
+               console.log(courseTitleString);
+               firebase.analytics().logEvent(`Course`, {Course:courseTitleString});
+               // firebase.analytics().logEvent(`Course_${courseTitleString}_Selected`);
+               
+               dispatch(NavigationActions.navigate({ routeName: 'CourseScreen', params: { ...dataSource, courseName: courseTitile, title: courseTitleString } }));
             } else {
                Alert.alert(
                   'Error..! Server did not respond',

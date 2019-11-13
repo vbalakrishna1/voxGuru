@@ -71,6 +71,9 @@ class BookLiveScreen extends Component {
       country: '',
       course: '',
     };
+
+    // firebase.analytics().logEvent(`Start_Live_Chat`);
+    firebase.analytics().logEvent(`Chat`, {Chat:"LiveChat_Opened"});
   }
   componentDidMount() {
     this.handleEnd = this.handleEnd.bind(this);
@@ -134,7 +137,12 @@ class BookLiveScreen extends Component {
               firebase.firestore().doc(`users/${userId}`).set(temp.info)
             }
           })
+
+          // firebase.analytics().logEvent(`Submitted_Chat_Form`);
+          firebase.analytics().logEvent(`Chat`, {Chat:"LiveChat_Submitted"});
+          
         })
+
         .catch(function (error) {
           console.error("Error adding document: ", error);
         });

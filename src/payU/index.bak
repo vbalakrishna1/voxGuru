@@ -53,7 +53,7 @@ PayuNewOrder.prototype.Create = function(payment, secure) {
                 // this.__main__.amount = Number.toFixed(this.__main__.amount, 2);
             } else {
                 this.url = "https://secure.payu.in/_payment";
-                //this.url = "https://testtxncdn.payubiz.in/hdfc";
+                // this.url = "https://testtxncdn.payubiz.in/hdfc";
             }
             if ("salt" in payment) this.salt = payment.salt;
             for (let prop in payment) {

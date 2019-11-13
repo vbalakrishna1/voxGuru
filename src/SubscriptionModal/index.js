@@ -198,11 +198,34 @@ class SubscriptionModalNavigation extends React.Component {
             }
             console.log(CURRENCY);
 
+            let planValue = parseInt(this.state.planSelected.value, 10);
+
+            // Temp Fix
+            if(CURRENCY === null) {
+                if(planValue <= 100) {
+                    CURRENCY = "USD";
+                } else {
+                    CURRENCY = "INR";
+                }
+            }
+
+            // Original Firebase Ecommerce_Purchase
             firebase.analytics().logEvent(`ECOMMERCE_PURCHASE`, {
                 TRANSACTION_ID: transition.txnid,
-                CURRENCY,
-                VALUE: this.state.planSelected.value,
+                CURRENCY: CURRENCY,
+                VALUE: planValue,
             });
+
+            // Firebase Ecommerce_Purchase
+            firebase.analytics().logEvent("ecommerce_purchase", {
+                transaction_id: transition.txnid,
+                currency: CURRENCY,
+                value: planValue,
+            });
+
+            console.log("Transaction ID", transition.txnid);
+            console.log("Currency", CURRENCY);
+            console.log("Value", this.state.planSelected.value);
 
             this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
 
@@ -210,7 +233,6 @@ class SubscriptionModalNavigation extends React.Component {
             this.setState({ executed: false, showWebpage: false });
             console.log("success:", data);
             this.writeToDB({ params, lessonDetails: this.props.params.info, isSuccess: true, lesnId });
-
 
             this.writeToRealtimeDatabase(params, update, CURRENCY)
 
@@ -306,7 +328,6 @@ class SubscriptionModalNavigation extends React.Component {
     }
 
     planSubmit = (params) => {
-
         console.log(params);
         this.setState({ planSelected: params });
     };
@@ -317,21 +338,6 @@ class SubscriptionModalNavigation extends React.Component {
         // processing payment
 
         //for live account payU
-        // newOrder.Create({
-        //     amount: this.state.planSelected.value,
-        //     productinfo: this.state.params.info.currentLevelName,
-        //     firstname: params.name,
-        //     email: params.email,
-        //     phone: params.phone,
-        //     surl: 'https://www.google.com/_success',
-        //     furl: 'https://www.google.com/_failure',
-        //     service_provider: 'payuBiz',
-        //     txnid: uuid.v4(),
-        //     key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
-        //     salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
-        // }, true);
-
-        //for test account payU
         newOrder.Create({
             amount: this.state.planSelected.value,
             productinfo: this.state.params.info.currentLevelName,
@@ -342,7 +348,22 @@ class SubscriptionModalNavigation extends React.Component {
             furl: 'https://www.google.com/_failure',
             service_provider: 'payuBiz',
             txnid: uuid.v4(),
-        }, false);
+            key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
+            salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
+        }, true);
+
+        //for test account payU
+        // newOrder.Create({
+        //     amount: this.state.planSelected.value,
+        //     productinfo: this.state.params.info.currentLevelName,
+        //     firstname: params.name,
+        //     email: params.email,
+        //     phone: params.phone,
+        //     surl: 'https://www.google.com/_success',
+        //     furl: 'https://www.google.com/_failure',
+        //     service_provider: 'payuBiz',
+        //     txnid: uuid.v4(),
+        // }, false);
 
         newOrder.sendReq()
             .then(Response => {
@@ -401,9 +422,23 @@ class SubscriptionModalNavigation extends React.Component {
         })
     }
     render() {
-
-
-
+        // Before Ecommerce_Purchasess
+        if(this.state.planSelected != null) {
+            let planValueBefore = parseInt(this.state.planSelected.value, 10);
+            let CURRENCYBefore = null;
+            if(CURRENCYBefore === null) {
+                if(planValueBefore <= 100) {
+                    CURRENCYBefore = "USD";
+                } else {
+                    CURRENCYBefore = "INR";
+                }
+            }
+            // Firebase Ecommerce_Purchase
+            firebase.analytics().logEvent("before_ecommerce_purchase", {
+                currency: CURRENCYBefore,
+                value: planValueBefore,
+            });
+        }
         return (
             <Modal
                 visible={this.state.modalVisible}

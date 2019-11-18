@@ -466,37 +466,37 @@ class WVScreen extends React.Component {
     });
   };
 
-  zeroUpdate = () => {
-    // lessonVideoPhI, Male_prac_video
-    let zeroValues;
-    if(this.props.navigation.state.params.zero.Male_prac_video) {
-      zeroValues = {
-        isZero: true,
-        lessonName: this.props.navigation.state.params.zero.levelTitle,
-        lessonVideo: this.props.navigation.state.params.zero.videoId,
-        lessonVideoPhI: this.props.navigation.state.params.zero.lessonVideoPhI,
-        lessonPracticeGuideVideo: this.props.navigation.state.params.zero.lessonPracticeGuideVideo,
-        lessonPracticeGuidePhI: this.props.navigation.state.params.zero.lessonPracticeGuidePhI,
-        lessonVideoPhI: this.props.navigation.state.params.zero.levelThumbnail,
-        Male_prac_video: this.props.navigation.state.params.zero.Male_prac_video,
-      }
-    } else {
-      zeroValues = {
-        isZero: true,
-        lessonName: this.props.navigation.state.params.zero.levelTitle,
-        lessonVideo: this.props.navigation.state.params.zero.videoId,
-        lessonVideoPhI: this.props.navigation.state.params.zero.lessonVideoPhI,
-        lessonPracticeGuideVideo: this.props.navigation.state.params.zero.lessonPracticeGuideVideo,
-        lessonPracticeGuidePhI: this.props.navigation.state.params.zero.lessonPracticeGuidePhI,
-        lessonVideoPhI: this.props.navigation.state.params.zero.levelThumbnail,
-      }
-    }
+  // zeroUpdate = () => {
+  //   // lessonVideoPhI, Male_prac_video
+  //   let zeroValues;
+  //   if(this.props.navigation.state.params.zero.Male_prac_video) {
+  //     zeroValues = {
+  //       isZero: true,
+  //       lessonName: this.props.navigation.state.params.zero.levelTitle,
+  //       lessonVideo: this.props.navigation.state.params.zero.videoId,
+  //       lessonVideoPhI: this.props.navigation.state.params.zero.lessonVideoPhI,
+  //       lessonPracticeGuideVideo: this.props.navigation.state.params.zero.lessonPracticeGuideVideo,
+  //       lessonPracticeGuidePhI: this.props.navigation.state.params.zero.lessonPracticeGuidePhI,
+  //       lessonVideoPhI: this.props.navigation.state.params.zero.levelThumbnail,
+  //       Male_prac_video: this.props.navigation.state.params.zero.Male_prac_video,
+  //     }
+  //   } else {
+  //     zeroValues = {
+  //       isZero: true,
+  //       lessonName: this.props.navigation.state.params.zero.levelTitle,
+  //       lessonVideo: this.props.navigation.state.params.zero.videoId,
+  //       lessonVideoPhI: this.props.navigation.state.params.zero.lessonVideoPhI,
+  //       lessonPracticeGuideVideo: this.props.navigation.state.params.zero.lessonPracticeGuideVideo,
+  //       lessonPracticeGuidePhI: this.props.navigation.state.params.zero.lessonPracticeGuidePhI,
+  //       lessonVideoPhI: this.props.navigation.state.params.zero.levelThumbnail,
+  //     }
+  //   }
 
-    console.log("Jagan", zeroValues);
+  //   console.log("Jagan", zeroValues);
 
-    // this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: this.props.navigation.state.params.zero}));
-    this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params:  zeroValues }));
-  }
+  //   // this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: this.props.navigation.state.params.zero}));
+  //   this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params:  zeroValues }));
+  // }
 
   render() {
     //console.log(this.props.navigation.state.params);
@@ -525,7 +525,7 @@ class WVScreen extends React.Component {
           {/* {console.log(this.props.navigation.state.params.zero)} */}
           {this.props.navigation.state.params.zero && (
             <View >
-              <TouchableOpacity onPress={this.zeroUpdate}>
+              <TouchableOpacity onPress={() => this.props.openVideo(this.props.navigation.state.params.zero.videoId) || firebase.analytics().logEvent(`Video`, {Video:"Trail_Video"})}>
               <View style={{ marginTop: 6, marginBottom: 3, marginHorizontal: 6, backgroundColor: '#fff' }}>
                 <View style={{ padding: 4, borderRadius: 2, flexDirection: "row", }}>
                   {/* firebase.analytics().logEvent(`Trail_Video_Opened`) */}

@@ -198,29 +198,52 @@ class SubscriptionModalNavigation extends React.Component {
             }
             console.log(CURRENCY);
 
-            let planValue = parseInt(this.state.planSelected.value, 10);
-
-            // Temp Fix
+        //
+            // Currency Conversion - Start
+            let planValueAfter = null;
             if(CURRENCY === null) {
-                if(planValue <= 100) {
+                if(planValueAfter <= 100) {
                     CURRENCY = "USD";
                 } else {
                     CURRENCY = "INR";
                 }
             }
+            // Conversion
+            if(CURRENCY === "USD") {
+                let dataAfter = this.props.params.cost.value;
+                let arrayAfter = Object.values( dataAfter );
+                let arrayPointerAfter = null;
+
+                for(let i = 0; i < 3; i++) {
+                    arrayAfter.shift();
+                }
+                for(let j = 0; j < arrayAfter.length; j++) {
+                    if(arrayAfter[j] === this.props.params.cost.value[this.state.planSelected.value]) {
+                        arrayPointerAfter = j;
+                    }
+                }
+                let planValueAfterPointer = parseInt(this.props.params.cost.Indian[arrayPointerAfter].value, 10);
+                let currencyValueAfterPointer = parseInt(this.props.params.cost.margin[arrayPointerAfter].value, 10);
+                planValueAfter = planValueAfterPointer + currencyValueAfterPointer;
+            } else {
+                planValueAfter = parseInt(this.state.planSelected.value, 10);
+            }
+            console.log("Plan Value After: ", planValueAfter);
+            // Currency Conversion - End
+        //
 
             // Original Firebase Ecommerce_Purchase
             firebase.analytics().logEvent(`ECOMMERCE_PURCHASE`, {
                 TRANSACTION_ID: transition.txnid,
                 CURRENCY: CURRENCY,
-                VALUE: planValue,
+                VALUE: planValueAfter,
             });
 
             // Firebase Ecommerce_Purchase
             firebase.analytics().logEvent("ecommerce_purchase", {
                 transaction_id: transition.txnid,
                 currency: CURRENCY,
-                value: planValue,
+                value: planValueAfter,
             });
 
             console.log("Transaction ID", transition.txnid);
@@ -422,9 +445,9 @@ class SubscriptionModalNavigation extends React.Component {
         })
     }
     render() {
-        // Before Ecommerce_Purchasess
+        // Currency Conversion - Start
         if(this.state.planSelected != null) {
-            let planValueBefore = parseInt(this.state.planSelected.value, 10);
+            let planValueBefore = null;
             let CURRENCYBefore = null;
             if(CURRENCYBefore === null) {
                 if(planValueBefore <= 100) {
@@ -433,12 +456,34 @@ class SubscriptionModalNavigation extends React.Component {
                     CURRENCYBefore = "INR";
                 }
             }
+            // Conversion
+            if(CURRENCYBefore === "USD") {
+                let dataBefore = this.props.params.cost.value;
+                let arrayBefore = Object.values( dataBefore );
+                let arrayPointer = null;
+
+                for(let i = 0; i < 3; i++) {
+                    arrayBefore.shift();
+                }
+                for(let j = 0; j < arrayBefore.length; j++) {
+                    if(arrayBefore[j] === this.props.params.cost.value[this.state.planSelected.value]) {
+                        arrayPointer = j;
+                    }
+                }
+                let planValueBeforePointer = parseInt(this.props.params.cost.Indian[arrayPointer].value, 10);
+                let currencyValueBeforePointer = parseInt(this.props.params.cost.margin[arrayPointer].value, 10);
+                planValueBefore = planValueBeforePointer + currencyValueBeforePointer;
+            } else {
+                planValueBefore = parseInt(this.state.planSelected.value, 10);
+            }
+            console.log("Plan Value Before: ", planValueBefore);
             // Firebase Ecommerce_Purchase
             firebase.analytics().logEvent("before_ecommerce_purchase", {
                 currency: CURRENCYBefore,
                 value: planValueBefore,
             });
         }
+        // Currency Conversion - End
         return (
             <Modal
                 visible={this.state.modalVisible}

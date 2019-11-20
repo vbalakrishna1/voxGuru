@@ -55,6 +55,7 @@ class SubscriptionModalNavigation extends React.Component {
             isSuccess: false,
             isFail: false,
             showWebpage: false,
+            testMode: false,
         };
 
     }
@@ -293,13 +294,17 @@ class SubscriptionModalNavigation extends React.Component {
         let transHistoryArray = Object.values(params.TransactionHistory)
         var sId = firebase.database().ref().push().key
         console.log("subscription_id---", sId);
+        let subscriptionType = 'Fresh';
+        if(this.state.testMode) {
+            subscriptionType = 'Test';
+        }
         firebase.database().ref('/user_subscription').child(sId).set({
             subscription_id: sId,
             email: self.props.user.user.email,
             product_id: purchasedLesson.currentLevelId,
             purchase_date_pst: purchasedLesson.startDate,
             is_trial_period: false,
-            subscription_type: 'Fresh',
+            subscription_type: subscriptionType,
             subscription_start_date_time: purchasedLesson.startDate,
             subscription_end_date_time: purchasedLesson.endDate,
             course_fee_amount_paid: transHistoryArray[0].amount
@@ -374,6 +379,7 @@ class SubscriptionModalNavigation extends React.Component {
             key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
             salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
         }, true);
+        this.setState({ testMode: false, });
 
         //for test account payU
         // newOrder.Create({
@@ -387,6 +393,7 @@ class SubscriptionModalNavigation extends React.Component {
         //     service_provider: 'payuBiz',
         //     txnid: uuid.v4(),
         // }, false);
+        // this.setState({ testMode: true, });
 
         newOrder.sendReq()
             .then(Response => {

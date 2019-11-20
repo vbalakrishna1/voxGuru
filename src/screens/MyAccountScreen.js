@@ -80,54 +80,12 @@ class MyAccountScreen extends Component {
       Img = gravatar.url(this.state.info.email, { s: '100', r: 'x', d: 'identicon' }, true)
     }
     return (
-      <View>
-        <View style={{
-          flexWrap: 'wrap',
-          flexDirection: 'column',
-          paddingVertical: 30,
-          padding: 10,
-        }}>
-          <View
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-            }} >
-            <TouchableHighlight
-              underlayColor={'yellow'}
-              onPress={this.accountEdit}>
-              <View>
-
-              </View>
-            </TouchableHighlight>
-          </View>
-          <View style={{
-            flex: 1,
-            flexWrap: 'nowrap',
-            flexDirection: 'row',
-          }}>
-            <UserAvatar size="100" name='No Image' src={Img} />
-            <View style={{
-              flex: 1,
-              flexWrap: 'wrap',
-              flexDirection: 'column',
-              paddingLeft: 10,
-              marginTop: 10,
-            }}>
-              <Text style={{ color: 'black', fontSize: 28, textAlign: 'left', padding: 5, flexWrap: 'wrap' }}>
-                {this.state.info.userName}
-              </Text>
-              {/* <Text style={{color:'black',fontSize: 14, textAlign: 'left', padding: 5, flexWrap: 'wrap'}}> 
-              Age: {this.state.info.ageText} years | Gender: {this.state.info.genderText}
-            </Text> */}
-              <Text style={{ color: 'black', fontSize: 14, textAlign: 'left', paddingLeft: 5, flexWrap: 'wrap' }}>
-                {this.state.info.email}
-              </Text>
-            </View>
-          </View>
+      <View style={{ width: '100%', padding: 8, paddingTop: 10 }}>
+        <View style={{ backgroundColor: "#FFFFFF", padding: 10, paddingLeft: 20, borderRadius: 4}}>
+          <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "400", textTransform: "uppercase", marginBottom: 5 }}>Login Details</Text>
+          <Text style={{ color: "#909090", fontSize: 18, fontWeight: "200" }}>{this.state.info.email}</Text>
         </View>
       </View>
-
     );
   }
 
@@ -160,27 +118,54 @@ class MyAccountScreen extends Component {
   _renderTransaction(val) {
     // console.log(this.state[val]);
 
+    // <View>
+    //   {this.state.transactionHistory ?
+    //     <View style={{
+    //       paddingHorizontal: 10,
+    //       paddingVertical: 20,
+    //       alignItems: "center",
+    //     }}>
+    //       <Text> No transactions yet. </Text>
+    //     </View>
+    //     :
+    //     <View style={{
+    //       flex: 1,
+    //       padding: 10,
+    //     }}>
+    //       <FlatList
+    //         data={Object.values(this.state.transactionHistory)}
+    //         renderItem={({ item, index }) => this._renderTransactionRow(item)}
+    //         keyExtractor={item => item.txnid}
+    //       />
+    //     </View>
+    //   }
+    // </View>
     return (
       <View>
-        {this.state.transactionHistory ?
-          <View style={{
-            paddingHorizontal: 10,
-            paddingVertical: 20,
-            alignItems: "center",
-          }}>
-            <Text> No transactions yet. </Text>
+        {this.state.transactionHistory ? (
+          <View style={{ width: '100%', padding: 8, paddingTop: 10 }}>
+            <View style={{ backgroundColor: "#FFFFFF", borderRadius: 4}}>
+              <View style={{ padding: 10, paddingLeft: 20, paddingBottom: 0}}>
+                <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "400", textTransform: "uppercase", marginBottom: 10 }}>Billing</Text>
+              </View>
+              <View style={{ paddingBottom: 20 }}>
+                <FlatList
+                  data={Object.values(this.state.transactionHistory)}
+                  renderItem={({ item, index }) => this._renderTransactionRow(item)}
+                  keyExtractor={item => item.txnid}
+                />
+              </View>
+            </View>
           </View>
-          :
-          <View style={{
-            flex: 1,
-            padding: 10,
-          }}>
-            <FlatList
-              data={Object.values(this.state.transactionHistory)}
-              renderItem={({ item, index }) => this._renderTransactionRow(item)}
-              keyExtractor={item => item.txnid}
-            />
-          </View>
+          ) : (
+            <View style={{
+              paddingHorizontal: 10,
+              paddingVertical: 20,
+              alignItems: "center",
+            }}>
+              <Text> No transactions yet. </Text>
+            </View>
+          )
         }
       </View>
     )
@@ -221,71 +206,47 @@ class MyAccountScreen extends Component {
   }
 
   _renderTransactionRow = (rowData, sectionID, rowID) => {
-
+    
     if (rowData.txnid) {
+
+      let day = rowData.createDate.getDate();
+      let month = rowData.createDate.getMonth();
+      let year = rowData.createDate.getFullYear().toString().slice(-2);
+
+      let serviceProvider = rowData.service_provider;
+      let iOS = false;
+
+      let amount = rowData.amount;
+      let amountText = "Android 1 month subscription";
+
+      if(serviceProvider === "payuBiz") {
+        iOS = false;
+      } else {
+        iOS = true;
+      }
+
+      if(amount <= 1000 && iOS === false) {
+        amountText = "Android 1 month subscription";
+      } else if(amount > 1000 && amount <= 1500 && iOS === false) {
+        amountText = "Android 2 month subscription";
+      } else if(amount > 1500 && iOS === false) {
+        amountText = "Android 3 month subscription";
+      }
+
       return (
-        <TouchableHighlight underlayColor={'yellow'}>
-
-          <View style={{
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            alignContent: 'space-between',
-            backgroundColor: '#fefefe',
-            margin: 5,
-            borderColor: '#e5e5e5',
-            borderWidth: 1,
-            borderRadius: 4,
-            shadowColor: "#000000",
-            shadowOpacity: 0.3,
-            shadowOffset: {
-              height: 1,
-              width: 0.3,
-            }
-          }}>
-            <View style={{
-              flex: 1,
-              flexWrap: 'wrap',
-              flexDirection: 'row',
-              alignContent: 'space-between',
-            }}>
-              <View style={{
-                flex: 1,
-                flexWrap: 'wrap',
-                flexDirection: 'column',
-                alignContent: 'center',
-                alignSelf: 'center',
-                paddingHorizontal: 10
-              }}>
-
-                <Text style={{ color: 'black', textAlign: 'left', flexWrap: 'wrap' }}>
-                  <Text>
-                    {rowData.txnid}
-                  </Text>
-                </Text>
-
-
-                <Text style={{ textAlign: 'left', color: 'grey', flexDirection: 'row', flexWrap: 'wrap' }}>
-                  <Text>
-                    Amount: {rowData.amount} ,
-                  </Text>
-                  {rowData.currentLevelId != null &&
-                    (<Text>
-                      Course Id: {rowData.currentLevelId}
-                    </Text>)
-                  }
-                  {rowData.productinfo != null &&
-                    (<Text>
-                      Course Id: {rowData.productinfo}
-                    </Text>)
-                  }
-                </Text>
-
-              </View>
-            </View>
+      <View style={{paddingTop: 10, paddingBottom: 10, borderBottomColor: "#E0E0E0", borderBottomWidth: 1}}>
+        <View style={{ paddingLeft: 20, paddingRight: 20 }}>
+          <View style={{ flexWrap: 'wrap', flexDirection: 'row', flex: 1 }}>
+            <Text style={{ justifyContent: "flex-start", fontSize: 18, fontWeight: "400", color: "#000000" }}>{day}/{month}/{year}</Text>
+            <View style={{ flex: 1 }}></View>
+            <Text style={{ justifyContent: "flex-end", fontSize: 18, fontWeight: "400", color: "#000000" }}>{rowData.amount}</Text>
           </View>
-
-        </TouchableHighlight>
-      );
+          <Text>{rowData.productinfo}</Text>
+          {iOS ? ( <Text>IOS auto-renewable subscription</Text> ) : ( <Text>{amountText}</Text> )}
+          <Text numberOfLines={1}>Txn id - {rowData.txnid}</Text>
+        </View>
+      </View>
+      )
     } else {
       return null;
     }
@@ -566,10 +527,10 @@ class MyAccountScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Header title={"My Account"} leftNavMenu={true} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'DrawerOpen' }))} />
-        <ScrollView style={{ backgroundColor: "#fefefe" }}>
+        <Header title={"My Account"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} center={true}/>
+        <ScrollView style={{ backgroundColor: "#E0E0E0" }}>
           {this._renderUserInfo()}
-          <View style={{ height: 10 }} />
+          {/* <View style={{ height: 10 }} />
           <ActivityIndicator animating={this.state.animating} />
           <SegmentedControlTab
             values={['Transaction History']}
@@ -580,7 +541,7 @@ class MyAccountScreen extends Component {
             tabStyle={{ backgroundColor: '#F2F2F2', borderWidth: 0, flexWrap: "wrap" }}
             activeTabStyle={{ backgroundColor: 'white', marginTop: 2, }}
             tabTextStyle={{ color: '#444444', fontSize: 14, }}
-            activeTabTextStyle={{ color: '#6b38a5', fontSize: 14 }} />
+            activeTabTextStyle={{ color: '#6b38a5', fontSize: 14 }} /> */}
           <View style={{ flex: 1 }}>
             {this._renderCustomSegmentElement()}
           </View>

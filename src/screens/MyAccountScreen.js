@@ -80,10 +80,10 @@ class MyAccountScreen extends Component {
       Img = gravatar.url(this.state.info.email, { s: '100', r: 'x', d: 'identicon' }, true)
     }
     return (
-      <View style={{ width: '100%', padding: 8, paddingTop: 10 }}>
+      <View style={{ width: '100%', padding: 8, paddingTop: 20 }}>
         <View style={{ backgroundColor: "#FFFFFF", padding: 10, paddingLeft: 20, borderRadius: 4}}>
-          <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "400", textTransform: "uppercase", marginBottom: 5 }}>Login Details</Text>
-          <Text style={{ color: "#909090", fontSize: 18, fontWeight: "200" }}>{this.state.info.email}</Text>
+          <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "600", textTransform: "uppercase", marginBottom: 5 }}>Login Details</Text>
+          <Text style={{ color: "#000000", fontSize: 18, fontWeight: "200" }}>{this.state.info.email}</Text>
         </View>
       </View>
     );
@@ -146,7 +146,7 @@ class MyAccountScreen extends Component {
           <View style={{ width: '100%', padding: 8, paddingTop: 10 }}>
             <View style={{ backgroundColor: "#FFFFFF", borderRadius: 4}}>
               <View style={{ padding: 10, paddingLeft: 20, paddingBottom: 0}}>
-                <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "400", textTransform: "uppercase", marginBottom: 10 }}>Billing</Text>
+                <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "600", textTransform: "uppercase", marginBottom: 10 }}>Billing</Text>
               </View>
               <View style={{ paddingBottom: 20 }}>
                 <FlatList
@@ -237,9 +237,9 @@ class MyAccountScreen extends Component {
       <View style={{paddingTop: 10, paddingBottom: 10, borderBottomColor: "#E0E0E0", borderBottomWidth: 1}}>
         <View style={{ paddingLeft: 20, paddingRight: 20 }}>
           <View style={{ flexWrap: 'wrap', flexDirection: 'row', flex: 1 }}>
-            <Text style={{ justifyContent: "flex-start", fontSize: 18, fontWeight: "400", color: "#000000" }}>{day}/{month}/{year}</Text>
+            <Text style={{ justifyContent: "flex-start", fontSize: 18, fontWeight: "600", color: "#000000" }}>{day}/{month}/{year}</Text>
             <View style={{ flex: 1 }}></View>
-            <Text style={{ justifyContent: "flex-end", fontSize: 18, fontWeight: "400", color: "#000000" }}>{rowData.amount}</Text>
+            <Text style={{ justifyContent: "flex-end", fontSize: 18, fontWeight: "600", color: "#000000" }}>{rowData.amount}</Text>
           </View>
           <Text>{rowData.productinfo}</Text>
           {iOS ? ( <Text>IOS auto-renewable subscription</Text> ) : ( <Text>{amountText}</Text> )}

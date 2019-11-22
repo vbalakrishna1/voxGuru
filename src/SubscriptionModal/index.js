@@ -305,7 +305,7 @@ class SubscriptionModalNavigation extends React.Component {
             course_fee_amount_paid: transHistoryArray[0].amount
         });
 
-        // // Subscription Test - Start
+        // Subscription Test - Start
         // firebase.database().ref('/user_subscription').child(sId).set({
         //     subscription_id: sId,
         //     email: self.props.user.user.email,
@@ -317,7 +317,7 @@ class SubscriptionModalNavigation extends React.Component {
         //     subscription_end_date_time: purchasedLesson.endDate,
         //     course_fee_amount_paid: transHistoryArray[0].amount
         // });
-        // // Subscription Test - End
+        // Subscription Test - End
 
         var stId = firebase.database().ref().push().key
         firebase.database().ref('/user_subscription_transactions').child(stId).set({
@@ -376,22 +376,7 @@ class SubscriptionModalNavigation extends React.Component {
         this.setState({ userInfoConfirm: true });
         // processing payment
 
-        //for live account payU
-        // newOrder.Create({
-        //     amount: this.state.planSelected.value,
-        //     productinfo: this.state.params.info.currentLevelName,
-        //     firstname: params.name,
-        //     email: params.email,
-        //     phone: params.phone,
-        //     surl: 'https://www.google.com/_success',
-        //     furl: 'https://www.google.com/_failure',
-        //     service_provider: 'payuBiz',
-        //     txnid: uuid.v4(),
-        //     key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
-        //     salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
-        // }, true);
-
-        //for test account payU
+        // for live account payU
         newOrder.Create({
             amount: this.state.planSelected.value,
             productinfo: this.state.params.info.currentLevelName,
@@ -402,7 +387,22 @@ class SubscriptionModalNavigation extends React.Component {
             furl: 'https://www.google.com/_failure',
             service_provider: 'payuBiz',
             txnid: uuid.v4(),
-        }, false);
+            key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
+            salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
+        }, true);
+
+        //for test account payU
+        // newOrder.Create({
+        //     amount: this.state.planSelected.value,
+        //     productinfo: this.state.params.info.currentLevelName,
+        //     firstname: params.name,
+        //     email: params.email,
+        //     phone: params.phone,
+        //     surl: 'https://www.google.com/_success',
+        //     furl: 'https://www.google.com/_failure',
+        //     service_provider: 'payuBiz',
+        //     txnid: uuid.v4(),
+        // }, false);
 
         newOrder.sendReq()
             .then(Response => {

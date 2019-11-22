@@ -354,7 +354,9 @@ class Subscribe extends Component {
          isSubscriber: sub,
          isLoading: true,
          data: null,
-         allCourse: allCourseTemp
+         allCourse: allCourseTemp,
+         duplicateCourse: null,
+         duplicatePointer: false,
       }
       // this.state={
       //   isLoading:true,
@@ -466,6 +468,64 @@ class Subscribe extends Component {
 
    check = (val, zero) => {
       this.props.onViewWeekViewScreen(val, zero)
+   }
+
+   duplicateRenderCourseCard = ({ item }) => {
+      let Coursemodule = this.getCoursemodule(item.currentLevelId)
+      let mainCourse = this.getCourseName(item.currentLevelId)
+      let CurrentDate = new Date().getTime();
+      let dateDiff = this.dateDiff(CurrentDate, parseInt(item.endDate));
+      return(
+         <View>
+            <View style={{ flex: 1, flexWrap: 'wrap', flexDirection: 'column', paddingHorizontal: 10, paddingVertical: 5, }}>
+               <View style={{
+                     flexWrap: 'nowrap',
+                     flexDirection: 'row',
+                     padding: 10,
+                     borderColor: "#e0e0e0",
+                     borderWidth: 1, borderRadius: 3
+               }}>
+                     <Image
+                        style={{
+                        width: this.state.width * 30.1 / 90,
+                        aspectRatio: 1.1,
+                        paddingTop: 15,
+                        borderRadius: 6,
+                        borderColor: 'grey',
+                        }}
+                        source={{ uri: Coursemodule.levelThumbNoPlayIcon }}
+                     />
+                     <View style={{
+                        flex: 1,
+                        flexWrap: 'wrap',
+                        flexDirection: 'column',
+                        paddingLeft: 10,
+                        paddingRight: 5,
+                        justifyContent: "space-between",
+                     }}>
+                        <View style={{ paddingLeft: 2.5 }}>
+                           <StyledText weight={"Bold"}>
+                                 {mainCourse.courseTitile}
+                           </StyledText>
+                           <StyledText>
+                                 {Coursemodule.LevelTitleNew}
+                           </StyledText>
+                           <StyledText size={"Medium"} style={{ color: 'grey' }}>
+                                 Subscription Expired.
+                           </StyledText>
+                        </View>
+                        <View
+                           style={{
+                           flexDirection: 'row',
+                           backgroundColor: '#6b38a5',
+                           borderRadius: 4,
+                           }}>
+                        </View>
+                     </View>
+               </View>
+            </View>
+         </View>
+      )
    }
 
    renderCourseCard = ({ item }) => {
@@ -759,7 +819,78 @@ class Subscribe extends Component {
          )
       }
    }
+
+   updateDuplicate = (duplicate) => {
+       this.setState({
+         duplicatePointer: true,
+       }, () => console.log("Duplicate New Pointer", this.state.duplicatePointer));
+   }
+
    componentDidMount() {
+      // Custom Render Old Course - Start
+
+      // console.log("TransactionHistory: ", typeof this.props.user.user.TransactionHistory);
+      // console.log("LessonStatus: ", typeof this.props.user.user.LessonStatus);
+
+      if(this.props.user.user.TransactionHistory != null || this.props.user.user.TransactionHistory != undefined) {
+         let transactionHistoryArray = [];
+         let lessonStatusArray = [];
+
+         for (let [key] of Object.entries(this.props.user.user.TransactionHistory)) {
+            for(let [keyInside, valueInside] of Object.entries(this.props.user.user.TransactionHistory[key])) {
+               if(keyInside === "productinfo") {
+                  transactionHistoryArray.push( valueInside );
+               }
+            }
+         }
+
+         for (let [key] of Object.entries(this.props.user.user.LessonStatus)) {
+            for(let [keyInside, valueInside] of Object.entries(this.props.user.user.LessonStatus[key])) {
+               if(keyInside === "currentLevelName") {
+                  lessonStatusArray.push( valueInside );
+               }
+            }
+         }
+
+         if(transactionHistoryArray.length !== lessonStatusArray.length) {
+            let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index)
+            let duplicate =  findDuplicates(transactionHistoryArray);
+
+            // Render Duplicate Entry - Start
+            let duplicateNewIndex = [];
+            for(let i = 0; i < duplicate.length; i++) {
+               for (let [key] of Object.entries(this.props.user.user.LessonStatus)) {
+                  for(let [keyInside, valueInside] of Object.entries(this.props.user.user.LessonStatus[key])) {
+                     if(keyInside === "currentLevelName") {
+                        if(valueInside === duplicate[i]) {
+                           duplicateNewIndex.push(key);
+                        }
+                     }
+                  }
+               }
+            }
+            this.updateDuplicate(duplicateNewIndex);
+            
+            var tempArray = Object.values(this.state.user.LessonStatus)
+            var duplicateCourseTemp = new Array()
+      
+            for (let i = 0; i < tempArray.length; i++) {
+               for(let j = 0; j < duplicateNewIndex.length; j++) {
+                  if(tempArray[i].currentLevelId === duplicateNewIndex[j]) {
+                     duplicateCourseTemp.push(tempArray[i]);
+                  }
+               }
+            }
+
+            this.setState({
+               duplicateCourse: duplicateCourseTemp,
+            }, () => console.log("Duplicate New Index", this.state.duplicateCourse));
+
+         }
+         // Render Duplicate Entry - End
+      }
+
+      // Custom Render Old Course - End
 
       this.ref = firebase.database().ref();
       var self = this;
@@ -906,6 +1037,16 @@ class Subscribe extends Component {
                            renderItem={this.renderCourseCard}
                            extraData={this.state}
                         />
+                        {this.state.duplicatePointer ? (
+                           <FlatList
+                              keyExtractor={item => item.currentLevelId}
+                              data={this.state.duplicateCourse}
+                              renderItem={this.duplicateRenderCourseCard}
+                              extraData={this.state}
+                           />
+                        ) : (
+                           console.log("No Duplicate Course.")
+                        )}
                      </StyledFullWidthContainer>
                   </ScrollView>
                ) :

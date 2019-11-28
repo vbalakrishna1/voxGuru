@@ -291,30 +291,30 @@ class SubscriptionModalNavigation extends React.Component {
         console.log("subscription_id---", sId);
 
         // Live Transaction
-        // firebase.database().ref('/user_subscription').child(sId).set({
-        //     subscription_id: sId,
-        //     email: self.props.user.user.email,
-        //     product_id: purchasedLesson.currentLevelId,
-        //     purchase_date_pst: purchasedLesson.startDate,
-        //     is_trial_period: false,
-        //     subscription_type: 'Fresh',
-        //     subscription_start_date_time: purchasedLesson.startDate,
-        //     subscription_end_date_time: purchasedLesson.endDate,
-        //     course_fee_amount_paid: transHistoryArray[0].amount
-        // });
-
-        // Test Transaction
         firebase.database().ref('/user_subscription').child(sId).set({
             subscription_id: sId,
             email: self.props.user.user.email,
             product_id: purchasedLesson.currentLevelId,
             purchase_date_pst: purchasedLesson.startDate,
             is_trial_period: false,
-            subscription_type: 'Test',
+            subscription_type: 'Fresh',
             subscription_start_date_time: purchasedLesson.startDate,
             subscription_end_date_time: purchasedLesson.endDate,
             course_fee_amount_paid: transHistoryArray[0].amount
         });
+
+        // Test Transaction
+        // firebase.database().ref('/user_subscription').child(sId).set({
+        //     subscription_id: sId,
+        //     email: self.props.user.user.email,
+        //     product_id: purchasedLesson.currentLevelId,
+        //     purchase_date_pst: purchasedLesson.startDate,
+        //     is_trial_period: false,
+        //     subscription_type: 'Test',
+        //     subscription_start_date_time: purchasedLesson.startDate,
+        //     subscription_end_date_time: purchasedLesson.endDate,
+        //     course_fee_amount_paid: transHistoryArray[0].amount
+        // });
 
         var stId = firebase.database().ref().push().key
         firebase.database().ref('/user_subscription_transactions').child(stId).set({

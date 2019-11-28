@@ -2,7 +2,7 @@
 
 // React
 import React from 'react'
-import { Modal, View, Alert, StatusBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
+import { Modal, View, Alert, StatuBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
 
 import {
     StyledContainer,
@@ -196,13 +196,7 @@ class SubscriptionModalNavigation extends React.Component {
             if (myArray) {
                 CURRENCY = "INR";
             }
-
-            // firebase.analytics().logEvent(
-            //     'after_ecommerce_purchase', {
-            //         CURRENCY: CURRENCY,
-            //         currency: CURRENCY,
-            //         amount: this.state.planSelected.value
-            // });
+            console.log(CURRENCY);
 
             // New Ecommerce Code - Start
             /*
@@ -232,16 +226,24 @@ class SubscriptionModalNavigation extends React.Component {
 
             */
 
-            let ecommerceTitle = this.props.params.info.currentLevelName;
-            let ecommerceAmount = parseInt(this.state.planSelected.value, 10);
+           let ecommerceTitle = this.props.params.info.currentLevelName;
+           let ecommerceAmount = parseInt(this.state.planSelected.value, 10);
 
-            firebase.analytics().logEvent('AndroidEcommercePurchase', {
-                Quantity:   1,
-                ItemName:   ecommerceTitle,
-                Currency:   CURRENCY,
-                Amount:  ecommerceAmount
-            });
-            // New Ecommerce Code - End            
+           firebase.analytics().logEvent('AndroidEcommercePurchase', {
+               Quantity:   1,
+               ItemName:   ecommerceTitle,
+               Currency:   CURRENCY,
+               Amount:  ecommerceAmount
+           });
+
+            // Subscription Values - Start
+            console.log("Quantity: ", 1);
+            console.log("ItemName: ", this.props.params.info.currentLevelName);
+            console.log("Currency: ", CURRENCY);
+            console.log("Amount: ", parseInt(this.state.planSelected.value, 10));
+            // Subscription Values - End
+
+           // New Ecommerce Code - End
 
             this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
 
@@ -287,6 +289,8 @@ class SubscriptionModalNavigation extends React.Component {
         let transHistoryArray = Object.values(params.TransactionHistory)
         var sId = firebase.database().ref().push().key
         console.log("subscription_id---", sId);
+
+        // Live Transaction
         // firebase.database().ref('/user_subscription').child(sId).set({
         //     subscription_id: sId,
         //     email: self.props.user.user.email,
@@ -326,7 +330,6 @@ class SubscriptionModalNavigation extends React.Component {
     }
 
     onNavigationStateChange = (data) => {
-
         if (this.state.showWebpage) {
             // Code for creating payment
             // this.processPayment(data);
@@ -370,7 +373,7 @@ class SubscriptionModalNavigation extends React.Component {
         this.setState({ userInfoConfirm: true });
         // processing payment
 
-        //for live account payU
+        // for live account payU
         // newOrder.Create({
         //     amount: this.state.planSelected.value,
         //     productinfo: this.state.params.info.currentLevelName,
@@ -385,7 +388,7 @@ class SubscriptionModalNavigation extends React.Component {
         //     salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
         // }, true);
 
-        //for test account payU
+        // for test account payU
         newOrder.Create({
             amount: this.state.planSelected.value,
             productinfo: this.state.params.info.currentLevelName,

@@ -2,7 +2,7 @@
 
 // React
 import React from 'react'
-import { Modal, View, Alert, StatuÍsBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
+import { Modal, View, Alert, StatusBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
 
 import {
     StyledContainer,
@@ -55,7 +55,6 @@ class SubscriptionModalNavigation extends React.Component {
             isSuccess: false,
             isFail: false,
             showWebpage: false,
-            testMode: false,
         };
 
     }
@@ -197,59 +196,52 @@ class SubscriptionModalNavigation extends React.Component {
             if (myArray) {
                 CURRENCY = "INR";
             }
-            console.log(CURRENCY);
 
-        //
-            // Currency Conversion - Start
-            let planValueAfter = null;
-            if(CURRENCY === null) {
-                if(planValueAfter <= 100) {
-                    CURRENCY = "USD";
-                } else {
-                    CURRENCY = "INR";
-                }
-            }
-            // Conversion
-            if(CURRENCY === "USD") {
-                let dataAfter = this.props.params.cost.value;
-                let arrayAfter = Object.values( dataAfter );
-                let arrayPointerAfter = null;
+            // firebase.analytics().logEvent(
+            //     'after_ecommerce_purchase', {
+            //         CURRENCY: CURRENCY,
+            //         currency: CURRENCY,
+            //         amount: this.state.planSelected.value
+            // });
 
-                for(let i = 0; i < 3; i++) {
-                    arrayAfter.shift();
-                }
-                for(let j = 0; j < arrayAfter.length; j++) {
-                    if(arrayAfter[j] === this.props.params.cost.value[this.state.planSelected.value]) {
-                        arrayPointerAfter = j;
-                    }
-                }
-                let planValueAfterPointer = parseInt(this.props.params.cost.Indian[arrayPointerAfter].value, 10);
-                let currencyValueAfterPointer = parseInt(this.props.params.cost.margin[arrayPointerAfter].value, 10);
-                planValueAfter = planValueAfterPointer + currencyValueAfterPointer;
-            } else {
-                planValueAfter = parseInt(this.state.planSelected.value, 10);
-            }
-            console.log("Plan Value After: ", planValueAfter);
-            // Currency Conversion - End
-        //
+            // New Ecommerce Code - Start
+            /*
 
-            // Original Firebase Ecommerce_Purchase
-            firebase.analytics().logEvent(`ECOMMERCE_PURCHASE`, {
-                TRANSACTION_ID: transition.txnid,
-                CURRENCY: CURRENCY,
-                VALUE: planValueAfter,
+            +-----------------------------------------------------------+
+            |  AndroidEcommercePurchase                                 |
+            +-----------------------------------------------------------+
+            |  Quantity |  ItemName             |  Currency |  Amount   |
+            +-----------------------------------------------------------+
+            |  2        |  CarnaticVocalModule1 |  INR      |  750      |
+            |  3        |  CarnaticVocalModule2 |  USD      |  20       |
+            |  1        |  CarnaticVocalModule2 |  INR      |  750      |
+            |  1        |  CarnaticVocalModule3 |  INR      |  750      |
+            +-----------------------------------------------------------+
+
+
+            firebase.analytics().logEvent('add_to_cart', {
+                quantity: 1,
+                item_name: 'Vitin',
+                item_id: 'dshjfsahd',
+                value: 30,
+                price: 30,
+                currency: 'BRL'
             });
 
-            // Firebase Ecommerce_Purchase
-            firebase.analytics().logEvent("ecommerce_purchase", {
-                transaction_id: transition.txnid,
-                currency: CURRENCY,
-                value: planValueAfter,
-            });
+            console.log('jagan', this.props.params.info.currentLevelName);
 
-            console.log("Transaction ID", transition.txnid);
-            console.log("Currency", CURRENCY);
-            console.log("Value", this.state.planSelected.value);
+            */
+
+            let ecommerceTitle = this.props.params.info.currentLevelName;
+            let ecommerceAmount = parseInt(this.state.planSelected.value, 10);
+
+            firebase.analytics().logEvent('AndroidEcommercePurchase', {
+                Quantity:   1,
+                ItemName:   ecommerceTitle,
+                Currency:   CURRENCY,
+                Amount:  ecommerceAmount
+            });
+            // New Ecommerce Code - End            
 
             this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
 
@@ -257,6 +249,7 @@ class SubscriptionModalNavigation extends React.Component {
             this.setState({ executed: false, showWebpage: false });
             console.log("success:", data);
             this.writeToDB({ params, lessonDetails: this.props.params.info, isSuccess: true, lesnId });
+
 
             this.writeToRealtimeDatabase(params, update, CURRENCY)
 
@@ -294,21 +287,31 @@ class SubscriptionModalNavigation extends React.Component {
         let transHistoryArray = Object.values(params.TransactionHistory)
         var sId = firebase.database().ref().push().key
         console.log("subscription_id---", sId);
-        let subscriptionType = 'Fresh';
-        if(this.state.testMode) {
-            subscriptionType = 'Test';
-        }
+        // firebase.database().ref('/user_subscription').child(sId).set({
+        //     subscription_id: sId,
+        //     email: self.props.user.user.email,
+        //     product_id: purchasedLesson.currentLevelId,
+        //     purchase_date_pst: purchasedLesson.startDate,
+        //     is_trial_period: false,
+        //     subscription_type: 'Fresh',
+        //     subscription_start_date_time: purchasedLesson.startDate,
+        //     subscription_end_date_time: purchasedLesson.endDate,
+        //     course_fee_amount_paid: transHistoryArray[0].amount
+        // });
+
+        // Test Transaction
         firebase.database().ref('/user_subscription').child(sId).set({
             subscription_id: sId,
             email: self.props.user.user.email,
             product_id: purchasedLesson.currentLevelId,
             purchase_date_pst: purchasedLesson.startDate,
             is_trial_period: false,
-            subscription_type: subscriptionType,
+            subscription_type: 'Test',
             subscription_start_date_time: purchasedLesson.startDate,
             subscription_end_date_time: purchasedLesson.endDate,
             course_fee_amount_paid: transHistoryArray[0].amount
         });
+
         var stId = firebase.database().ref().push().key
         firebase.database().ref('/user_subscription_transactions').child(stId).set({
             subscription_transaction_id: stId,
@@ -323,6 +326,7 @@ class SubscriptionModalNavigation extends React.Component {
     }
 
     onNavigationStateChange = (data) => {
+
         if (this.state.showWebpage) {
             // Code for creating payment
             // this.processPayment(data);
@@ -356,6 +360,7 @@ class SubscriptionModalNavigation extends React.Component {
     }
 
     planSubmit = (params) => {
+
         console.log(params);
         this.setState({ planSelected: params });
     };
@@ -366,22 +371,6 @@ class SubscriptionModalNavigation extends React.Component {
         // processing payment
 
         //for live account payU
-        newOrder.Create({
-            amount: this.state.planSelected.value,
-            productinfo: this.state.params.info.currentLevelName,
-            firstname: params.name,
-            email: params.email,
-            phone: params.phone,
-            surl: 'https://www.google.com/_success',
-            furl: 'https://www.google.com/_failure',
-            service_provider: 'payuBiz',
-            txnid: uuid.v4(),
-            key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
-            salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
-        }, true);
-        this.setState({ testMode: false, });
-
-        //for test account payU
         // newOrder.Create({
         //     amount: this.state.planSelected.value,
         //     productinfo: this.state.params.info.currentLevelName,
@@ -392,8 +381,22 @@ class SubscriptionModalNavigation extends React.Component {
         //     furl: 'https://www.google.com/_failure',
         //     service_provider: 'payuBiz',
         //     txnid: uuid.v4(),
-        // }, false);
-        // this.setState({ testMode: true, });
+        //     key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
+        //     salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
+        // }, true);
+
+        //for test account payU
+        newOrder.Create({
+            amount: this.state.planSelected.value,
+            productinfo: this.state.params.info.currentLevelName,
+            firstname: params.name,
+            email: params.email,
+            phone: params.phone,
+            surl: 'https://www.google.com/_success',
+            furl: 'https://www.google.com/_failure',
+            service_provider: 'payuBiz',
+            txnid: uuid.v4(),
+        }, false);
 
         newOrder.sendReq()
             .then(Response => {
@@ -452,45 +455,6 @@ class SubscriptionModalNavigation extends React.Component {
         })
     }
     render() {
-        // Currency Conversion - Start
-        if(this.state.planSelected != null) {
-            let planValueBefore = null;
-            let CURRENCYBefore = null;
-            if(CURRENCYBefore === null) {
-                if(planValueBefore <= 100) {
-                    CURRENCYBefore = "USD";
-                } else {
-                    CURRENCYBefore = "INR";
-                }
-            }
-            // Conversion
-            if(CURRENCYBefore === "USD") {
-                let dataBefore = this.props.params.cost.value;
-                let arrayBefore = Object.values( dataBefore );
-                let arrayPointer = null;
-
-                for(let i = 0; i < 3; i++) {
-                    arrayBefore.shift();
-                }
-                for(let j = 0; j < arrayBefore.length; j++) {
-                    if(arrayBefore[j] === this.props.params.cost.value[this.state.planSelected.value]) {
-                        arrayPointer = j;
-                    }
-                }
-                let planValueBeforePointer = parseInt(this.props.params.cost.Indian[arrayPointer].value, 10);
-                let currencyValueBeforePointer = parseInt(this.props.params.cost.margin[arrayPointer].value, 10);
-                planValueBefore = planValueBeforePointer + currencyValueBeforePointer;
-            } else {
-                planValueBefore = parseInt(this.state.planSelected.value, 10);
-            }
-            console.log("Plan Value Before: ", planValueBefore);
-            // Firebase Ecommerce_Purchase
-            firebase.analytics().logEvent("before_ecommerce_purchase", {
-                currency: CURRENCYBefore,
-                value: planValueBefore,
-            });
-        }
-        // Currency Conversion - End
         return (
             <Modal
                 visible={this.state.modalVisible}

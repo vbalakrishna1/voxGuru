@@ -283,17 +283,25 @@ export class HomeScreen extends PureComponent {
    }
    render() {
       if(this.props.user.user.info) {
-         if(!this.props.user.user.info.creationTime) {
-            // console.log("User Information", this.props.user.user);
-            firebase.database().ref(`users/${this.props.user.user.uid}/info`).update({
-               creationTime: this.props.user.user.metadata.creationTime,
-            }).then((data)=>{
-               console.log('Updated Date of Registration ' , data)
-            }).catch((error)=>{
-               console.log('Error Date of Registration' , error)
-            })
+         if(this.props.user.user.metadata) {
+            let dateOfRegistration = this.props.user.user.metadata.creationTime;
+            let userDB = 'users/' + this.props.user.user.uid + '/info';
+            firebase.database().ref(`users/${this.props.user.user.uid}/info`).once("value")
+            .then(function(snapshot) {
+               let creationTime = snapshot.child("creationTime").exists();
+               if(!creationTime) {
+                  firebase.database().ref(userDB).update({
+                     creationTime: dateOfRegistration,
+                  }).then((data)=>{
+                     console.log('Updated Date of Registration ' , data)
+                  }).catch((error)=>{
+                     console.log('Error Date of Registration' , error)
+                  });
+               }
+            });
          }
       }
+
       return (
          <StyledContainer>
             <Header title={"Home"} leftNavMenu={true} leftNavFunc={this.props.openMenu} />

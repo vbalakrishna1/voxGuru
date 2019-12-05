@@ -218,11 +218,20 @@ class SubscriptionModalNavigation extends React.Component {
                    case 20:
                        ecommerceConvertedAmount = 1435;
                        break;
+                   case 22:
+                       ecommerceConvertedAmount = 1573;
+                       break;
                    case 35:
                        ecommerceConvertedAmount = 2511;
                        break;
+                   case 38:
+                       ecommerceConvertedAmount = 2716;
+                       break;
                    case 45:
                        ecommerceConvertedAmount = 3229;
+                       break;
+                   case 49:
+                       ecommerceConvertedAmount = 3502; 
                        break;
                }
                ecommerceAmount = ecommerceConvertedAmount;

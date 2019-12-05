@@ -201,49 +201,45 @@ class SubscriptionModalNavigation extends React.Component {
             // New Ecommerce Code - Start
             /*
 
-            +-----------------------------------------------------------+
-            |  AndroidEcommercePurchase                                 |
-            +-----------------------------------------------------------+
-            |  Quantity |  ItemName             |  Currency |  Amount   |
-            +-----------------------------------------------------------+
-            |  2        |  CarnaticVocalModule1 |  INR      |  750      |
-            |  3        |  CarnaticVocalModule2 |  USD      |  20       |
-            |  1        |  CarnaticVocalModule2 |  INR      |  750      |
-            |  1        |  CarnaticVocalModule3 |  INR      |  750      |
-            +-----------------------------------------------------------+
+            Manual Conversion
 
-
-            firebase.analytics().logEvent('add_to_cart', {
-                quantity: 1,
-                item_name: 'Vitin',
-                item_id: 'dshjfsahd',
-                value: 30,
-                price: 30,
-                currency: 'BRL'
-            });
-
-            console.log('jagan', this.props.params.info.currentLevelName);
+            20 => 750  + 685 = 1435
+            35 => 1385 + 1126 = 2511
+            45 => 1900 + 1329 = 3229
 
             */
 
-           let ecommerceTitle = this.props.params.info.currentLevelName;
-           let ecommerceAmount = parseInt(this.state.planSelected.value, 10);
+           const currentAmount = parseInt(this.state.planSelected.value, 10);
+           let ecommerceAmount = null;
+           let ecommerceConvertedAmount = null;
 
-           firebase.analytics().logEvent('AndroidEcommercePurchase', {
-               Quantity:   1,
-               ItemName:   ecommerceTitle,
-               Currency:   CURRENCY,
-               Amount:  ecommerceAmount
+           if(CURRENCY !== 'INR') {
+               switch(currentAmount) {
+                   case 20:
+                       ecommerceConvertedAmount = 1435;
+                       break;
+                   case 35:
+                       ecommerceConvertedAmount = 2511;
+                       break;
+                   case 45:
+                       ecommerceConvertedAmount = 3229;
+                       break;
+               }
+               ecommerceAmount = ecommerceConvertedAmount;
+           } else {
+               ecommerceAmount = currentAmount;
+           }
+
+           console.log("Amount: ", typeof ecommerceAmount, ecommerceAmount);
+           console.log("Currency: ", typeof CURRENCY, CURRENCY);
+
+           firebase.analytics().logEvent("AndroidEcommercePurchase", {
+               Amount: ecommerceAmount,
+               value: ecommerceAmount,
+               Currency: CURRENCY,
            });
-
-            // Subscription Values - Start
-            console.log("Quantity: ", 1);
-            console.log("ItemName: ", this.props.params.info.currentLevelName);
-            console.log("Currency: ", CURRENCY);
-            console.log("Amount: ", parseInt(this.state.planSelected.value, 10));
-            // Subscription Values - End
-
-           // New Ecommerce Code - End
+           
+          // New Ecommerce Code - End
 
             this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
 

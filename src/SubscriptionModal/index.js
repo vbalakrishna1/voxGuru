@@ -201,6 +201,7 @@ class SubscriptionModalNavigation extends React.Component {
         //
             // Currency Conversion - Start
             let planValueAfter = null;
+            let planValue = parseInt(this.state.planSelected.value, 10);
             if(CURRENCY === null) {
                 if(planValueAfter <= 100) {
                     CURRENCY = "USD";
@@ -209,22 +210,27 @@ class SubscriptionModalNavigation extends React.Component {
                 }
             }
             // Conversion
-            if(CURRENCY === "USD") {
-                let dataAfter = this.props.params.cost.value;
-                let arrayAfter = Object.values( dataAfter );
-                let arrayPointerAfter = null;
-
-                for(let i = 0; i < 3; i++) {
-                    arrayAfter.shift();
+            if(CURRENCY !== 'INR') {
+                switch(planValue) {
+                    case 20:
+                        planValueAfter = 1435;
+                        break;
+                    case 22:
+                        planValueAfter = 1573;
+                        break;
+                    case 35:
+                        planValueAfter = 2511;
+                        break;
+                    case 38:
+                        planValueAfter = 2716;
+                        break;
+                    case 45:
+                        planValueAfter = 3229;
+                        break;
+                    case 49:
+                        planValueAfter = 3502;
+                        break;
                 }
-                for(let j = 0; j < arrayAfter.length; j++) {
-                    if(arrayAfter[j] === this.props.params.cost.value[this.state.planSelected.value]) {
-                        arrayPointerAfter = j;
-                    }
-                }
-                let planValueAfterPointer = parseInt(this.props.params.cost.Indian[arrayPointerAfter].value, 10);
-                let currencyValueAfterPointer = parseInt(this.props.params.cost.margin[arrayPointerAfter].value, 10);
-                planValueAfter = planValueAfterPointer + currencyValueAfterPointer;
             } else {
                 planValueAfter = parseInt(this.state.planSelected.value, 10);
             }
@@ -239,8 +245,8 @@ class SubscriptionModalNavigation extends React.Component {
             });
 
             // Firebase Ecommerce_Purchase
-            firebase.analytics().logEvent("ecommerce_purchase", {
-                transaction_id: transition.txnid,
+            firebase.analytics().logEvent("AndroidEcommercePurchase", {
+                Amount: planValueAfter,
                 currency: CURRENCY,
                 value: planValueAfter,
             });

@@ -20,7 +20,10 @@
       android:theme="@style/AppTheme"
         >
 
+ 
 
+
+ 
 
         <!--<meta-data-->
                  <!--android:name="io.fabric.ApiKey"-->

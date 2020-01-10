@@ -309,7 +309,7 @@ export class HomeScreen extends PureComponent {
                   <StyledImageContainer>
                      <TopCard img={this.state.ui.CARD}
                         openVideo={this.props.openVideo} width={this.state.width}
-                        TopCardAspectRatio={this.state.TopCardAspectRatio} />
+                        TopCardAspectRatio={this.state.TopCardAspectRatio} isHomepage = {true} />
                      <StyledVideoBar>
                         <StyledText color={"Light"} weight={"SemiBold"}>{this.props.appUi.HomeScreen.CARD.courseTitile}</StyledText>
                         <StyledText color={"Light"} weight={"SemiBold"}>{this.props.appUi.HomeScreen.CARD.courseVideoLength}</StyledText>
@@ -409,7 +409,7 @@ const mapDispatchToProps = dispatch => ({
                console.log(courseTitleString);
                firebase.analytics().logEvent(`Course`, {Course:courseTitleString});
                // firebase.analytics().logEvent(`Course_${courseTitleString}_Selected`);
-               
+               console.log("course=====>",dataSource)
                dispatch(NavigationActions.navigate({ routeName: 'CourseScreen', params: { ...dataSource, courseName: courseTitile, title: courseTitleString } }));
             } else {
                Alert.alert(

@@ -147,7 +147,7 @@ class LScreen extends React.Component {
          pracVideo = true;
       }
 
-      console.log("Parameters", this.props.navigation.state.params);
+      console.log("Parameters", this.state.params);
       return (
          <StyledContainer style={{flex: 1, alignItems: 'center'}}>
             <Header title={this.state.params.lessonName} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
@@ -160,12 +160,13 @@ class LScreen extends React.Component {
                            <StyledImageContainer>
                               <TopCard img={this.state.params} openVideo={this.props.openVideo}
                                  TopCardAspectRatio={this.state.TopCardAspectRatio} width={'100%'}
+                                 isHomepage = {false}
                               />
                            </StyledImageContainer>
                         ) : (
                            <StyledImageContainer>
                               <TopCard img={this.state.params} openVideo={debounce(() => this.props.openPay(this.state.params.levelId), 1000, { leading: true, trailing: false })}
-                                 TopCardAspectRatio={this.state.TopCardAspectRatio}  width={'100%'}
+                                 TopCardAspectRatio={this.state.TopCardAspectRatio}  width={'100%'} isHomepage = {false}
                               />
                               <StyledFloatIcon>
                                  <Icon name="lock-outline" size={24} color="#fefefe" />

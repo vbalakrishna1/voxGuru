@@ -4,16 +4,18 @@ import android.app.Application;
 
 import com.facebook.CallbackManager;
 import com.facebook.react.ReactApplication;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
-import com.github.yamill.orientation.OrientationPackage;
-import com.brentvatne.react.ReactVideoPackage;
+import com.horcrux.svg.SvgPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.reactnativecommunity.slider.ReactSliderPackage;
+import com.brentvatne.react.ReactVideoPackage;
+import org.wonday.orientation.OrientationPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.tradle.react.UdpSocketsModule;
 import com.peel.react.TcpSocketsModule;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.learnta.clear.ClearCachePackage;
 import com.ianlin.RNCarrierInfo.RNCarrierInfoPackage;
 import io.branch.rnbranch.RNBranchPackage;
@@ -66,17 +68,19 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new SvgPackage(),
+            new RandomBytesPackage(),
+            new RNGestureHandlerPackage(),
+            new ReactSliderPackage(),
+            new ReactVideoPackage(),
             new RNDeviceInfo(),
               new FabricPackage(),
               new OrientationPackage(),
-            new ReactVideoPackage(),
-            new RandomBytesPackage(),
             new VectorIconsPackage(),
             new UdpSocketsModule(),
             new TcpSocketsModule(),
             new LinearGradientPackage(),
             new KCKeepAwakePackage(),
-            new RNGestureHandlerPackage(),
             new ClearCachePackage(),
             new RNCarrierInfoPackage(),
             new RNBranchPackage(),

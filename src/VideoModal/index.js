@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { StyledFloatIcon } from '../UI';
 import { NavigationActions } from 'react-navigation';
 import clear from 'react-native-clear-app-cache'
-import Video from 'react-native-af-video-player'
+//import Video from 'react-native-af-video-player'
 import { checkInternetConnection, offlineActionTypes } from 'react-native-offline';
 
 

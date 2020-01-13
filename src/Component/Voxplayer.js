@@ -1,52 +1,46 @@
-import React, { Component } from 'react';
-import { View, ScrollView, TouchableOpacity, Text, ToastAndroid, Alert,StyleSheet } from 'react-native';
-// import VideoPlayer from 'react-native-video-player';
-// import VideoPlayer from 'react-native-video-controls';
-// import Video from 'react-native-video'
-import { NavigationActions } from 'react-navigation';
-// // import {Icon} from 'react-native-material-design';
-// // import firebase from '../services';
-// // import CountDown from './CountDown';
-import Video from 'react-native-af-video-player'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import React, {useState, useEffect, Component} from 'react';
 import { connect } from 'react-redux';
-// const VIMEO_ID = '235014989';
+import Icon from 'react-native-vector-icons/MaterialIcons'
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  Text,
+  TouchableOpacity,
+  StatusBar,
+  TouchableWithoutFeedback,
+  ScrollView,
+} from 'react-native';
+import Video, {
+  OnSeekData,
+  OnLoadData,
+  OnProgressData,
+} from 'react-native-video';
+import Orientation from 'react-native-orientation-locker';
+import {FullscreenClose, FullscreenOpen} from './assets/icons';
+import {PlayerControls} from './player/PlayerControls';
+import {ProgressBar} from './player/ProgressBar';
 var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4';
+
  class VoxPlayer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+   constructor(props){
+     super(props);
+     this.state = {
+      fullscreen: false,
+      play: true,
+      currentTime: 0,
+      duration: 0,
+      showControls: true,
       video: { width: 704, height: 396, duration: 23 },
       thumbnailUrl: null,
-      videoUrl: null,
-      onEnd: false,
+      videoUrl: videourl,
       showThumbnail: true,
-      paused:true,
-      fullscreenstatus : true,
       modalVisible: false,
-    };
-  };
-
-  componentWillMount() {
-    // Remember to add listener
-    // fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
-    // .then(res => res.json())
-    // .then(res => {
-    //   console.log("---------------------->", res);
-    //   videourl = res.request.files.progressive[2].url
-    //   this.setState({
-    //     thumbnailUrl: res.video.thumbs['640'],
-    //     videoUrl: res.request.files.progressive[2].url,
-    //     video: res.video,
-    //   })
-    // });
-    // this.funloaddata()
-  };
-
-
-  componentDidMount() {
-    // this.props.getVideoInfo(this.props.videoId);    
-    // need to update
+    }
+    this.videoRef = React.createRef();
+   }
+   componentDidMount(){
+    Orientation.addOrientationListener(this.handleOrientation);
     global.fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
       .then(res => res.json())
       .then(res => {
@@ -58,99 +52,75 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
           video: res.video,
         })
       });
-    // global.fetch(`https://player.vimeo.com/video/233958481/config`)
-    // .then(res => res.json())
-    // .then(res => {
-    //   console.log("---------------------->", res);
-    //   videourl = res.request.files.progressive[2].url
-    //   this.setState({
-    //     thumbnailUrl: res.video.thumbs['640'],
-    //     videoUrl: res.request.files.progressive[2].url,
-    //     video: res.video,
-    //   })
-    // });
-    
-      
-  };
+   }
+
+   componentWillUnmount(){
+    Orientation.removeOrientationListener(this.handleOrientation);
+   }
+  
 
 
-  funloaddata()
-  {
-    // global.fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
-    //   .then(res => res.json())
-    //   .then(res => {
-    //     videourl = res.request.files.progressive[2].url
-    //   });
-
-    global.fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
-    .then(res => res.json())
-    .then(res => {
-      console.log("---------------------->", res);
-      videourl = res.request.files.progressive[2].url
-      this.setState({
-        thumbnailUrl: res.video.thumbs['640'],
-        videoUrl: res.request.files.progressive[2].url,
-        video: res.video,
-      })
-    });
-
-
-
+  handleOrientation=(orientation) => {
+    orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
+      ? (this.setState({fullscreen: true}), StatusBar.setHidden(true))
+      : (this.setState({fullscreen: false}),
+        StatusBar.setHidden(false));
   }
 
+  handleFullscree=()=> {
+    this.state.fullscreen
+      ? Orientation.unlockAllOrientations()
+      : Orientation.lockToLandscapeLeft();
+  }
 
-  // Todo: Check the fetch response and see if there urls for other types like progressive, instead of hls
+  handlePlayPause=()=> {
+    // If playing, pause and show controls immediately.
+    if (this.state.play) {
+      this.setState({...this.state, play: false, showControls: true});
+      return;
+    }
 
-  componentWillUnmount() {
-    // Remember to remove listener
+    this.setState({...this.state, play: true});
+    setTimeout(() => this.setState({showControls: false}), 2000);
+  }
 
-  };
+  skipBackward=()=> {
+    this.videoRef.current.seek(state.currentTime - 15);
+    this.setState({...this.state, currentTime: state.currentTime - 15});
+  }
 
-  onProgress = (data) => {
-    //  console.log('onProgress', data );
-    Alert.alert("onProgress")
+  skipForward=() =>{
+    this.videoRef.current.seek(state.currentTime + 15);
+    this.setState({...this.state, currentTime: state.currentTime + 15});
+  }
 
-  };
+  onSeek=(data)=> {
+    this.videoRef.current.seek(data.seekTime);
+   this. setState({...this.state, currentTime: data.seekTime});
+  }
 
-  onEnd = (data) => {
-    console.log('onEnd', data);
-    Alert.alert("onstart")
+ onLoadEnd=(data) =>{
+    this.setState({
+      duration: data.duration,
+      currentTime: data.currentTime,
+    });
+  }
 
-  };
+   onProgress=(data)=> {
+    this.setState({
+      currentTime: data.currentTime,
+    });
+  }
 
-  onLoad = (data) => {
-    // console.log( 'onLoad' ,data);
-    Alert.alert("onLoad")
-  };
+  onEnd=()=> {
+    this.setState({...this.state, play: false});
+    this.videoRef.current.seek(0);
+  }
 
-  onStart = (data) => {
-    // console.log( 'onStart' ,data);
-    Alert.alert("onstart")
-  };
-
-
-  onPlayPress = (data) => {
-    // console.log('onPlayPress', data)
-    Alert.alert("onPlayPress")
-  };
-
-  onFullScreen(status) {
-    // Set the params to pass in fullscreen status to navigationOptions
-    // this.props.navigation.setParams({
-    //   fullscreen: !status
-   
-    // })
-
-    if(status == false)
-      {
-         this.setState({fullscreenstatus : true})
-      }
-      else
-      {
-         this.setState({fullscreenstatus : false})
-      }
-
- console.log(status)
+  showControls=()=> {
+   this.state.showControls
+      ? this.setState({...this.state, showControls: false})
+      : this.setState({...this.state, showControls: true});
   }
 
   onLearnMore = () => {
@@ -161,87 +131,101 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
     // this.setState({modalVisible : false})
     
  }
-
-  render() {
-
-    
-    return (
-      <View style={{ flexGrow: 1, justifyContent: 'center', backgroundColor: "black" }}>
-        {/* <VideoPlayer
-          endWithThumbnail
-          thumbnail={{ uri: this.state.thumbnailUrl}}
-          video={{uri: this.state.videoUrl , type: 'mp4'}}
-          videoWidth={this.state.video.width}
-          videoHeight={this.state.video.height}
-          duration={this.state.video.duration}
-          onProgress={this.props.onProgress}
-          onEnd={this.props.onEnd}
-          onPlayPress={this.props.onPlayPress}
-          onLoad={this.props.onLoad}
-          repeat={this.props.repeat}
-          onStart={this.props.onStart}
-           /> */}
-
-           <View style={styles.container}>
-
-           {this.state.fullscreenstatus ?  <TouchableOpacity style={{ padding: 5 }} onPress={this.onLearnMore}>
+  render(){
+  return (
+    <View style={styles.container}>
+      {!this.state.fullscreen ?  <TouchableOpacity style={{ padding: 5 }} onPress={this.onLearnMore}>
                   <Icon name="close" size={24} color="white" />
                 </TouchableOpacity> : null} 
-           {/* {this.funloaddata()} */}
-        <Video url={videourl} 
-        rotateToFullScreen = {true}
-        placeholder = {this.state.thumbnailUrl}
-        onFullScreen={status => this.onFullScreen(status)}
-        onProgress={this.props.onProgress}
-          onEnd={this.props.onEnd}
-          onLoad={this.props.onLoad}
-        />
-        {/* <Video url={'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4'} 
-        rotateToFullScreen = {true}
-        onFullScreen={status => this.onFullScreen(status)}
-        /> */}
-      </View>
-        {/* <VideoPlayer
-          source={{ uri: this.state.videoUrl }}
-          poster={this.state.showThumbnail ? this.state.thumbnailUrl : undefined}
-          onLoad={() => this.setState({ showThumbnail: false})}
-          onPlayPress={() => this.setState({ showThumbnail: false})}
-          disableBack = {true}
-          paused={this.state.paused}
-        ></VideoPlayer> */}
-        {/* <VideoPlayer
-          endWithThumbnail
-          source={{ uri: this.state.videoUrl }}
-          poster={this.state.thumbnailUrl}
-          disableBack={true}
-          onProgress={this.props.onProgress}
-          onEnd={this.props.onEnd}
-          onPlayPress={this.props.onPlayPress}
-          onLoad={this.props.onLoad}
-          repeat={this.props.repeat}
-          onStart={this.props.onStart}
-        /> */}
-        {/* <VideoPlayer
-          poster={this.state.showThumbnail ? this.state.thumbnailUrl : undefined}
-          source={{ uri: this.state.videoUrl }}
-          disableBack={true}
-          disableFullscreen={true}
-          paused={this.state.paused}
-          onPlay={() => this.setState({showThumbnail:false,paused:false})}
-        /> */}
-      </View>
-    );
+      <TouchableWithoutFeedback onPress={this.showControls}>
+        <View>
+          <Video
+            ref={this.videoRef}
+            source={{
+              uri:
+              this.state.videoUrl,
+            }}
+            style={this.state.fullscreen ? styles.fullscreenVideo : styles.video}
+            controls={true}
+            resizeMode={'contain'}
+            onLoad={this.onLoadEnd}
+            onProgress={this.onProgress}
+            onEnd={this.onEnd}
+            paused={!this.state.play}
+          />
+          {/* {this.state.showControls && (
+            <View style={styles.controlOverlay}>
+              <TouchableOpacity
+                onPress={this.handleFullscreen}
+                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+                style={styles.fullscreenButton}>
+                {this.state.fullscreen ? <FullscreenClose /> : <FullscreenOpen />}
+              </TouchableOpacity>
+              <PlayerControls
+                onPlay={this.handlePlayPause}
+                onPause={this.handlePlayPause}
+                playing={this.state.play}
+                showPreviousAndNext={false}
+                showSkip={true}
+                skipBackwards={this.skipBackward}
+                skipForwards={this.skipForward}
+              /> 
+              <ProgressBar
+                currentTime={this.state.currentTime}
+                duration={this.state.duration > 0 ? this.state.duration : 0}
+                onSlideStart={this.handlePlayPause}
+                onSlideComplete={this.handlePlayPause}
+                onSlideCapture={this.onSeek}
+              />
+            </View>
+          )} */}
+        </View>
+      </TouchableWithoutFeedback>
+      
+    </View>
+  );
   }
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
-  }
-})
-
-
+    justifyContent:'center',
+    backgroundColor: '#000',
+  },
+  video: {
+    height: Dimensions.get('window').width * (9 / 16),
+    width: Dimensions.get('window').width,
+    backgroundColor: 'black',
+  },
+  fullscreenVideo: {
+    height: Dimensions.get('window').width,
+    width: Dimensions.get('window').height,
+    backgroundColor: 'black',
+  },
+  text: {
+    marginTop: 30,
+    marginHorizontal: 20,
+    fontSize: 15,
+    textAlign: 'justify',
+  },
+  fullscreenButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    alignItems: 'center',
+    paddingRight: 10,
+  },
+  controlOverlay: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#000000c4',
+    justifyContent: 'space-between',
+  },
+});
 const mapDispatchToProps = dispatch => ({
 
   closemodal: (params) => {
@@ -249,6 +233,4 @@ const mapDispatchToProps = dispatch => ({
  },
 
 })
-
-
-export default VoxPlayer = connect(mapDispatchToProps)(VoxPlayer);
+export default connect(mapDispatchToProps)(VoxPlayer);

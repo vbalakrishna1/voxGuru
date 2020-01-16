@@ -6,6 +6,7 @@ import {
   Dimensions,
   View,
   Text,
+  Image,
   TouchableOpacity,
   StatusBar,
   TouchableWithoutFeedback,
@@ -85,18 +86,23 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
   }
 
   skipBackward=()=> {
-    this.videoRef.current.seek(state.currentTime - 15);
-    this.setState({...this.state, currentTime: state.currentTime - 15});
+    this.videoRef.current.seek(this.state.currentTime - 15);
+    this.setState({...this.state, currentTime: this.state.currentTime - 15});
   }
 
   skipForward=() =>{
-    this.videoRef.current.seek(state.currentTime + 15);
-    this.setState({...this.state, currentTime: state.currentTime + 15});
+    this.videoRef.current.seek(this.state.currentTime + 15);
+    this.setState({...this.state, currentTime: this.state.currentTime + 15});
   }
 
   onSeek=(data)=> {
     this.videoRef.current.seek(data.seekTime);
    this. setState({...this.state, currentTime: data.seekTime});
+  }
+  handleFullscreen=()=> {
+    this.state.fullscreen
+      ? Orientation.unlockAllOrientations()
+      : Orientation.lockToLandscapeLeft();
   }
 
  onLoadEnd=(data) =>{
@@ -146,20 +152,21 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
               this.state.videoUrl,
             }}
             style={this.state.fullscreen ? styles.fullscreenVideo : styles.video}
-            controls={true}
+            controls={false}
             resizeMode={'contain'}
             onLoad={this.onLoadEnd}
             onProgress={this.onProgress}
             onEnd={this.onEnd}
             paused={!this.state.play}
           />
-          {/* {this.state.showControls && (
+          {this.state.showControls && (
             <View style={styles.controlOverlay}>
               <TouchableOpacity
                 onPress={this.handleFullscreen}
                 hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
                 style={styles.fullscreenButton}>
-                {this.state.fullscreen ? <FullscreenClose /> : <FullscreenOpen />}
+                  <Image source= {this.state.fullscreen? require('../Component/assets/icons/fullscreen-close.png') :  require('../Component/assets/icons/fullscreen-open.png') } />
+                
               </TouchableOpacity>
               <PlayerControls
                 onPlay={this.handlePlayPause}
@@ -178,7 +185,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
                 onSlideCapture={this.onSeek}
               />
             </View>
-          )} */}
+          )}
         </View>
       </TouchableWithoutFeedback>
       

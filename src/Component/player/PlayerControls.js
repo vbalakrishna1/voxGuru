@@ -1,13 +1,13 @@
 import React from 'react';
-import {View, TouchableOpacity, StyleSheet} from 'react-native';
-import {
-  VideoSkipBack,
-  VideoPrevious,
-  VideoPause,
-  VideoPlay,
-  VideoNext,
-  VideoSkipForward,
-} from '../assets/icons';
+import {View, Image, TouchableOpacity, StyleSheet} from 'react-native';
+// import {
+//   VideoSkipBack,
+//   VideoPrevious,
+//   VideoPause,
+//   VideoPlay,
+//   VideoNext,
+//   VideoSkipForward,
+// } from '../assets/icons';
 
 
 export const PlayerControls = ({
@@ -29,25 +29,25 @@ export const PlayerControls = ({
         style={[styles.touchable, previousDisabled && styles.touchableDisabled]}
         onPress={onPrevious}
         disabled={previousDisabled}>
-        <VideoPrevious />
+        <Image source= {require('../assets/icons/video-previous.png')} />
       </TouchableOpacity>
     )}
 
     {showSkip && (
       <TouchableOpacity style={styles.touchable} onPress={skipBackwards}>
-        <VideoSkipBack />
+        <Image source= {require('../assets/icons/video-backward.png')} />
       </TouchableOpacity>
     )}
 
     <TouchableOpacity
       style={styles.touchable}
       onPress={playing ? onPause : onPlay}>
-      {playing ? <VideoPause /> : <VideoPlay />}
+        <Image source= {playing? require('../assets/icons/video-pause.png') :require('../assets/icons/video-play.png')} />
     </TouchableOpacity>
 
     {showSkip && (
       <TouchableOpacity style={styles.touchable} onPress={skipForwards}>
-        <VideoSkipForward />
+        <Image source= {require('../assets/icons/video-forward.png')} />
       </TouchableOpacity>
     )}
 
@@ -56,7 +56,7 @@ export const PlayerControls = ({
         style={[styles.touchable, nextDisabled && styles.touchableDisabled]}
         onPress={onNext}
         disabled={nextDisabled}>
-        <VideoNext />
+        <Image source= {require('../assets/icons/video-next.png')} />
       </TouchableOpacity>
     )}
   </View>

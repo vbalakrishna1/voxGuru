@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.CallbackManager;
 import com.facebook.react.ReactApplication;
+import com.ianlin.RNCarrierInfo.RNCarrierInfoPackage;
 import com.horcrux.svg.SvgPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -17,7 +18,6 @@ import com.peel.react.TcpSocketsModule;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.learnta.clear.ClearCachePackage;
-import com.ianlin.RNCarrierInfo.RNCarrierInfoPackage;
 import io.branch.rnbranch.RNBranchPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.facebook.react.ReactNativeHost;
@@ -68,6 +68,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCarrierInfoPackage(),
             new SvgPackage(),
             new RandomBytesPackage(),
             new RNGestureHandlerPackage(),
@@ -82,7 +83,6 @@ public class MainApplication extends Application implements ReactApplication {
             new LinearGradientPackage(),
             new KCKeepAwakePackage(),
             new ClearCachePackage(),
-            new RNCarrierInfoPackage(),
             new RNBranchPackage(),
             new LottiePackage(),
               new RNFirebasePackage(),

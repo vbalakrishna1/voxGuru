@@ -46,10 +46,10 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
       .then(res => res.json())
       .then(res => {
         console.log("---------------------->", res);
-        videourl = res.request.files.progressive[2].url
+        videourl = res.request.files.hls.cdns[res.request.files.hls.default_cdn].url
         this.setState({
           thumbnailUrl: res.video.thumbs['640'],
-          videoUrl: res.request.files.progressive[2].url,
+          videoUrl: res.request.files.hls.cdns[res.request.files.hls.default_cdn].url,
           video: res.video,
         })
       });

@@ -5,12 +5,14 @@ import {
   StyleSheet,
   Dimensions,
   View,
+  ActivityIndicator,
   Text,
   Image,
   TouchableOpacity,
   StatusBar,
   TouchableWithoutFeedback,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Video, {
   OnSeekData,
@@ -37,12 +39,17 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
       videoUrl: videourl,
       showThumbnail: true,
       modalVisible: false,
+      loading:false
     }
     this.videoRef = React.createRef();
    }
    componentDidMount(){
     Orientation.addOrientationListener(this.handleOrientation);
-    global.fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
+    // ${this.props.videoId}
+    this.setState({
+      loading:true
+    });
+    global.fetch(`https://player.vimeo.com/video/366252372/config`)
       .then(res => res.json())
       .then(res => {
         console.log("---------------------->", res);
@@ -51,7 +58,10 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
           thumbnailUrl: res.video.thumbs['640'],
           videoUrl: res.request.files.hls.cdns[res.request.files.hls.default_cdn].url,
           video: res.video,
+          loading:false
         })
+      }).catch(err=>{
+        Alert.alert("Sorry!","There is an issue.Please try after some time.");
       });
    }
 
@@ -159,6 +169,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
             onEnd={this.onEnd}
             paused={!this.state.play}
           />
+          
           {this.state.showControls && (
             <View style={styles.controlOverlay}>
               <TouchableOpacity
@@ -173,7 +184,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
                 onPause={this.handlePlayPause}
                 playing={this.state.play}
                 showPreviousAndNext={false}
-                showSkip={true}
+                showSkip={false}
                 skipBackwards={this.skipBackward}
                 skipForwards={this.skipForward}
               /> 
@@ -186,9 +197,15 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
               />
             </View>
           )}
+          
         </View>
       </TouchableWithoutFeedback>
-      
+      {
+            this.state.loading && 
+            <View style={{width:Dimensions.get('screen').width,height:Dimensions.get('screen').height,justifyContent:'center',alignItems:'center',position:'absolute'}}>
+              <ActivityIndicator size="large" color="#ffffff" />
+            </View>
+          }
     </View>
   );
   }

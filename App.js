@@ -17,6 +17,8 @@ import store from './src/store';
 import { Provider } from 'react-redux';
 import CarrierInfo from 'react-native-carrier-info';
 import HomeScreen from './src/screens/HomeScreen'
+
+import Orientation from 'react-native-orientation-locker';
 import './shim.js';
 import DeviceInfo from 'react-native-device-info'
 
@@ -232,8 +234,10 @@ export default class MyApp extends React.Component {
          this.handleFirstConnectivityChange
       );
    }
-   onBackPress = () => {
+   onBackPress = async() => {
       let state = store.getState();
+      Orientation.unlockAllOrientations()
+      Orientation.lockToPortrait();
       if (state.nav.index === 0 && state.home.index === 0 && state.about.index === 0) {
          if (backCounter < 3) {
             ToastAndroid.show(`Press ${backCounter} Times to Exit`, ToastAndroid.SHORT)

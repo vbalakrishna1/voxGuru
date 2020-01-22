@@ -61,11 +61,17 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
           loading:false
         })
       }).catch(err=>{
+        this.setState({
+          loading:false
+        })
         Alert.alert("Sorry!","There is an issue.Please try after some time.");
       });
    }
 
    componentWillUnmount(){
+     this.setState({
+      play: false
+     })
     Orientation.removeOrientationListener(this.handleOrientation);
    }
   
@@ -119,6 +125,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
     this.setState({
       duration: data.duration,
       currentTime: data.currentTime,
+      loading:false
     });
   }
 
@@ -147,65 +154,75 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
     // this.setState({modalVisible : false})
     
  }
+
+ _renderVideoPlayer=()=>{
+   return(
+    <TouchableWithoutFeedback onPress={this.showControls}>
+    <View>
+      <Video
+        ref={this.videoRef}
+        source={{
+          uri:
+          this.state.videoUrl,
+        }}
+        style={this.state.fullscreen ? styles.fullscreenVideo : styles.video}
+        controls={false}
+        resizeMode={'contain'}
+        onLoad={this.onLoadEnd}
+        onProgress={this.onProgress}
+        onEnd={this.onEnd}
+        paused={!this.state.play}
+      />
+      
+      {this.state.showControls && (
+        <View style={styles.controlOverlay}>
+          <TouchableOpacity
+            onPress={this.handleFullscreen}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+            style={styles.fullscreenButton}>
+              <Image source= {this.state.fullscreen? require('../Component/assets/icons/fullscreen-close.png') :  require('../Component/assets/icons/fullscreen-open.png') } />
+            
+          </TouchableOpacity>
+          <PlayerControls
+            onPlay={this.handlePlayPause}
+            onPause={this.handlePlayPause}
+            playing={this.state.play}
+            showPreviousAndNext={false}
+            showSkip={false}
+            skipBackwards={this.skipBackward}
+            skipForwards={this.skipForward}
+          /> 
+          <ProgressBar
+            currentTime={this.state.currentTime}
+            duration={this.state.duration > 0 ? this.state.duration : 0}
+            onSlideStart={this.handlePlayPause}
+            onSlideComplete={this.handlePlayPause}
+            onSlideCapture={this.onSeek}
+          />
+        </View>
+      )}
+       {!this.state.fullscreen ?  <TouchableOpacity style={{ padding: 5,position:'absolute',top:0,left:0 }} onPress={this.onLearnMore}>
+                  <Icon name="close" size={24} color="white" />
+                </TouchableOpacity> : null} 
+      
+    </View>
+  </TouchableWithoutFeedback>
+   )
+ }
+
   render(){
   return (
     <View style={styles.container}>
-      {!this.state.fullscreen ?  <TouchableOpacity style={{ padding: 5 }} onPress={this.onLearnMore}>
-                  <Icon name="close" size={24} color="white" />
-                </TouchableOpacity> : null} 
-      <TouchableWithoutFeedback onPress={this.showControls}>
-        <View>
-          <Video
-            ref={this.videoRef}
-            source={{
-              uri:
-              this.state.videoUrl,
-            }}
-            style={this.state.fullscreen ? styles.fullscreenVideo : styles.video}
-            controls={false}
-            resizeMode={'contain'}
-            onLoad={this.onLoadEnd}
-            onProgress={this.onProgress}
-            onEnd={this.onEnd}
-            paused={!this.state.play}
-          />
-          
-          {this.state.showControls && (
-            <View style={styles.controlOverlay}>
-              <TouchableOpacity
-                onPress={this.handleFullscreen}
-                hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
-                style={styles.fullscreenButton}>
-                  <Image source= {this.state.fullscreen? require('../Component/assets/icons/fullscreen-close.png') :  require('../Component/assets/icons/fullscreen-open.png') } />
-                
-              </TouchableOpacity>
-              <PlayerControls
-                onPlay={this.handlePlayPause}
-                onPause={this.handlePlayPause}
-                playing={this.state.play}
-                showPreviousAndNext={false}
-                showSkip={false}
-                skipBackwards={this.skipBackward}
-                skipForwards={this.skipForward}
-              /> 
-              <ProgressBar
-                currentTime={this.state.currentTime}
-                duration={this.state.duration > 0 ? this.state.duration : 0}
-                onSlideStart={this.handlePlayPause}
-                onSlideComplete={this.handlePlayPause}
-                onSlideCapture={this.onSeek}
-              />
-            </View>
-          )}
-          
-        </View>
-      </TouchableWithoutFeedback>
+      
+     
       {
-            this.state.loading && 
+            this.state.loading ? 
             <View style={{width:Dimensions.get('screen').width,height:Dimensions.get('screen').height,justifyContent:'center',alignItems:'center',position:'absolute'}}>
               <ActivityIndicator size="large" color="#ffffff" />
-            </View>
+            </View>:
+            this._renderVideoPlayer()
           }
+         
     </View>
   );
   }

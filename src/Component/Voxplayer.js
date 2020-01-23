@@ -30,7 +30,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
      super(props);
      this.state = {
       fullscreen: false,
-      play: true,
+      play: false,
       currentTime: 0,
       duration: 0,
       showControls: true,
@@ -58,6 +58,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
           thumbnailUrl: res.video.thumbs['640'],
           videoUrl: res.request.files.hls.cdns[res.request.files.hls.default_cdn].url,
           video: res.video,
+          play: true,
           loading:false
         })
       }).catch(err=>{

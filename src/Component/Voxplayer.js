@@ -49,7 +49,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
     this.setState({
       loading:true
     });
-    global.fetch(`https://player.vimeo.com/video/366252372/config`)
+    global.fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
       .then(res => res.json())
       .then(res => {
         console.log("---------------------->", res);
@@ -148,6 +148,9 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
 
   onLearnMore = () => {
     // this.props.dispatch(this.closeModal());
+    this.setState({
+      play:false
+    });
     this.props.dispatch({ type: 'CLOSE_VIDEO_NEW' })
     // this.props.closemodal
 

@@ -236,8 +236,7 @@ export default class MyApp extends React.Component {
    }
    onBackPress = async() => {
       let state = store.getState();
-      Orientation.unlockAllOrientations()
-      Orientation.lockToPortrait();
+      Orientation.unlockAllOrientations();
       if (state.nav.index === 0 && state.home.index === 0 && state.about.index === 0) {
          if (backCounter < 3) {
             ToastAndroid.show(`Press ${backCounter} Times to Exit`, ToastAndroid.SHORT)

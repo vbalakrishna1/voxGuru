@@ -39,7 +39,9 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
       videoUrl: videourl,
       showThumbnail: true,
       modalVisible: false,
-      loading:false
+      loading:false,
+      loaderWidth: Dimensions.get('screen').width,
+      loaderHeight: Dimensions.get('screen').height,
     }
     this.videoRef = React.createRef();
    }
@@ -59,7 +61,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
           videoUrl: res.request.files.hls.cdns[res.request.files.hls.default_cdn].url,
           video: res.video,
           play: true,
-          loading:false
+          
         })
       }).catch(err=>{
         this.setState({
@@ -86,9 +88,19 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
   }
 
   handleFullscree=()=> {
-    this.state.fullscreen
-      ? Orientation.unlockAllOrientations()
-      : Orientation.lockToLandscapeLeft();
+    if(this.state.fullscreen){
+      Orientation.unlockAllOrientations();
+       this.setState({
+        loaderWidth: Dimensions.get('screen').width,
+        loaderHeight: Dimensions.get('screen').height,
+      })
+    }else{
+      Orientation.lockToLandscapeLeft();
+      this.setState({
+        loaderWidth: Dimensions.get('screen').height,
+        loaderHeight: Dimensions.get('screen').width,
+      })
+    }
   }
 
   handlePlayPause=()=> {
@@ -123,6 +135,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
   }
 
  onLoadEnd=(data) =>{
+  //Alert.alert("test load finish");
     this.setState({
       duration: data.duration,
       currentTime: data.currentTime,
@@ -176,6 +189,9 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
         onProgress={this.onProgress}
         onEnd={this.onEnd}
         paused={!this.state.play}
+        //onReadyForDisplay={()=>{Alert.alert("test ready");}}
+        onError={(err)=>{Alert.alert("Sorry!",error['errorString']);}}
+        //onLoadStart={()=>{Alert.alert("test load start");}}
       />
       
       {this.state.showControls && (
@@ -220,11 +236,14 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
       
      
       {
-            this.state.loading ? 
-            <View style={{width:Dimensions.get('screen').width,height:Dimensions.get('screen').height,justifyContent:'center',alignItems:'center',position:'absolute'}}>
-              <ActivityIndicator size="large" color="#ffffff" />
-            </View>:
             this._renderVideoPlayer()
+      }
+      {
+            this.state.loading && 
+            <View style={{top:0,left:0,right:0,bottom:0,width:this.state.loaderWidth,height:this.state.loaderHeight,justifyContent:'center',alignItems:'center',position:'absolute',backgroundColor:'rgba(0,0,0,0.6)'}}>
+              <ActivityIndicator size="large" color="#ffffff" />
+            </View>
+            
           }
          
     </View>

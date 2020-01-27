@@ -160,6 +160,14 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
       : this.setState({...this.state, showControls: true});
   }
 
+  onBuffer = (data)=>{
+    if(data.isBuffering){
+      this.setState({loading:true})
+    } else{
+      this.setState({loading:false})
+    }
+  }
+
   onLearnMore = () => {
     // this.props.dispatch(this.closeModal());
     this.setState({
@@ -188,6 +196,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
         onLoad={this.onLoadEnd}
         onProgress={this.onProgress}
         onEnd={this.onEnd}
+        onBuffer={this.onBuffer}
         paused={!this.state.play}
         //onReadyForDisplay={()=>{Alert.alert("test ready");}}
         onError={(err)=>{Alert.alert("Sorry!",error['errorString']);}}

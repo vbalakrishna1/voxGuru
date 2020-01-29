@@ -41,6 +41,7 @@ export default class MyApp extends React.Component {
       this.state = {
          isLoading: true,
          progress: new Animated.Value(0),
+         fullscreen:false
       };
       this.unsubscribeFireStore = null;
    }
@@ -194,6 +195,7 @@ export default class MyApp extends React.Component {
          store.dispatch({ type: 'USER_UPDATE', params: { LessonStatus } });
       }
       BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+      Orientation.addOrientationListener(this.handleOrientation);
       FCM.getToken().then(token => {
          console.log(token);
       });
@@ -223,6 +225,7 @@ export default class MyApp extends React.Component {
    }
    componentWillUnmount() {
       BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+      Orientation.removeOrientationListener(this.handleOrientation);
       console.log('----------reached hardwareBackPress here--------');
       // console.log("****unsubscribe*****",unsubscribe())
       unsubscribe();
@@ -234,9 +237,18 @@ export default class MyApp extends React.Component {
          this.handleFirstConnectivityChange
       );
    }
+   handleOrientation=(orientation) => {
+      orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
+        ? (this.setState({fullscreen: true}))
+        : this.setState({fullscreen: false})
+    }
    onBackPress = async() => {
       let state = store.getState();
-      Orientation.unlockAllOrientations();
+      
+      if(this.state.fullscreen){
+         Orientation.unlockAllOrientations();
+         StatusBar.setHidden(false);
+      } else{
       if (state.nav.index === 0 && state.home.index === 0 && state.about.index === 0) {
          if (backCounter < 3) {
             ToastAndroid.show(`Press ${backCounter} Times to Exit`, ToastAndroid.SHORT)
@@ -259,6 +271,7 @@ export default class MyApp extends React.Component {
          )
       }
       store.dispatch(NavigationActions.back());
+   }
       return true;
    };
 

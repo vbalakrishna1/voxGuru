@@ -51,6 +51,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
     this.setState({
       loading:true
     });
+    setTimeout(() => {this.setState({showControls: false})}, 3000);
     global.fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
       .then(res => res.json())
       .then(res => {
@@ -61,8 +62,10 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
           videoUrl: res.request.files.hls.cdns[res.request.files.hls.default_cdn].url,
           video: res.video,
           play: true,
-          
+          showControls: true
         })
+        setTimeout(() => {this.setState({showControls: false})}, 3000);
+
       }).catch(err=>{
         this.setState({
           loading:false
@@ -111,7 +114,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
     }
 
     this.setState({...this.state, play: true});
-    setTimeout(() => this.setState({showControls: false}), 2000);
+   // setTimeout(() => this.setState({showControls: false}), 3000);
   }
 
   skipBackward=()=> {
@@ -155,16 +158,20 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
   }
 
   showControls=()=> {
-   this.state.showControls
-      ? this.setState({...this.state, showControls: false})
-      : this.setState({...this.state, showControls: true});
+   /* if(this.state.showControls){
+    this.setState({...this.state, showControls: false})
+   } else { */
+    this.setState({...this.state, showControls: true});
+      setTimeout(() => {this.setState({showControls: false})}, 5000);
+   /* } */
   }
 
   onBuffer = (data)=>{
     if(data.isBuffering){
-      this.setState({loading:true})
+      this.setState({loading:true,showControls: true})
     } else{
       this.setState({loading:false})
+      setTimeout(() => {this.setState({showControls: false})}, 3000);
     }
   }
 
@@ -198,9 +205,15 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
         onEnd={this.onEnd}
         onBuffer={this.onBuffer}
         paused={!this.state.play}
-        //onReadyForDisplay={()=>{Alert.alert("test ready");}}
+        fullscreen={true}
+        fullscreenOrientation="landscape"
         onError={(err)=>{Alert.alert("Sorry!",error['errorString']);}}
-        //onLoadStart={()=>{Alert.alert("test load start");}}
+        bufferConfig={{
+          minBufferMs: 10000,
+          maxBufferMs: 15000,
+          bufferForPlaybackMs: 5000,
+          bufferForPlaybackAfterRebufferMs: 7500
+        }}
       />
       
       {this.state.showControls && (

@@ -167,6 +167,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
   }
 
   onBuffer = (data)=>{
+    console.log("DATA==>",data);
     if(data.isBuffering){
       this.setState({loading:true,showControls: true})
     } else{
@@ -198,7 +199,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
           this.state.videoUrl,
         }}
         style={this.state.fullscreen ? styles.fullscreenVideo : styles.video}
-        controls={false}
+        controls={true}
         resizeMode={'contain'}
         onLoad={this.onLoadEnd}
         onProgress={this.onProgress}
@@ -209,15 +210,15 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
         fullscreenOrientation="landscape"
         onError={(err)=>{Alert.alert("Sorry!",error['errorString']);}}
         bufferConfig={{
-          minBufferMs: 10000,
-          maxBufferMs: 15000,
-          bufferForPlaybackMs: 5000,
-          bufferForPlaybackAfterRebufferMs: 7500
+          minBufferMs: 1000, 
+          maxBufferMs: 5000,
+          bufferForPlaybackMs: 700,
+          bufferForPlaybackAfterRebufferMs: 500
         }}
       />
       
-      {this.state.showControls && (
-        <View style={styles.controlOverlay}>
+      {/* {this.state.showControls && (
+         <View style={styles.controlOverlay}>
           <TouchableOpacity
             onPress={this.handleFullscreen}
             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
@@ -241,11 +242,18 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
             onSlideComplete={this.handlePlayPause}
             onSlideCapture={this.onSeek}
           />
-        </View>
-      )}
+        </View> 
+      )} */}
        {!this.state.fullscreen ?  <TouchableOpacity style={{ padding: 5,position:'absolute',top:0,left:0 }} onPress={this.onLearnMore}>
                   <Icon name="close" size={24} color="white" />
                 </TouchableOpacity> : null} 
+                <TouchableOpacity
+            onPress={this.handleFullscreen}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+            style={[styles.fullscreenButton,{padding: 5,position:'absolute',top:0,right:0}]}>
+              <Image source= {this.state.fullscreen? require('../Component/assets/icons/fullscreen-close.png') :  require('../Component/assets/icons/fullscreen-open.png') } />
+            
+          </TouchableOpacity>
       
     </View>
   </TouchableWithoutFeedback>
@@ -262,7 +270,7 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
       }
       {
             this.state.loading && 
-            <View style={{top:0,left:0,right:0,bottom:0,width:this.state.loaderWidth,height:this.state.loaderHeight,justifyContent:'center',alignItems:'center',position:'absolute',backgroundColor:'rgba(0,0,0,0.6)'}}>
+            <View style={{top:0,left:0,right:0,bottom:0,justifyContent:'center',alignItems:'center',position:'absolute',backgroundColor:'rgba(0,0,0,0.6)'}}>
               <ActivityIndicator size="large" color="#ffffff" />
             </View>
             

@@ -7,7 +7,12 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
 
-
+    <supports-screens
+        android:largeScreens="false"
+        android:largestWidthLimitDp="600"
+        android:normalScreens="true"
+        android:smallScreens="true"
+        android:xlargeScreens="false" />
 
 
     <application

@@ -113,8 +113,8 @@ android {
         applicationId "com.voxguru"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 51
-        versionName '34.0'
+        versionCode 52
+        versionName '35.0'
         multiDexEnabled true
     }
 

@@ -4,12 +4,12 @@ import android.app.Application;
 
 import com.facebook.CallbackManager;
 import com.facebook.react.ReactApplication;
+import com.brentvatne.react.ReactVideoPackage;
 import com.ianlin.RNCarrierInfo.RNCarrierInfoPackage;
 import com.horcrux.svg.SvgPackage;
 import com.bitgo.randombytes.RandomBytesPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.reactnativecommunity.slider.ReactSliderPackage;
-import com.brentvatne.react.ReactVideoPackage;
 import org.wonday.orientation.OrientationPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -68,12 +68,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactVideoPackage(),
             new RNCarrierInfoPackage(),
             new SvgPackage(),
             new RandomBytesPackage(),
             new RNGestureHandlerPackage(),
             new ReactSliderPackage(),
-            new ReactVideoPackage(),
             new RNDeviceInfo(),
               new FabricPackage(),
               new OrientationPackage(),

@@ -71,7 +71,6 @@
 		3C0A48C729904D5A89666337 /* libRNOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF924D0F59A46FEA09CD4EF /* libRNOS.a */; };
 		50C41F33056C4BAB9AA82640 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BEE1A5339700401299FDA1A0 /* libRNDeviceInfo.a */; };
 		6527371E5E374635B91CB459 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F8BEBEFD78747B69FB4DBC3 /* libRNDeviceInfo-tvOS.a */; };
-		B9E5529071614A939E1377C5 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D79B8DE461C447B86E3DA5A /* libRCTVideo.a */; };
 		874F435D60254A98B723C82C /* libRNCSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70BC7AB61E85461B8860A106 /* libRNCSlider.a */; };
 		F13024E9E6664948914366D1 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B13457328AD84DB5AA2747A5 /* libRNGestureHandler.a */; };
 		71F64B89FF4A4C74A822ACC4 /* libRNGestureHandler-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7B83023F2DA431AA069ED58 /* libRNGestureHandler-tvOS.a */; };
@@ -80,6 +79,7 @@
 		F586D19D43A8492498D6C9FB /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EB09133B1FD42CC8A57BD2F /* libRNSVG.a */; };
 		ED17B99836BF418DA6F14C3A /* libRNSVG-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 61E4564453A14013BE38533C /* libRNSVG-tvOS.a */; };
 		41875AB243DB4EF29A83B51C /* libRNCarrierInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EC3DC7302674F24B633CDEA /* libRNCarrierInfo.a */; };
+		9FC0717AA9A445F4AD601738 /* libRCTVideo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B757A2F343824EA2A4606F10 /* libRCTVideo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -515,8 +515,6 @@
 		C6E11A8425DF4B319CCFFF59 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNDeviceInfo.xcodeproj"; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		BEE1A5339700401299FDA1A0 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo.a"; path = "libRNDeviceInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		2F8BEBEFD78747B69FB4DBC3 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; name = "libRNDeviceInfo-tvOS.a"; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
-		B54139C43B384281B5CB5A2B /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; name = "RCTVideo.xcodeproj"; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		4D79B8DE461C447B86E3DA5A /* libRCTVideo.a */ = {isa = PBXFileReference; name = "libRCTVideo.a"; path = "libRCTVideo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		CB8D9306BDE143A4885C8D9F /* RNCSlider.xcodeproj */ = {isa = PBXFileReference; name = "RNCSlider.xcodeproj"; path = "../node_modules/@react-native-community/slider/ios/RNCSlider.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		70BC7AB61E85461B8860A106 /* libRNCSlider.a */ = {isa = PBXFileReference; name = "libRNCSlider.a"; path = "libRNCSlider.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		F747FD8D9CCE4ACC8E6DD118 /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; name = "RNGestureHandler.xcodeproj"; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
@@ -530,6 +528,8 @@
 		61E4564453A14013BE38533C /* libRNSVG-tvOS.a */ = {isa = PBXFileReference; name = "libRNSVG-tvOS.a"; path = "libRNSVG-tvOS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		3CF02CE8A48247EEB6314C8F /* RNCarrierInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNCarrierInfo.xcodeproj"; path = "../node_modules/react-native-carrier-info/ios/RNCarrierInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		6EC3DC7302674F24B633CDEA /* libRNCarrierInfo.a */ = {isa = PBXFileReference; name = "libRNCarrierInfo.a"; path = "libRNCarrierInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		CB9B6537D6844E9B89414E69 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; name = "RCTVideo.xcodeproj"; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		B757A2F343824EA2A4606F10 /* libRCTVideo.a */ = {isa = PBXFileReference; name = "libRCTVideo.a"; path = "libRCTVideo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -571,12 +571,12 @@
 				FD567E80928A46E5ABE0C6E3 /* libRCTFBSDK.a in Frameworks */,
 				3C0A48C729904D5A89666337 /* libRNOS.a in Frameworks */,
 				50C41F33056C4BAB9AA82640 /* libRNDeviceInfo.a in Frameworks */,
-				B9E5529071614A939E1377C5 /* libRCTVideo.a in Frameworks */,
 				874F435D60254A98B723C82C /* libRNCSlider.a in Frameworks */,
 				F13024E9E6664948914366D1 /* libRNGestureHandler.a in Frameworks */,
 				7D3C1899952D413CB036A937 /* libRNRandomBytes.a in Frameworks */,
 				F586D19D43A8492498D6C9FB /* libRNSVG.a in Frameworks */,
 				41875AB243DB4EF29A83B51C /* libRNCarrierInfo.a in Frameworks */,
+				9FC0717AA9A445F4AD601738 /* libRCTVideo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -811,12 +811,12 @@
 				BB5021ABD456450CB4F112C2 /* RCTFBSDK.xcodeproj */,
 				BC6A8FEE526448A39C7D278E /* RNOS.xcodeproj */,
 				C6E11A8425DF4B319CCFFF59 /* RNDeviceInfo.xcodeproj */,
-				B54139C43B384281B5CB5A2B /* RCTVideo.xcodeproj */,
 				CB8D9306BDE143A4885C8D9F /* RNCSlider.xcodeproj */,
 				F747FD8D9CCE4ACC8E6DD118 /* RNGestureHandler.xcodeproj */,
 				E7DFBB51983B496B9CFBC307 /* RNRandomBytes.xcodeproj */,
 				E48760890B604CCE9AE9CAAB /* RNSVG.xcodeproj */,
 				3CF02CE8A48247EEB6314C8F /* RNCarrierInfo.xcodeproj */,
+				CB9B6537D6844E9B89414E69 /* RCTVideo.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1711,12 +1711,12 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-os/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/slider/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-carrier-info/ios/RNCarrierInfo/**",
+					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = voxguruTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1756,12 +1756,12 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-os/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/slider/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-carrier-info/ios/RNCarrierInfo/**",
+					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = voxguruTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1802,12 +1802,12 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-os/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/slider/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-carrier-info/ios/RNCarrierInfo/**",
+					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = voxguru/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1843,12 +1843,12 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-os/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/slider/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-carrier-info/ios/RNCarrierInfo/**",
+					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = voxguru/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1891,12 +1891,12 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-os/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/slider/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-carrier-info/ios/RNCarrierInfo/**",
+					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = "voxguru-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1944,12 +1944,12 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-os/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/slider/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-carrier-info/ios/RNCarrierInfo/**",
+					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = "voxguru-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1996,12 +1996,12 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-os/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/slider/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-carrier-info/ios/RNCarrierInfo/**",
+					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = "voxguru-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -2048,12 +2048,12 @@
 					"$(SRCROOT)/../node_modules/react-native-fbsdk/ios/RCTFBSDK/**",
 					"$(SRCROOT)/../node_modules/react-native-os/ios",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
-					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/slider/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-randombytes",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-carrier-info/ios/RNCarrierInfo/**",
+					"$(SRCROOT)/../node_modules/react-native-video/ios/**",
 				);
 				INFOPLIST_FILE = "voxguru-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

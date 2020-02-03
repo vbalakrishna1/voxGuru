@@ -42,8 +42,24 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
       loading:false,
       loaderWidth: Dimensions.get('screen').width,
       loaderHeight: Dimensions.get('screen').height,
+      orientation:'PORTRAIT'
     }
     this.videoRef = React.createRef();
+    Orientation.getDeviceOrientation(orientation=>{
+      if(orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'){
+        this.setState({
+          orientation:orientation,
+          loaderWidth: Dimensions.get('screen').height,
+          loaderHeight: Dimensions.get('screen').width,
+        })
+      } else{
+        this.setState({
+          orientation:orientation,
+          loaderWidth: Dimensions.get('screen').width,
+          loaderHeight: Dimensions.get('window').width * (9 / 16),
+        })
+      }
+    });
    }
    componentDidMount(){
     Orientation.addOrientationListener(this.handleOrientation);
@@ -85,8 +101,8 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
 
   handleOrientation=(orientation) => {
     orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
-      ? (this.setState({fullscreen: true}), StatusBar.setHidden(true))
-      : (this.setState({fullscreen: false}),
+      ? (this.setState({fullscreen: true,orientation:orientation,}), StatusBar.setHidden(true))
+      : (this.setState({fullscreen: false,orientation:orientation,}),
         StatusBar.setHidden(false));
   }
 
@@ -94,14 +110,14 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
     if(this.state.fullscreen){
       Orientation.unlockAllOrientations();
        this.setState({
-        loaderWidth: Dimensions.get('screen').width,
-        loaderHeight: Dimensions.get('screen').height,
+        loaderWidth: Dimensions.get('window').width,
+        loaderHeight: Dimensions.get('window').height,
       })
     }else{
       Orientation.lockToLandscapeLeft();
       this.setState({
-        loaderWidth: Dimensions.get('screen').height,
-        loaderHeight: Dimensions.get('screen').width,
+        loaderWidth: Dimensions.get('window').height,
+        loaderHeight: Dimensions.get('window').width,
       })
     }
   }
@@ -191,14 +207,14 @@ var videourl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample
  _renderVideoPlayer=()=>{
    return(
     <TouchableWithoutFeedback onPress={this.showControls}>
-    <View>
+    <View style={{width:'100%',height:Dimensions.get('window').width<Dimensions.get('window').height?'40%':'100%'}}>
       <Video
         ref={this.videoRef}
         source={{
           uri:
           this.state.videoUrl,
         }}
-        style={this.state.fullscreen ? styles.fullscreenVideo : styles.video}
+        style={{height:'100%',width:'100%'}}
         controls={true}
         resizeMode={'contain'}
         onLoad={this.onLoadEnd}

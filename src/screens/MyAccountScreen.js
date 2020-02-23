@@ -8,12 +8,15 @@ import Header from '../Component/Header';
 import { connect } from 'react-redux'
 import UserAvatar from 'react-native-user-avatar'
 import gravatar from 'gravatar';
+import moment from 'moment';
+import axios from 'axios';
 import { StyledContainer, StyledImageContainer, StyledListContainer, StyledVideoBar, StyledText, StyledButton, StyledBox, StyledFloatBar, SmallButton, AlignedText, StyledImageCard, Button } from '../UI';
 
 
 class MyAccountScreen extends Component {
   constructor(props) {
     super(props);
+    console.log("My Account");
     this.ref = null;
     this.unsubscribe = null;
     this.dataSource = {};
@@ -39,17 +42,43 @@ class MyAccountScreen extends Component {
       info: this.props.user.user.info,
       animating: false
     });
+    
     console.log('---info', this.props.user)
     if (this.props.user.user.LessonStatus != {}) {
-
-
       this.setState({
         lessonStatus: this.props.user.user.LessonStatus,
         transactionHistory: this.props.user.user.TransactionHistory,
       });
     }
+    this.getMyAccountData(this.props.user.user.email);
 
   };
+
+  getMyAccountData = (email) => {
+    console.log("EMAIL++>", email)
+    try {
+      let reqData = {
+        "email": email
+      };
+
+      axios.post("https://app.voxguru.in/api/my_account.php", reqData)
+                      .then((dataApi) =>{
+        console.log("data===>",dataApi)
+      if(dataApi.data !=null){
+        this.setState({
+          transactionHistory: dataApi.data.billing_history
+        });
+      } else {
+        Alert.alert("Sorry!","No transactions found.");
+      }
+      });
+      
+    } catch (err) {
+      console.log(err);
+      Alert.alert("Opps!","Something went wrong please try again.");
+      
+    }
+  }
 
   componentWillMount() {
     var self = this;
@@ -81,9 +110,9 @@ class MyAccountScreen extends Component {
     }
     return (
       <View style={{ width: '100%', padding: 8, paddingTop: 20 }}>
-        <View style={{ backgroundColor: "#FFFFFF", padding: 10, paddingLeft: 20, borderRadius: 4}}>
+        <View style={{ backgroundColor: "#FFFFFF", padding: 10, paddingLeft: 20, borderRadius: 4 }}>
           <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "600", textTransform: "uppercase", marginBottom: 5 }}>Login Details</Text>
-          <Text style={{ color: "#000000", fontSize: 18, fontWeight: "200" }}>{this.state.info.email}</Text>
+          <Text style={{ color: "#000000", fontSize: 18, fontWeight: "200" }}>{this.props.user.user.email}</Text>
         </View>
       </View>
     );
@@ -144,20 +173,20 @@ class MyAccountScreen extends Component {
       <View>
         {this.state.transactionHistory ? (
           <View style={{ width: '100%', padding: 8, paddingTop: 10 }}>
-            <View style={{ backgroundColor: "#FFFFFF", borderRadius: 4}}>
-              <View style={{ padding: 10, paddingLeft: 20, paddingBottom: 0}}>
+            <View style={{ backgroundColor: "#FFFFFF", borderRadius: 4 }}>
+              <View style={{ padding: 10, paddingLeft: 20, paddingBottom: 0 }}>
                 <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "600", textTransform: "uppercase", marginBottom: 10 }}>Billing</Text>
               </View>
               <View style={{ paddingBottom: 20 }}>
                 <FlatList
-                  data={Object.values(this.state.transactionHistory)}
+                  data={this.state.transactionHistory}
                   renderItem={({ item, index }) => this._renderTransactionRow(item)}
-                  keyExtractor={item => item.txnid}
+                  keyExtractor={item => item.subscription_start_date_time + item.course_name}
                 />
               </View>
             </View>
           </View>
-          ) : (
+        ) : (
             <View style={{
               paddingHorizontal: 10,
               paddingVertical: 20,
@@ -205,51 +234,56 @@ class MyAccountScreen extends Component {
     // }
   }
 
-  _renderTransactionRow = (rowData, sectionID, rowID) => {
-    
-    if (rowData.txnid) {
+  _renderTransactionRow = (rowData) => {
 
-      let day = rowData.createDate.getDate();
-      let month = rowData.createDate.getMonth();
-      let year = rowData.createDate.getFullYear().toString().slice(-2);
+    /* if (rowData.txnid) { */
 
-      let serviceProvider = rowData.service_provider;
-      let iOS = false;
+    //let day = moment(rowData.createDate.getDate());
+    // let day = rowData.createDate.getDate();
+    // let month = rowData.createDate.getMonth();
+    // let year = rowData.createDate.getFullYear().toString().slice(-2);
 
-      let amount = rowData.amount;
-      let amountText = "Android 1 month subscription";
+    let serviceProvider = rowData.service_provider;
+    let iOS = false;
 
-      if(serviceProvider === "payuBiz") {
-        iOS = false;
-      } else {
-        iOS = true;
-      }
+    let amount = rowData.amount;
+    let amountText = "Android 1 month subscription";
 
-      if(amount <= 1000 && iOS === false) {
-        amountText = "Android 1 month subscription";
-      } else if(amount > 1000 && amount <= 1500 && iOS === false) {
-        amountText = "Android 2 month subscription";
-      } else if(amount > 1500 && iOS === false) {
-        amountText = "Android 3 month subscription";
-      }
+    if (serviceProvider === "payuBiz") {
+      iOS = false;
+    } else {
+      iOS = true;
+    }
 
-      return (
-      <View style={{paddingTop: 10, paddingBottom: 10, borderBottomColor: "#E0E0E0", borderBottomWidth: 1}}>
+    if (amount <= 1000 && iOS === false) {
+      amountText = "Android 1 month subscription";
+    } else if (amount > 1000 && amount <= 1500 && iOS === false) {
+      amountText = "Android 2 month subscription";
+    } else if (amount > 1500 && iOS === false) {
+      amountText = "Android 3 month subscription";
+    }
+    /* {day}/{month}/{year} */
+    return (
+      <View style={{ paddingTop: 10, paddingBottom: 10, borderBottomColor: "#E0E0E0", borderBottomWidth: 1 }}>
         <View style={{ paddingLeft: 20, paddingRight: 20 }}>
           <View style={{ flexWrap: 'wrap', flexDirection: 'row', flex: 1 }}>
-            <Text style={{ justifyContent: "flex-start", fontSize: 18, fontWeight: "600", color: "#000000" }}>{day}/{month}/{year}</Text>
+            <Text style={{ justifyContent: "flex-start", fontSize: 18, fontWeight: "600", color: "#000000" }}>{moment(rowData.purchase_date_pst, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}</Text>
             <View style={{ flex: 1 }}></View>
-            <Text style={{ justifyContent: "flex-end", fontSize: 18, fontWeight: "600", color: "#000000" }}>{rowData.amount}</Text>
+            <Text style={{ justifyContent: "flex-end", fontSize: 18, fontWeight: "600", color: "#000000" }}>{rowData.purchase_currency+" "+ rowData.course_fee_amount_paid}</Text>
           </View>
-          <Text>{rowData.productinfo}</Text>
-          {iOS ? ( <Text>IOS auto-renewable subscription</Text> ) : ( <Text>{amountText}</Text> )}
-          <Text numberOfLines={1}>Txn id - {rowData.txnid}</Text>
+          <Text style={{ fontWeight: 'bold' }}>{rowData.course_name}</Text>
+          <Text style={{ fontWeight: 'bold' }}>{rowData.subscription_info}</Text>
+          {/* {iOS ? ( <Text>IOS auto-renewable subscription</Text> ) : ( <Text>{amountText}</Text> )}
+          <Text numberOfLines={1}>Txn id - {rowData.txnid}</Text> */}
+          <Text ><Text style={{ fontWeight: 'bold' }}>Subscription Start Date:</Text>{` ${moment(rowData.subscription_start_date_time, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}`}</Text>
+          <Text ><Text style={{ fontWeight: 'bold' }}>Subscription End Date:</Text>{` ${moment(rowData.subscription_end_date_time, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}`}</Text>
+          <Text ><Text style={{ fontWeight: 'bold' }}>Txn_id: </Text>{rowData.txn_id}</Text>
         </View>
       </View>
-      )
-    } else {
+    )
+    /* } else {
       return null;
-    }
+    } */
 
   } // var rowHash = Math.abs(hashCode(rowData));
   getCoursemodule = (courseId) => {
@@ -527,7 +561,7 @@ class MyAccountScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Header title={"My Account"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} center={true}/>
+        <Header title={"My Account"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} center={true} />
         <ScrollView style={{ backgroundColor: "#E0E0E0" }}>
           {this._renderUserInfo()}
           {/* <View style={{ height: 10 }} />

@@ -63,7 +63,7 @@ class UserInfo extends Component {
 
 
         
-        if( this.name.value()&&this.email.value()&&this.phone.value() ){
+        if( this.name.value()&&this.phone.value() ){
             this.props.userInfoSubmit(this.state)
         }else{
             // 
@@ -114,7 +114,7 @@ class UserInfo extends Component {
                     onChangeText={ (name) => this.setState(prevState =>({ name, button:prevState.button+1 })) }
                     />
             {/* Email */}
-                <TextField
+                {/* <TextField
                     ref={this.emailRef}
                     label='Email Id'
                     value={email}
@@ -123,7 +123,7 @@ class UserInfo extends Component {
                     enablesReturnKeyAutomatically={true}
                     returnKeyType='next'
                     onChangeText={ (email) => this.setState(prevState =>({ email, button:prevState.button+1 })) }
-                    />
+                    /> */}
             {/* phone */}
 
                 <TextField
@@ -138,7 +138,7 @@ class UserInfo extends Component {
                     />
 
             {
-            this.state.button > 2 && 
+            this.state.button > 1 && 
             <View style={{paddingVertical:10}}>
             <Button onPress={()=>this.onSubmit() || firebase.analytics().logEvent(`Selected_Plan`, {Submitted_Plan:"Submitted_Plan"})}
                 title="Submit"

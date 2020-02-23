@@ -2,7 +2,7 @@
 
 // React
 import React from 'react'
-import { Modal, View, Alert, StatuÃsBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
+import { Modal, View, Alert, StatuÃsBar, ActivityIndicator, ToastAndroid, TouchableOpacity, Platform } from 'react-native'
 
 import {
     StyledContainer,
@@ -18,7 +18,8 @@ import WebPage from '../Component/WebPage';
 //Redux
 import { connect } from 'react-redux';
 
-import debounce from 'lodash.debounce'
+import debounce from 'lodash.debounce';
+import axios from 'axios';
 
 // payment processor
 
@@ -56,6 +57,8 @@ class SubscriptionModalNavigation extends React.Component {
             isFail: false,
             showWebpage: false,
         };
+
+        this.paymentType='test';
 
     }
 
@@ -255,11 +258,12 @@ class SubscriptionModalNavigation extends React.Component {
             console.log("Currency", CURRENCY);
             console.log("Value", this.state.planSelected.value);
 
-            this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
+            //this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
 
             params.LessonStatus[key] = update;
             this.setState({ executed: false, showWebpage: false });
             console.log("success:", data);
+
             this.writeToDB({ params, lessonDetails: this.props.params.info, isSuccess: true, lesnId });
 
 
@@ -271,7 +275,8 @@ class SubscriptionModalNavigation extends React.Component {
             }
         }
     }
-    writeToRealtimeDatabase(params, purchasedLesson, CURRENCY) {
+     writeToRealtimeDatabase = async(params, purchasedLesson, CURRENCY)=> {
+        console.log("writeToRealtimeDatabase",params, purchasedLesson, CURRENCY)
         var self = this
         firebase.firestore().collection("users").doc(self.props.user.user.uid).get().then(function (doc) {
             if (doc.exists) {
@@ -305,11 +310,11 @@ class SubscriptionModalNavigation extends React.Component {
              product_id: purchasedLesson.currentLevelId,
              purchase_date_pst: purchasedLesson.startDate,
              is_trial_period: false,
-             subscription_type: 'Fresh',
+             subscription_type:"Fresh",
              subscription_start_date_time: purchasedLesson.startDate,
              subscription_end_date_time: purchasedLesson.endDate,
              course_fee_amount_paid: transHistoryArray[0].amount
-         });
+         });    
 
         // Subscription Test - Start
         //firebase.database().ref('/user_subscription').child(sId).set({
@@ -336,6 +341,64 @@ class SubscriptionModalNavigation extends React.Component {
             amount: transHistoryArray[0].amount,
             currency: CURRENCY,
         });
+      /*   let apiData = {
+            "course_fee_amount_paid": transHistoryArray[0].amount,
+            "email": self.props.user.user.email,
+            "is_trial_period": false,
+            "product_id": purchasedLesson.currentLevelId,
+            "purchase_date_pst": purchasedLesson.startDate,
+            "subscription_start_date_time": purchasedLesson.startDate,
+            "subscription_end_date_time": purchasedLesson.endDate,
+            "subscription_id": sId,
+            "subscription_type":"fresh",
+            "transaction_details":
+                 {
+                    "amount": transHistoryArray[0].amount,
+                    "currentLessonId": this.props.params.info.currentLessonId,
+                    "currentLevelId": purchasedLesson.currentLevelId,
+                    "start_date": purchasedLesson.startDate,
+                    "end_date": purchasedLesson.endDate,
+                    "txnid": stId,
+                    "currency": CURRENCY,
+                    "purchased_from_device": Platform.OS,
+                    "payment_gateway": this.paymentType==='test'? "PayUTest" : "PayUProduction",
+                    "transaction_date":  purchasedLesson.startDate
+                 }
+        }; */
+
+        let apiData =  {
+            "course_fee_amount_paid": transHistoryArray[0].amount,
+            "email": self.props.user.user.email,
+            "is_trial_period": false,
+            "product_id": purchasedLesson.currentLevelId,
+            "purchase_date_pst": purchasedLesson.startDate,
+            "subscription_start_date_time": purchasedLesson.startDate,
+            "subscription_end_date_time": purchasedLesson.endDate,
+            "subscription_id": sId,
+            "subscription_type": "fresh",
+            "transaction_details":
+                 {
+                    "amount": transHistoryArray[0].amount,
+                    "currentLessonId": this.props.params.info.currentLessonId,
+                    "currentLevelId": purchasedLesson.currentLevelId,
+                    "start_date": purchasedLesson.startDate,
+                    "end_date": purchasedLesson.endDate,
+                    "txnid": sId,
+                    "currency": CURRENCY,
+                    "purchased_from_device": Platform.OS,
+                    "payment_gateway": this.paymentType==='test'? "PayUTest" : "PayUProduction",
+                    "transaction_date":  purchasedLesson.startDate
+                 }
+          }
+
+         //let data_user_subscription = await this.sendTansactionReportsOnAPi("https://dev100.mercuryminds.com/voxguru/api/add_user_subscription.php",apiData);
+         console.log("sendTansactionReportsOnAPi request==>",apiData);
+         axios.post("https://app.voxguru.in/api/add_user_subscription.php", apiData)
+                      .then((dataApi) =>{
+                            console.log("sendTansactionReportsOnAPi",dataApi);
+                      }).catch(err=>{
+                        console.log("sendTansactionReportsOnAPi err",err);
+                      });
     }
 
     onNavigationStateChange = (data) => {
@@ -380,7 +443,21 @@ class SubscriptionModalNavigation extends React.Component {
     userInfoSubmit = (params) => {
         console.log(params);
         this.setState({ userInfoConfirm: true });
-        // processing payment
+        if(this.paymentType === 'test'){
+            //for test account payU
+         newOrder.Create({
+            amount: this.state.planSelected.value,
+             productinfo: this.state.params.info.currentLevelName,
+             firstname: params.name,
+             email: this.props.user.user.email,
+             phone: params.phone,
+             surl: 'https://www.google.com/_success',
+             furl: 'https://www.google.com/_failure',
+             service_provider: 'payuBiz',
+             txnid: uuid.v4(),
+         }, false);
+        } else{
+                    // processing payment
 
         // for live account payU
        newOrder.Create({
@@ -396,19 +473,7 @@ class SubscriptionModalNavigation extends React.Component {
            key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
            salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
         }, true);
-
-        //for test account payU
-         /* newOrder.Create({
-            amount: this.state.planSelected.value,
-             productinfo: this.state.params.info.currentLevelName,
-             firstname: params.name,
-             email: params.email,
-             phone: params.phone,
-             surl: 'https://www.google.com/_success',
-             furl: 'https://www.google.com/_failure',
-             service_provider: 'payuBiz',
-             txnid: uuid.v4(),
-         }, false); */
+        }
 
         newOrder.sendReq()
             .then(Response => {
@@ -432,6 +497,24 @@ class SubscriptionModalNavigation extends React.Component {
                 console.log(err);
             });
     };
+
+    sendTansactionReportsOnAPi=async (url,data)=>{
+  
+        try{
+        
+          let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(data)
+          });
+          return await response.json();
+        } catch(err){
+          return err;
+          console.log(error.code);
+        }
+      }
 
     writeToDB = ({ params, lessonDetails, isSuccess, lesnId }) => {
         var self = this;

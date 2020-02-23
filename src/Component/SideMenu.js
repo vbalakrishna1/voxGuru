@@ -62,6 +62,7 @@ export class SideMenu extends Component {
     }
 
     onNavigate = (data) => {
+        console.log("this.props onNavigate",this.props);
         if (data != "") {
             if (this.props.user.userLogin) {
                

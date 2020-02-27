@@ -267,17 +267,17 @@ class MyAccountScreen extends Component {
       <View style={{ paddingTop: 10, paddingBottom: 10, borderBottomColor: "#E0E0E0", borderBottomWidth: 1 }}>
         <View style={{ paddingLeft: 20, paddingRight: 20 }}>
           <View style={{ flexWrap: 'wrap', flexDirection: 'row', flex: 1 }}>
-            <Text style={{ justifyContent: "flex-start", fontSize: 18, fontWeight: "600", color: "#000000" }}>{moment(rowData.purchase_date_pst, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}</Text>
+            <Text style={{fontFamily: "Nunito-Bold", justifyContent: "flex-start", fontSize: 18, fontWeight: "600", color: "#000000" }}>{moment(rowData.purchase_date_pst, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}</Text>
             <View style={{ flex: 1 }}></View>
-            <Text style={{ justifyContent: "flex-end", fontSize: 18, fontWeight: "600", color: "#000000" }}>{rowData.purchase_currency+" "+ rowData.course_fee_amount_paid}</Text>
+            <Text style={{ fontFamily: "Nunito-Bold",justifyContent: "flex-end", fontSize: 18, fontWeight: "600", color: "#000000" }}>{rowData.purchase_currency+" "+ rowData.course_fee_amount_paid}</Text>
           </View>
-          <Text style={{ fontWeight: 'bold' }}>{rowData.course_name}</Text>
-          <Text style={{ fontWeight: 'bold' }}>{rowData.subscription_info}</Text>
-          {/* {iOS ? ( <Text>IOS auto-renewable subscription</Text> ) : ( <Text>{amountText}</Text> )}
-          <Text numberOfLines={1}>Txn id - {rowData.txnid}</Text> */}
-          <Text ><Text style={{ fontWeight: 'bold' }}>Subscription Start Date:</Text>{` ${moment(rowData.subscription_start_date_time, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}`}</Text>
-          <Text ><Text style={{ fontWeight: 'bold' }}>Subscription End Date:</Text>{` ${moment(rowData.subscription_end_date_time, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}`}</Text>
-          <Text ><Text style={{ fontWeight: 'bold' }}>Txn_id: </Text>{rowData.txn_id}</Text>
+          <Text style={{fontFamily: "Nunito-Bold", fontWeight: 'bold' }}>{rowData.course_name}</Text>
+          <Text style={{fontFamily: "Nunito-Bold", fontWeight: 'bold' }}>{rowData.subscription_info}</Text>
+          {/* {iOS ? ( <Text style={{fontFamily: "Nunito-Bold"}}>IOS auto-renewable subscription</Text> ) : ( <Text>{amountText}</Text> )}
+          <Text style={{fontFamily: "Nunito-Bold"}} numberOfLines={1}>Txn id - {rowData.txnid}</Text> */}
+         {/*  <Text style={{fontFamily: "Nunito-Bold"}}><Text style={{ fontFamily: "Nunito-Bold",fontWeight: 'bold' }}>Subscription Start Date:</Text>{` ${moment(rowData.subscription_start_date_time, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}`}</Text>
+          <Text style={{fontFamily: "Nunito-Bold"}}><Text style={{ fontFamily: "Nunito-Bold",fontWeight: 'bold' }}>Subscription End Date:</Text>{` ${moment(rowData.subscription_end_date_time, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}`}</Text> */}
+          <Text style={{fontFamily: "Nunito-Bold"}}><Text style={{ fontFamily: "Nunito-Bold",fontWeight: 'bold' }}>Txn_id: </Text>{rowData.txn_id}</Text>
         </View>
       </View>
     )

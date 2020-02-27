@@ -58,7 +58,7 @@ class SubscriptionModalNavigation extends React.Component {
             showWebpage: false,
         };
 
-        this.paymentType='test';
+        this.paymentType='production';
 
     }
 
@@ -386,7 +386,7 @@ class SubscriptionModalNavigation extends React.Component {
                     "txnid": sId,
                     "currency": CURRENCY,
                     "purchased_from_device": Platform.OS,
-                    "payment_gateway": this.paymentType==='test'? "PayUTest" : "PayUProduction",
+                    "payment_gateway": this.paymentType==='test'? "PayUTest" : "PayU",
                     "transaction_date":  purchasedLesson.startDate
                  }
           }

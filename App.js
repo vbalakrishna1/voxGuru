@@ -120,6 +120,7 @@ export default class MyApp extends React.Component {
          CarrierInfo.isoCountryCode()
             .then((result) => {
                countryVar = result
+               // countryVar = 'india'
                if (user) {
                   loginVar = 1;
                   console.log(user);

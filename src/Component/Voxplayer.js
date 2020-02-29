@@ -116,7 +116,7 @@
 //      })
 //     Orientation.removeOrientationListener(this.handleOrientation);
 //    }
-  
+
 
 
 //   handleOrientation=(orientation) => {
@@ -221,7 +221,7 @@
 //     // this.props.closemodal
 
 //     // this.setState({modalVisible : false})
-    
+
 //  }
 //  hideSpinner() {
 //   this.setState({ visible: false });
@@ -254,7 +254,7 @@
 //           bufferForPlaybackAfterRebufferMs: 500
 //         }}
 //       />
-      
+
 //       {/* {this.state.showControls && (
 //          <View style={styles.controlOverlay}>
 //           <TouchableOpacity
@@ -262,7 +262,7 @@
 //             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
 //             style={styles.fullscreenButton}>
 //               <Image source= {this.state.fullscreen? require('../Component/assets/icons/fullscreen-close.png') :  require('../Component/assets/icons/fullscreen-open.png') } />
-            
+
 //           </TouchableOpacity>
 //           <PlayerControls
 //             onPlay={this.handlePlayPause}
@@ -290,9 +290,9 @@
 //             hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
 //             style={[styles.fullscreenButton,{padding: 5,position:'absolute',top:0,right:0}]}>
 //               <Image source= {this.state.fullscreen? require('../Component/assets/icons/fullscreen-close.png') :  require('../Component/assets/icons/fullscreen-open.png') } />
-            
+
 //           </TouchableOpacity>
-      
+
 //     </View>
 //   </TouchableWithoutFeedback>
 //    )
@@ -301,8 +301,8 @@
 //   render(){
 //   return (
 //     <View style={styles.container}>
-      
-     
+
+
 //       {
 //             this._renderVideoPlayer()
 //       }
@@ -311,9 +311,9 @@
 //             <View style={{top:0,left:0,right:0,bottom:0,justifyContent:'center',alignItems:'center',position:'absolute',backgroundColor:'rgba(0,0,0,0.6)'}}>
 //               <ActivityIndicator size="large" color="#ffffff" />
 //             </View>
-            
+
 //           }
-         
+
 //     </View>
 //   );
 //   }
@@ -369,12 +369,19 @@
 
 
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet, WebView, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, WebView, ActivityIndicator,StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { connect } from 'react-redux';
+import Vimeo from './Vimeo';
+import Orientation from 'react-native-orientation-locker';
 function getVimeoPageURL(videoId) {
-  console.log('https://player.vimeo.com/video/' + videoId+'?quality=360p')
-  return 'https://player.vimeo.com/video/' + videoId+'?quality=360p';
+  //Fix Quality.
+  // console.log('https://player.vimeo.com/video/' + videoId + '?quality=360p')
+  // return 'https://player.vimeo.com/video/' + videoId + '?quality=360p';
+
+  //Auto Quality.
+  console.log('https://player.vimeo.com/video/' + videoId)
+  return 'https://player.vimeo.com/video/' + videoId;
 }
 
 class VoxPlayer extends Component {
@@ -395,6 +402,7 @@ class VoxPlayer extends Component {
 
 
   componentDidMount() {
+    Orientation.lockToLandscape();
     global.fetch(`https://player.vimeo.com/video/${this.props.videoId}/config`)
       .then(res => res.json())
       .then(res => {
@@ -417,6 +425,7 @@ class VoxPlayer extends Component {
   }
 
   onLearnMore = () => {
+    Orientation.lockToPortrait()
     this.props.dispatch({ type: 'CLOSE_VIDEO_NEW' })
   }
   hideSpinner() {
@@ -425,18 +434,34 @@ class VoxPlayer extends Component {
   render() {
     return (
       <View style={{ flexGrow: 1, justifyContent: 'center', backgroundColor: "black" }}>
+        <StatusBar hidden={true} />
         <View style={styles.container}>
           {this.state.fullscreenstatus ?
             <TouchableOpacity style={{ padding: 5, position: 'absolute', top: 0, right: 0, left: 0, zIndex: 1000, width: 50, height: 40 }} onPress={this.onLearnMore}>
               <Icon name="close" size={30} color="white" />
             </TouchableOpacity> : null}
+
           <WebView
             style={{ backgroundColor: 'black' }}
             source={{ uri: getVimeoPageURL(this.props.videoId) }}
-            scalesPageToFit={false}
-            scrollEnabled={false}
+            // source={{html: '<div style="position:relative; padding-bottom: 56.25%;height: 0;"><iframe src="https://player.vimeo.com/video/132471949?playsinline=false" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen=true></iframe></div>'}}  
             onLoad={() => this.hideSpinner()}
+            originWhitelist={['*']}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            allowFullscreenVideo={true}
+
           />
+
+          {/* <Vimeo
+            videoId={this.props.videoId} // Vimeo video ID
+            onReady={() => console.log('Video is ready')}
+            onPlay={() => console.log('Video is playing')}
+            onPlayProgress={data => console.log('Video progress data:', data)}
+            onFinish={() => console.log('Video is finished')}
+            state={this.state}
+          /> */}
+
           {this.state.visible && (
             <ActivityIndicator
               style={{ position: "absolute", alignSelf: 'center' }}

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.facebook.CallbackManager;
 import com.facebook.react.ReactApplication;
+import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.ianlin.RNCarrierInfo.RNCarrierInfoPackage;
 import com.horcrux.svg.SvgPackage;
@@ -68,6 +69,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new WebViewBridgePackage(),
             new ReactVideoPackage(),
             new RNCarrierInfoPackage(),
             new SvgPackage(),

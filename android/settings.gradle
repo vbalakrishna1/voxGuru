@@ -1,4 +1,6 @@
 rootProject.name = 'voxguru'
+include ':react-native-webview-bridge'
+project(':react-native-webview-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-webview-bridge/android')
 include ':react-native-video'
 project(':react-native-video').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-video/android')
 include ':react-native-carrier-info'
@@ -40,3 +42,4 @@ project(':react-native-fbsdk').projectDir = new File(rootProject.projectDir, '..
 include ':react-native-fabric'
 project(':react-native-fabric').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-fabric/android')
 include ':app'
+

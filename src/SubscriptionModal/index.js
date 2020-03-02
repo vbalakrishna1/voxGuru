@@ -460,11 +460,12 @@ class SubscriptionModalNavigation extends React.Component {
                     // processing payment
 
         // for live account payU
+        console.log('live payment ')
        newOrder.Create({
            amount: this.state.planSelected.value,
            productinfo: this.state.params.info.currentLevelName,
            firstname: params.name,
-           email: params.email,
+           email: this.props.user.user.email,
            phone: params.phone,
            surl: 'https://www.google.com/_success',
            furl: 'https://www.google.com/_failure',

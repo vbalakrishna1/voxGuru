@@ -152,7 +152,7 @@ class VideoModalNavigation extends React.Component {
       checkInternetConnection().then(isConnected => {
          if (isConnected) {
             // ToastAndroid.show('Connected', ToastAndroid.SHORT);
-            this.setState({ isNoConnected: false });
+            this.setState({ isNoConnected: false,  });
          } else {
             // ToastAndroid.show('not Connected', ToastAndroid.SHORT);
             this.setState({ isNoConnected: true });
@@ -206,7 +206,7 @@ class VideoModalNavigation extends React.Component {
 
    onProgress = (data) => {
       //ToastAndroid.show('onProgress=>'+data.currentTime, ToastAndroid.SHORT)
-      if (data.currentTime > 7 && ran == 0) {
+      if (data > 7 && ran == 0) {
          ran = 1;
          if (this.props.user) {
             if (this.state.info) {

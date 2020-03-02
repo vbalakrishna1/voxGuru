@@ -211,7 +211,7 @@ onRegister = (email, password) => {
                         "firebase_unique_reference_go": user.user.uid
                       };
 
-                      axios.post("https://dev100.mercuryminds.com/voxguru/api/add_user.php", reqData)
+                      axios.post("https://app.voxguru.in/api/add_user.php", reqData)
                       .then((dataApi) =>{
                         let response = dataApi.data;
                         console.log(response);
@@ -232,6 +232,7 @@ onRegister = (email, password) => {
                       .catch((error)=> {
                         console.log(error);
                         this.resetRegisterState();
+                        console.log('catch enter')
                         Alert.alert(  
                           'Oops!',  
                           error.toString());

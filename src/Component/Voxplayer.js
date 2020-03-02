@@ -369,11 +369,12 @@
 
 
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet, WebView, ActivityIndicator,StatusBar } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, WebView, ActivityIndicator, StatusBar } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { connect } from 'react-redux';
-import Vimeo from './Vimeo';
+// import Vimeo from 'react-native-vimeo';
 import Orientation from 'react-native-orientation-locker';
+import { object } from 'prop-types';
 function getVimeoPageURL(videoId) {
   //Fix Quality.
   // console.log('https://player.vimeo.com/video/' + videoId + '?quality=360p')
@@ -413,6 +414,8 @@ class VoxPlayer extends Component {
           video: res.video,
         })
       });
+    this.webview.injectJavaScript('window.testMessage = "hello world"; void(0);');
+
   };
 
   onFullScreen(status) {
@@ -431,6 +434,61 @@ class VoxPlayer extends Component {
   hideSpinner() {
     this.setState({ visible: false });
   }
+  onMessage = (event) => {
+    let obj = JSON.parse(event.nativeEvent.data)
+    // console.log(event.nativeEvent.data.eventData)
+    switch (obj.event) {
+      case 'play':
+        break;
+
+      case 'pause':
+        break;
+
+      case 'timeupdate':
+        this.props.onProgress(obj.data)
+        break;
+
+      case 'end':
+        this.props.onEnd()
+        break;
+
+      default:
+        break;
+    }
+
+    console.log('----------------11111111222------------', obj)
+
+  }
+
+  onWebViewLoaded = () => {
+    let js = `
+      const postmeg=(event,data)=>{
+        let eventData = {
+          event:event,
+          data:data
+        } 
+        window.postMessage(JSON.stringify(eventData))
+      }
+      var iframe = document.querySelector('iframe');
+      var player = new Vimeo.Player(iframe);
+
+      player.on('play', function (data) {
+        postmeg('play',data.duration)
+      });
+      player.on('pause', function (data) {
+        postmeg('pause',data.seconds)
+      });
+      player.on('timeupdate', function (data) {
+        postmeg('timeupdate',data.seconds)
+      });
+      player.on('ended', function(data) {
+        postmeg("ended",'end')
+      });
+    `
+
+    this.webview.injectJavaScript(js);
+    console.log('****************injected broken');
+  }
   render() {
     return (
       <View style={{ flexGrow: 1, justifyContent: 'center', backgroundColor: "black" }}>
@@ -441,19 +499,41 @@ class VoxPlayer extends Component {
               <Icon name="close" size={30} color="white" />
             </TouchableOpacity> : null}
 
-          <WebView
+          {/* <WebView
+           ref={ref => (this.webview = ref)}
             style={{ backgroundColor: 'black' }}
-            source={{ uri: getVimeoPageURL(this.props.videoId) }}
-            // source={{html: '<div style="position:relative; padding-bottom: 56.25%;height: 0;"><iframe src="https://player.vimeo.com/video/132471949?playsinline=false" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen=true></iframe></div>'}}  
+            // source={{ uri: getVimeoPageURL(this.props.videoId) }}
+            source={{html: '<div style="position:relative; padding-bottom: 56.25%;height: 0;"><iframe src="https://player.vimeo.com/video/132471949?playsinline=false" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen=true></iframe></div>'}}  
             onLoad={() => this.hideSpinner()}
             originWhitelist={['*']}
+            // injectedJavaScript={javaScript}
+            onMessage = {this.onMessage}
             javaScriptEnabled={true}
-            domStorageEnabled={true}
-            allowFullscreenVideo={true}
+          /> */}
 
+          <WebView
+            ref={ref => (this.webview = ref)}
+            style={{backgroundColor:'black'}}
+            source={{ html: `<script src="https://player.vimeo.com/api/player.js"></script>
+            <div style="position:relative; background:black; padding-bottom: 56.25%;">
+                <iframe src=${getVimeoPageURL(this.props.videoId)} style="position: absolute; top: 0; left: 0; width: 100%; height: 90%;" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen=true></iframe>
+            </div>` }}
+
+            // source={{ html: `<script src="https://player.vimeo.com/api/player.js"></script><div style="position:relative; padding-bottom: 56.25%;height: 0;"><iframe src=${getVimeoPageURL(this.props.videoId)} style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" width="100%" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen=true></iframe></div>` }}
+            onError={console.error.bind(console, 'error')}
+            // bounces={false}
+            onShouldStartLoadWithRequest={() => true}
+            javaScriptEnabledAndroid={true}
+            startInLoadingState={true}
+            onLoad={() => this.hideSpinner()}
+            onLoadEnd={this.onWebViewLoaded}
+            onMessage={this.onMessage}
+            scalesPageToFit={true}
+            scrollEnabled={false}
           />
 
           {/* <Vimeo
+          style={{height:300, width:300, backgroundColor:'black'}}
             videoId={this.props.videoId} // Vimeo video ID
             onReady={() => console.log('Video is ready')}
             onPlay={() => console.log('Video is playing')}
@@ -477,7 +557,8 @@ class VoxPlayer extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: 'black',
   }
 })
 

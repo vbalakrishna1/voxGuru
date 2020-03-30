@@ -207,7 +207,7 @@ class LScreen extends React.Component {
                                        </View>
                                        <View style={{borderRadius: 8, borderColor: "#693e96", borderWidth: 1}}>
                                           <ImageBackground source={require('../images/male_doodle.png')} style={{ width: 100, aspectRatio: 1 }}>
-                                             <Image source={require('../images/play_button.png')} style={{ width: 100, height: 100 }} />
+                                             <Image resizeMode="contain" source={require('../images/play_button.png')} style={{ width: 100, height: 100 }} />
                                           </ImageBackground>
                                        </View>
                                     </View>

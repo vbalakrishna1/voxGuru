@@ -58,7 +58,7 @@ class SubscriptionModalNavigation extends React.Component {
             showWebpage: false,
         };
 
-        this.paymentType='production';
+        this.paymentType='production';// test for test and  'production' for production
 
     }
 
@@ -262,17 +262,17 @@ class SubscriptionModalNavigation extends React.Component {
 
             params.LessonStatus[key] = update;
             this.setState({ executed: false, showWebpage: false });
-            console.log("success:", data);
+            console.log("success:", data,params);
 
             this.writeToDB({ params, lessonDetails: this.props.params.info, isSuccess: true, lesnId });
 
 
             this.writeToRealtimeDatabase(params, update, CURRENCY)
 
-            if (this.state.isSuccess) {
+            /* if (this.state.isSuccess) {
                 this.setState({ showWebpage: false })
                 this.closeSuccess()
-            }
+            } */
         }
     }
      writeToRealtimeDatabase = async(params, purchasedLesson, CURRENCY)=> {
@@ -341,30 +341,6 @@ class SubscriptionModalNavigation extends React.Component {
             amount: transHistoryArray[0].amount,
             currency: CURRENCY,
         });
-      /*   let apiData = {
-            "course_fee_amount_paid": transHistoryArray[0].amount,
-            "email": self.props.user.user.email,
-            "is_trial_period": false,
-            "product_id": purchasedLesson.currentLevelId,
-            "purchase_date_pst": purchasedLesson.startDate,
-            "subscription_start_date_time": purchasedLesson.startDate,
-            "subscription_end_date_time": purchasedLesson.endDate,
-            "subscription_id": sId,
-            "subscription_type":"fresh",
-            "transaction_details":
-                 {
-                    "amount": transHistoryArray[0].amount,
-                    "currentLessonId": this.props.params.info.currentLessonId,
-                    "currentLevelId": purchasedLesson.currentLevelId,
-                    "start_date": purchasedLesson.startDate,
-                    "end_date": purchasedLesson.endDate,
-                    "txnid": stId,
-                    "currency": CURRENCY,
-                    "purchased_from_device": Platform.OS,
-                    "payment_gateway": this.paymentType==='test'? "PayUTest" : "PayUProduction",
-                    "transaction_date":  purchasedLesson.startDate
-                 }
-        }; */
 
         let apiData =  {
             "course_fee_amount_paid": transHistoryArray[0].amount,
@@ -543,7 +519,7 @@ class SubscriptionModalNavigation extends React.Component {
         }
 
         batch.commit().then(function () {
-            // console.log("batch wrote successfully");
+             console.log("batch wrote successfully");
             ToastAndroid.show(`Completed Course buy`, ToastAndroid.LONG)
             self.props.dispatch({ type: "USER_COURSE_BUY", params, lessonDetails, isSuccess, lesnId });
             self.props.dispatch({ type: "USER_UPDATE", params });

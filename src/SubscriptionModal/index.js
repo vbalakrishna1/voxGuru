@@ -2,7 +2,7 @@
 
 // React
 import React from 'react'
-import { Modal, View, Alert, StatuÃsBar, ActivityIndicator, ToastAndroid, TouchableOpacity, Platform } from 'react-native'
+import { Modal, View, Alert, ActivityIndicator, ToastAndroid, TouchableOpacity, Platform } from 'react-native'
 
 import {
     StyledContainer,

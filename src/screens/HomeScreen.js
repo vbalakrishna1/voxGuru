@@ -301,6 +301,7 @@ export class HomeScreen extends PureComponent {
             });
          }
       }
+
       return (
          <StyledContainer>
             <Header title={"Home"} leftNavMenu={true} leftNavFunc={this.props.openMenu} />

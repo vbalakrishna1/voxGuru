@@ -113,7 +113,7 @@ class CScreen extends React.Component {
                                     alignContent: "space-between",
                                     paddingVertical: 10,
                                  }}>
-                                 <Text style={{ color: '#ffffff', marginRight: 5, fontFamily: 'Nunito-Bold' }} >
+                                 <Text style={{ color: '#ffffff', marginRight: 5, fontFamily: 'Nunito-Bold' }}>
                                     View full course</Text>
                                  <Icon size={18} name="md-arrow-forward" color='#ffffff' />
                               </TouchableOpacity>

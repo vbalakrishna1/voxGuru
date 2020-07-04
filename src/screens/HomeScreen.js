@@ -282,6 +282,25 @@ export class HomeScreen extends PureComponent {
       }
    }
    render() {
+      if(this.props.user.user.info) {
+         if(this.props.user.user.metadata) {
+            let dateOfRegistration = this.props.user.user.metadata.creationTime;
+            let userDB = 'users/' + this.props.user.user.uid + '/info';
+            firebase.database().ref(`users/${this.props.user.user.uid}/info`).once("value")
+            .then(function(snapshot) {
+               let creationTime = snapshot.child("creationTime").exists();
+               if(!creationTime) {
+                  firebase.database().ref(userDB).update({
+                     creationTime: dateOfRegistration,
+                  }).then((data)=>{
+                     console.log('Updated Date of Registration ' , data)
+                  }).catch((error)=>{
+                     console.log('Error Date of Registration' , error)
+                  });
+               }
+            });
+         }
+      }
 
       return (
          <StyledContainer>
@@ -387,7 +406,12 @@ const mapDispatchToProps = dispatch => ({
             if (snapshot.val()) {
                let dataSource = snapshot.val() || {};
                // console.log(snapshot.val());
-               dispatch(NavigationActions.navigate({ routeName: 'CourseScreen', params: { ...dataSource, courseName: courseTitile } }));
+               courseTitleString = courseTitile.replace(/[- )(]/g,'');
+               console.log(courseTitleString);
+               firebase.analytics().logEvent(`Course`, {Course:courseTitleString});
+               // firebase.analytics().logEvent(`Course_${courseTitleString}_Selected`);
+               
+               dispatch(NavigationActions.navigate({ routeName: 'CourseScreen', params: { ...dataSource, courseName: courseTitile, title: courseTitleString } }));
             } else {
                Alert.alert(
                   'Error..! Server did not respond',

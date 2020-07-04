@@ -249,7 +249,6 @@ class VideoModalNavigation extends React.Component {
       clear.clearAppCache(() => { })
       console.log("on end");
       // ToastAndroid.show('on end', ToastAndroid.SHORT)
-
       // set db 
       if (this.props.user) {
          if (this.state.info) {
@@ -341,6 +340,8 @@ class VideoModalNavigation extends React.Component {
             }
          }
       }
+      // firebase.analytics().logEvent(`Video_Completed`);
+      firebase.analytics().logEvent(`Video`, {Video:"Video_Completed"});
    }
 
    onLoad = (data) => {

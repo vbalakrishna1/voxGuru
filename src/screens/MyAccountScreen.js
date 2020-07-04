@@ -162,7 +162,7 @@ class MyAccountScreen extends Component {
 
     return (
       <View>
-        {this.state.transactionHistory.length === 0 ?
+        {this.state.transactionHistory ?
           <View style={{
             paddingHorizontal: 10,
             paddingVertical: 20,

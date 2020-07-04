@@ -6,6 +6,7 @@ import {StyledHeader, StyledTouchableOpacity, StyledText,AlignedText, StyledLeft
 
 import { TextField }from 'react-native-material-textfield';
 import Icon from 'react-native-vector-icons/Ionicons';
+import firebase from 'react-native-firebase';
 
 
 class UserInfo extends Component {
@@ -23,6 +24,33 @@ class UserInfo extends Component {
         this.nameRef = this.updateRef.bind(this, 'name');
         this.phoneRef = this.updateRef.bind(this, 'phone');
     
+      }
+
+      componentDidMount() {
+        let priceValue = this.props.planSelected.value;
+        let priceMsg = '';
+        switch(priceValue) {
+          case '750':
+            priceMsg = "1_Month_India";
+            break;
+          case '1385':
+            priceMsg = "2_Months_India";
+            break;
+          case '1900':
+            priceMsg = "3_Months_India";
+            break;
+          case '20':
+            priceMsg = "1_month_Overseas";
+            break;
+          case '35':
+            priceMsg = "2_Months_Overseas";
+            break;
+          case '45':
+            priceMsg = "3_Months_Overseas";
+            break;
+        }
+        console.log("Price ", priceMsg);
+        firebase.analytics().logEvent(`Selected_Plan`, {Selected_Plan:priceMsg});
       }
 
       
@@ -112,7 +140,7 @@ class UserInfo extends Component {
             {
             this.state.button > 2 && 
             <View style={{paddingVertical:10}}>
-            <Button onPress={()=>this.onSubmit()}
+            <Button onPress={()=>this.onSubmit() || firebase.analytics().logEvent(`Selected_Plan`, {Submitted_Plan:"Submitted_Plan"})}
                 title="Submit"
                 color="#6b38a5"
                 accessibilityLabel="Submit payment request"

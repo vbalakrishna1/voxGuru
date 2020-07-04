@@ -372,6 +372,11 @@ class WVScreen extends React.Component {
       courseActive
     };
 
+    let courseModuleFB = this.props.navigation.state.params.info.currentLevelName.replace(/[- )(]/g,'');
+    //firebase.analytics().logEvent(`${this.props.navigation.state.params.info.currentLevelName.replace(/[- )(]/g,'')}`);
+    firebase.analytics().logEvent(`Modules`, {Modules:courseModuleFB});
+    console.log(courseModuleFB);
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -461,6 +466,38 @@ class WVScreen extends React.Component {
     });
   };
 
+  // zeroUpdate = () => {
+  //   // lessonVideoPhI, Male_prac_video
+  //   let zeroValues;
+  //   if(this.props.navigation.state.params.zero.Male_prac_video) {
+  //     zeroValues = {
+  //       isZero: true,
+  //       lessonName: this.props.navigation.state.params.zero.levelTitle,
+  //       lessonVideo: this.props.navigation.state.params.zero.videoId,
+  //       lessonVideoPhI: this.props.navigation.state.params.zero.lessonVideoPhI,
+  //       lessonPracticeGuideVideo: this.props.navigation.state.params.zero.lessonPracticeGuideVideo,
+  //       lessonPracticeGuidePhI: this.props.navigation.state.params.zero.lessonPracticeGuidePhI,
+  //       lessonVideoPhI: this.props.navigation.state.params.zero.levelThumbnail,
+  //       Male_prac_video: this.props.navigation.state.params.zero.Male_prac_video,
+  //     }
+  //   } else {
+  //     zeroValues = {
+  //       isZero: true,
+  //       lessonName: this.props.navigation.state.params.zero.levelTitle,
+  //       lessonVideo: this.props.navigation.state.params.zero.videoId,
+  //       lessonVideoPhI: this.props.navigation.state.params.zero.lessonVideoPhI,
+  //       lessonPracticeGuideVideo: this.props.navigation.state.params.zero.lessonPracticeGuideVideo,
+  //       lessonPracticeGuidePhI: this.props.navigation.state.params.zero.lessonPracticeGuidePhI,
+  //       lessonVideoPhI: this.props.navigation.state.params.zero.levelThumbnail,
+  //     }
+  //   }
+
+  //   console.log("Jagan", zeroValues);
+
+  //   // this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: this.props.navigation.state.params.zero}));
+  //   this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params:  zeroValues }));
+  // }
+
   render() {
     //console.log(this.props.navigation.state.params);
     //console.log(this.props.user);
@@ -469,7 +506,7 @@ class WVScreen extends React.Component {
     // this.props.user.user.LessonStatus.currentLessonWeekId => set this to arrow rotate.
     // this.props.user.user.LessonStatus.currentLessonId => set this for check mark if lesser, show alert if greater
     // this.props.user.user.LessonStatus.currentStatusLevel => progress level
-    // 
+    // alert( JSON.stringify(this.props.navigation.state.params.info.currentLevelName) );
 
     var courseCount = 0
     for (let i = 0; i < this.props.navigation.state.params.SECTIONS.length; i++) {
@@ -485,14 +522,16 @@ class WVScreen extends React.Component {
 
 
         <ScrollView style={{ backgroundColor: 'grey' }} style={{ marginBottom: !this.state.courseActive ? 50 : 0 }}>
+          {/* {console.log(this.props.navigation.state.params.zero)} */}
           {this.props.navigation.state.params.zero && (
             <View >
+              <TouchableOpacity onPress={() => this.props.openVideo(this.props.navigation.state.params.zero.videoId) || firebase.analytics().logEvent(`Video`, {Video:"Trail_Video"})}>
               <View style={{ marginTop: 6, marginBottom: 3, marginHorizontal: 6, backgroundColor: '#fff' }}>
                 <View style={{ padding: 4, borderRadius: 2, flexDirection: "row", }}>
-                  <TouchableOpacity onPress={() => this.props.openVideo(this.props.navigation.state.params.zero.videoId)}>
+                  {/* firebase.analytics().logEvent(`Trail_Video_Opened`) */}
+                  {/* <TouchableOpacity onPress={() => this.props.openVideo(this.props.navigation.state.params.zero.videoId) || firebase.analytics().logEvent(`Video`, {Video:"Trail_Video"})}> */}
                     <Image style={{ width: 100, aspectRatio: 1, borderRadius: 10 }}
                       source={{ uri: this.props.navigation.state.params.zero.levelThumbnail }} />
-                  </TouchableOpacity>
                   <View style={{ justifyContent: "center", paddingHorizontal: 5, flexWrap: "nowrap", flex: 1 }}>
                     <StyledText weight={"SemiBold"}>
                       {this.props.navigation.state.params.zero.levelTitle}
@@ -509,6 +548,7 @@ class WVScreen extends React.Component {
                   </View>
                 </View>
               </View>
+              </TouchableOpacity>
             </View>
           )
           }
@@ -533,8 +573,8 @@ class WVScreen extends React.Component {
               paddingTop: 0,
               alignSelf: "center",
             }}>
-
-            <TouchableOpacity onPress={() => this.props.openPay(this.props.navigation.state.params)}>
+            {/* firebase.analytics().logEvent(`Subscribe_Button_Clicked`) */}
+            <TouchableOpacity onPress={() => this.props.openPay(this.props.navigation.state.params) || firebase.analytics().logEvent(`Clicks`, {Clicks:"Subscribe_Button"})}>
               <View
                 style={{
                   width: Dimensions.get('window').width,
@@ -573,6 +613,8 @@ const mapDispatchToProps = dispatch => ({
 
 
     if (!courseActive) {
+      // firebase.analytics().logEvent(`Locked_Course_Clicked`);
+      firebase.analytics().logEvent(`Clicks`, {Clicks:"Locked_Course"});
       dispatch({ type: 'OPEN_PAY', params });
     } else {
       if (courseActive || !isActive) {

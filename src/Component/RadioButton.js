@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { StyledHeader, StyledTouchableOpacity, StyledText, AlignedText, StyledLeftBox, StyledBackIcon, StyledCenterBox, StyledMenuIcon } from '../UI/index';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import firebase from 'react-native-firebase';
 
 
 class RadioButton extends Component {
@@ -34,7 +35,8 @@ class RadioButton extends Component {
           backgroundColor: this.state.button === index ? "#ffbc00" : "white", elevation: 4, margin: 5, borderWidth: 1, padding: 5,
           alignItems: "center", paddingRight: 10, borderRadius: 4,
           flexDirection: "row", borderColor: this.state.button === index ? "#6b38a5" : "#fefefe", justifyContent: "space-around", flexWrap: "nowrap"
-        }}>
+        }}
+        >
           {(this.state.button === index)
             ? (<Icon size={28} name="md-radio-button-on" color='#6b38a5' />)
             : (<Icon size={28} name="md-radio-button-off" color='#6b38a5' />)}
@@ -50,7 +52,6 @@ class RadioButton extends Component {
     return (
       this.props.params ? (
         <View style={{ paddingHorizontal: 5 }}>
-
           <View style={{
             padding: 10,
             margin: 10,
@@ -71,6 +72,8 @@ class RadioButton extends Component {
           {
             this.state.button > -1 &&
             <View style={{ paddingHorizontal: 5 }}>
+              {/* firebase.analytics().logEvent(`Selected_${this.state.cost[this.state.button].value}`) */}
+              { /* <TouchableOpacity onPress={() => this.props.planSubmit(this.state.cost[this.state.button])} style={{ backgroundColor: '#6b38a5', alignItems: 'center', justifyContent: 'center', paddingVertical: 15 }}> */}
               <TouchableOpacity onPress={() => this.props.planSubmit(this.state.cost[this.state.button])} style={{ backgroundColor: '#6b38a5', alignItems: 'center', justifyContent: 'center', paddingVertical: 15 }}>
                 <Text style={{ color: '#ffffff', fontWeight: 'bold', fontSize: 18 }}>Pay Now</Text>
               </TouchableOpacity>

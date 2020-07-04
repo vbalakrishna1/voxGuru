@@ -2,7 +2,7 @@
 
 // React
 import React from 'react'
-import { Modal, View, Alert, StatuÍsBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
+import { Modal, View, Alert, StatuBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
 
 import {
     StyledContainer,
@@ -198,11 +198,57 @@ class SubscriptionModalNavigation extends React.Component {
             }
             console.log(CURRENCY);
 
-            firebase.analytics().logEvent(`ECOMMERCE_PURCHASE`, {
-                TRANSACTION_ID: transition.txnid,
-                CURRENCY,
-                VALUE: this.state.planSelected.value,
-            });
+            // New Ecommerce Code - Start
+            /*
+
+            Manual Conversion
+
+            20 => 750  + 685 = 1435
+            35 => 1385 + 1126 = 2511
+            45 => 1900 + 1329 = 3229
+
+            */
+
+           const currentAmount = parseInt(this.state.planSelected.value, 10);
+           let ecommerceAmount = null;
+           let ecommerceConvertedAmount = null;
+
+           if(CURRENCY !== 'INR') {
+               switch(currentAmount) {
+                   case 20:
+                       ecommerceConvertedAmount = 1435;
+                       break;
+                   case 22:
+                       ecommerceConvertedAmount = 1573;
+                       break;
+                   case 35:
+                       ecommerceConvertedAmount = 2511;
+                       break;
+                   case 38:
+                       ecommerceConvertedAmount = 2716;
+                       break;
+                   case 45:
+                       ecommerceConvertedAmount = 3229;
+                       break;
+                   case 49:
+                       ecommerceConvertedAmount = 3502; 
+                       break;
+               }
+               ecommerceAmount = ecommerceConvertedAmount;
+           } else {
+               ecommerceAmount = currentAmount;
+           }
+
+           console.log("Amount: ", typeof ecommerceAmount, ecommerceAmount);
+           console.log("Currency: ", typeof CURRENCY, CURRENCY);
+
+           firebase.analytics().logEvent("AndroidEcommercePurchase", {
+               Amount: ecommerceAmount,
+               value: ecommerceAmount,
+               Currency: CURRENCY,
+           });
+           
+          // New Ecommerce Code - End
 
             this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
 
@@ -248,6 +294,8 @@ class SubscriptionModalNavigation extends React.Component {
         let transHistoryArray = Object.values(params.TransactionHistory)
         var sId = firebase.database().ref().push().key
         console.log("subscription_id---", sId);
+
+        // Live Transaction
         firebase.database().ref('/user_subscription').child(sId).set({
             subscription_id: sId,
             email: self.props.user.user.email,
@@ -259,6 +307,20 @@ class SubscriptionModalNavigation extends React.Component {
             subscription_end_date_time: purchasedLesson.endDate,
             course_fee_amount_paid: transHistoryArray[0].amount
         });
+
+        // Test Transaction
+        // firebase.database().ref('/user_subscription').child(sId).set({
+        //     subscription_id: sId,
+        //     email: self.props.user.user.email,
+        //     product_id: purchasedLesson.currentLevelId,
+        //     purchase_date_pst: purchasedLesson.startDate,
+        //     is_trial_period: false,
+        //     subscription_type: 'Test',
+        //     subscription_start_date_time: purchasedLesson.startDate,
+        //     subscription_end_date_time: purchasedLesson.endDate,
+        //     course_fee_amount_paid: transHistoryArray[0].amount
+        // });
+
         var stId = firebase.database().ref().push().key
         firebase.database().ref('/user_subscription_transactions').child(stId).set({
             subscription_transaction_id: stId,
@@ -316,22 +378,7 @@ class SubscriptionModalNavigation extends React.Component {
         this.setState({ userInfoConfirm: true });
         // processing payment
 
-        //for live account payU
-        // newOrder.Create({
-        //     amount: this.state.planSelected.value,
-        //     productinfo: this.state.params.info.currentLevelName,
-        //     firstname: params.name,
-        //     email: params.email,
-        //     phone: params.phone,
-        //     surl: 'https://www.google.com/_success',
-        //     furl: 'https://www.google.com/_failure',
-        //     service_provider: 'payuBiz',
-        //     txnid: uuid.v4(),
-        //     key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
-        //     salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
-        // }, true);
-
-        //for test account payU
+        // for live account payU
         newOrder.Create({
             amount: this.state.planSelected.value,
             productinfo: this.state.params.info.currentLevelName,
@@ -342,7 +389,22 @@ class SubscriptionModalNavigation extends React.Component {
             furl: 'https://www.google.com/_failure',
             service_provider: 'payuBiz',
             txnid: uuid.v4(),
-        }, false);
+            key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
+            salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
+        }, true);
+
+        // for test account payU
+        // newOrder.Create({
+        //     amount: this.state.planSelected.value,
+        //     productinfo: this.state.params.info.currentLevelName,
+        //     firstname: params.name,
+        //     email: params.email,
+        //     phone: params.phone,
+        //     surl: 'https://www.google.com/_success',
+        //     furl: 'https://www.google.com/_failure',
+        //     service_provider: 'payuBiz',
+        //     txnid: uuid.v4(),
+        // }, false);
 
         newOrder.sendReq()
             .then(Response => {
@@ -401,9 +463,6 @@ class SubscriptionModalNavigation extends React.Component {
         })
     }
     render() {
-
-
-
         return (
             <Modal
                 visible={this.state.modalVisible}

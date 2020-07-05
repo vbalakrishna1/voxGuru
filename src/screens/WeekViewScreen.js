@@ -379,6 +379,39 @@ class WVScreen extends React.Component {
 
   }
 
+  _zeroVideo = () => {
+    firebase.analytics().logEvent(`Video`, {Video:"Trail_Video"});  
+    let zeroValues;
+    console.log("this.props.navigation.state.params.zero.Male_prac_video",this.props.navigation.state.params.zero)
+    if(this.props.navigation.state.params.zero.Male_prac_video) {
+      zeroValues = {
+        isZero: true,
+        lessonName: this.props.navigation.state.params.zero.levelDesc,
+        lessonVideo: this.props.navigation.state.params.zero.videoId,
+        lessonVideoPhI: this.props.navigation.state.params.zero.lessonVideoPhI,
+        lessonPracticeGuideVideo: this.props.navigation.state.params.zero.lessonPracticeGuideVideo,
+        lessonPracticeGuidePhI: this.props.navigation.state.params.zero.lessonPracticeGuidePhI,
+        lessonVideoPhI: this.props.navigation.state.params.zero.levelThumbnail,
+        TrailThumbnail:this.props.navigation.state.params.zero.TrailThumbnail,
+        Male_prac_video: this.props.navigation.state.params.zero.Male_prac_video
+      }
+    } else {
+      zeroValues = {
+        isZero: true,
+        lessonName: this.props.navigation.state.params.zero.levelDesc,
+        lessonVideo: this.props.navigation.state.params.zero.videoId,
+        lessonVideoPhI: this.props.navigation.state.params.zero.lessonVideoPhI,
+        lessonPracticeGuideVideo: this.props.navigation.state.params.zero.lessonPracticeGuideVideo,
+        lessonPracticeGuidePhI: this.props.navigation.state.params.zero.lessonPracticeGuidePhI,
+        lessonVideoPhI: this.props.navigation.state.params.zero.levelThumbnail,
+        TrailThumbnail:this.props.navigation.state.params.zero.TrailThumbnail,
+      }
+    }
+
+    // this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: this.props.navigation.state.params.zero}));
+    this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params:  zeroValues }));
+}
+
   componentWillReceiveProps(nextProps) {
 
     let myRe = null;
@@ -406,6 +439,7 @@ class WVScreen extends React.Component {
 
 
   _renderCard = ({ item }) => {
+    console.log("data==>",item)
     return (
       <LessonCard item={item} params={this.props.navigation.state.params} onViewAll={this.props.onViewAll}
         lessonName={this.state.lessonName} courseActive={this.state.courseActive} currentLessonNum={this.state.currentLessonNum}
@@ -514,6 +548,7 @@ class WVScreen extends React.Component {
         courseCount = courseCount + 1
       }
     }
+    { console.log("Jagan: ", this.props.navigation.state.params.zero.videoId) }
     return (
       <View style={{ flex: 1, }}>
         <Header title={"Course Plan ( " + (courseCount + 1) + " Lessons )"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
@@ -525,7 +560,8 @@ class WVScreen extends React.Component {
           {/* {console.log(this.props.navigation.state.params.zero)} */}
           {this.props.navigation.state.params.zero && (
             <View >
-              <TouchableOpacity onPress={() => this.props.openVideo(this.props.navigation.state.params.zero.videoId) || firebase.analytics().logEvent(`Video`, {Video:"Trail_Video"})}>
+              <TouchableOpacity onPress={this._zeroVideo}>
+              {/* <TouchableOpacity onPress={() => this.props.openVideo(this.props.navigation.state.params.zero.videoId) || firebase.analytics().logEvent(`Video`, {Video:"Trail_Video"})}> */}
               <View style={{ marginTop: 6, marginBottom: 3, marginHorizontal: 6, backgroundColor: '#fff' }}>
                 <View style={{ padding: 4, borderRadius: 2, flexDirection: "row", }}>
                   {/* firebase.analytics().logEvent(`Trail_Video_Opened`) */}
@@ -539,12 +575,6 @@ class WVScreen extends React.Component {
                     <StyledText size={"Medium"}>
                       {this.props.navigation.state.params.zero.levelDesc}
                     </StyledText>
-                    {/* <AlignedText size={"Large"} weight={"SemiBold"}>
-                      {this.props.navigation.state.params.zero.levelTitle}
-                    </AlignedText>
-                    <AlignedText size={"Medium"} textalign={"Justify"}>
-                      {this.props.navigation.state.params.zero.levelDesc}
-                    </AlignedText> */}
                   </View>
                 </View>
               </View>
@@ -611,7 +641,7 @@ const mapDispatchToProps = dispatch => ({
   },
   onViewAll: (val, isActive, progressState, lessonName, courseActive, params) => {
 
-
+    console.log("onViewAll==>: ", val, isActive, progressState, lessonName, courseActive, params);
     if (!courseActive) {
       // firebase.analytics().logEvent(`Locked_Course_Clicked`);
       firebase.analytics().logEvent(`Clicks`, {Clicks:"Locked_Course"});
@@ -626,6 +656,7 @@ const mapDispatchToProps = dispatch => ({
                 // console.log(snapshot.val());
 
                 dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: dataSource }));
+                console.log("Jaganx: ", dataSource);
               } else {
                 Alert.alert(
                   'Error..! Server did not respond',
@@ -644,7 +675,7 @@ const mapDispatchToProps = dispatch => ({
               if (snapshot.val()) {
                 let dataSource = snapshot.val() || {};
                 // console.log(snapshot.val());
-
+                console.log("Jaganx: ", dataSource);
                 dispatch(NavigationActions.navigate({ routeName: 'LessonScreen', params: dataSource }));
               } else {
                 Alert.alert(

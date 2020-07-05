@@ -8,12 +8,15 @@ import Header from '../Component/Header';
 import { connect } from 'react-redux'
 import UserAvatar from 'react-native-user-avatar'
 import gravatar from 'gravatar';
+import moment from 'moment';
+import axios from 'axios';
 import { StyledContainer, StyledImageContainer, StyledListContainer, StyledVideoBar, StyledText, StyledButton, StyledBox, StyledFloatBar, SmallButton, AlignedText, StyledImageCard, Button } from '../UI';
 
 
 class MyAccountScreen extends Component {
   constructor(props) {
     super(props);
+    console.log("My Account");
     this.ref = null;
     this.unsubscribe = null;
     this.dataSource = {};
@@ -39,17 +42,43 @@ class MyAccountScreen extends Component {
       info: this.props.user.user.info,
       animating: false
     });
+    
     console.log('---info', this.props.user)
     if (this.props.user.user.LessonStatus != {}) {
-
-
       this.setState({
         lessonStatus: this.props.user.user.LessonStatus,
         transactionHistory: this.props.user.user.TransactionHistory,
       });
     }
+    this.getMyAccountData(this.props.user.user.email);
 
   };
+
+  getMyAccountData = (email) => {
+    console.log("EMAIL++>", email)
+    try {
+      let reqData = {
+        "email": email
+      };
+
+      axios.post("https://app.voxguru.in/api/my_account.php", reqData)
+                      .then((dataApi) =>{
+        console.log("data===>",dataApi)
+      if(dataApi.data !=null){
+        this.setState({
+          transactionHistory: dataApi.data.billing_history
+        });
+      } else {
+        Alert.alert("Sorry!","No transactions found.");
+      }
+      });
+      
+    } catch (err) {
+      console.log(err);
+      Alert.alert("Opps!","Something went wrong please try again.");
+      
+    }
+  }
 
   componentWillMount() {
     var self = this;
@@ -80,54 +109,12 @@ class MyAccountScreen extends Component {
       Img = gravatar.url(this.state.info.email, { s: '100', r: 'x', d: 'identicon' }, true)
     }
     return (
-      <View>
-        <View style={{
-          flexWrap: 'wrap',
-          flexDirection: 'column',
-          paddingVertical: 30,
-          padding: 10,
-        }}>
-          <View
-            style={{
-              position: 'absolute',
-              top: 10,
-              right: 10,
-            }} >
-            <TouchableHighlight
-              underlayColor={'yellow'}
-              onPress={this.accountEdit}>
-              <View>
-
-              </View>
-            </TouchableHighlight>
-          </View>
-          <View style={{
-            flex: 1,
-            flexWrap: 'nowrap',
-            flexDirection: 'row',
-          }}>
-            <UserAvatar size="100" name='No Image' src={Img} />
-            <View style={{
-              flex: 1,
-              flexWrap: 'wrap',
-              flexDirection: 'column',
-              paddingLeft: 10,
-              marginTop: 10,
-            }}>
-              <Text style={{ color: 'black', fontSize: 28, textAlign: 'left', padding: 5, flexWrap: 'wrap' }}>
-                {this.state.info.userName}
-              </Text>
-              {/* <Text style={{color:'black',fontSize: 14, textAlign: 'left', padding: 5, flexWrap: 'wrap'}}> 
-              Age: {this.state.info.ageText} years | Gender: {this.state.info.genderText}
-            </Text> */}
-              <Text style={{ color: 'black', fontSize: 14, textAlign: 'left', paddingLeft: 5, flexWrap: 'wrap' }}>
-                {this.state.info.email}
-              </Text>
-            </View>
-          </View>
+      <View style={{ width: '100%', padding: 8, paddingTop: 20 }}>
+        <View style={{ backgroundColor: "#FFFFFF", padding: 10, paddingLeft: 20, borderRadius: 4 }}>
+          <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "600", textTransform: "uppercase", marginBottom: 5 }}>Login Details</Text>
+          <Text style={{ color: "#000000", fontSize: 18, fontWeight: "200" }}>{this.props.user.user.email}</Text>
         </View>
       </View>
-
     );
   }
 
@@ -160,27 +147,54 @@ class MyAccountScreen extends Component {
   _renderTransaction(val) {
     // console.log(this.state[val]);
 
+    // <View>
+    //   {this.state.transactionHistory ?
+    //     <View style={{
+    //       paddingHorizontal: 10,
+    //       paddingVertical: 20,
+    //       alignItems: "center",
+    //     }}>
+    //       <Text> No transactions yet. </Text>
+    //     </View>
+    //     :
+    //     <View style={{
+    //       flex: 1,
+    //       padding: 10,
+    //     }}>
+    //       <FlatList
+    //         data={Object.values(this.state.transactionHistory)}
+    //         renderItem={({ item, index }) => this._renderTransactionRow(item)}
+    //         keyExtractor={item => item.txnid}
+    //       />
+    //     </View>
+    //   }
+    // </View>
     return (
       <View>
-        {this.state.transactionHistory ?
-          <View style={{
-            paddingHorizontal: 10,
-            paddingVertical: 20,
-            alignItems: "center",
-          }}>
-            <Text> No transactions yet. </Text>
+        {this.state.transactionHistory ? (
+          <View style={{ width: '100%', padding: 8, paddingTop: 10 }}>
+            <View style={{ backgroundColor: "#FFFFFF", borderRadius: 4 }}>
+              <View style={{ padding: 10, paddingLeft: 20, paddingBottom: 0 }}>
+                <Text style={{ color: "#6b38a5", fontSize: 18, fontWeight: "600", textTransform: "uppercase", marginBottom: 10 }}>Billing</Text>
+              </View>
+              <View style={{ paddingBottom: 20 }}>
+                <FlatList
+                  data={this.state.transactionHistory}
+                  renderItem={({ item, index }) => this._renderTransactionRow(item)}
+                  keyExtractor={item => item.subscription_start_date_time + item.course_name}
+                />
+              </View>
+            </View>
           </View>
-          :
-          <View style={{
-            flex: 1,
-            padding: 10,
-          }}>
-            <FlatList
-              data={Object.values(this.state.transactionHistory)}
-              renderItem={({ item, index }) => this._renderTransactionRow(item)}
-              keyExtractor={item => item.txnid}
-            />
-          </View>
+        ) : (
+            <View style={{
+              paddingHorizontal: 10,
+              paddingVertical: 20,
+              alignItems: "center",
+            }}>
+              <Text> No transactions yet. </Text>
+            </View>
+          )
         }
       </View>
     )
@@ -220,75 +234,56 @@ class MyAccountScreen extends Component {
     // }
   }
 
-  _renderTransactionRow = (rowData, sectionID, rowID) => {
+  _renderTransactionRow = (rowData) => {
 
-    if (rowData.txnid) {
-      return (
-        <TouchableHighlight underlayColor={'yellow'}>
+    /* if (rowData.txnid) { */
 
-          <View style={{
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            alignContent: 'space-between',
-            backgroundColor: '#fefefe',
-            margin: 5,
-            borderColor: '#e5e5e5',
-            borderWidth: 1,
-            borderRadius: 4,
-            shadowColor: "#000000",
-            shadowOpacity: 0.3,
-            shadowOffset: {
-              height: 1,
-              width: 0.3,
-            }
-          }}>
-            <View style={{
-              flex: 1,
-              flexWrap: 'wrap',
-              flexDirection: 'row',
-              alignContent: 'space-between',
-            }}>
-              <View style={{
-                flex: 1,
-                flexWrap: 'wrap',
-                flexDirection: 'column',
-                alignContent: 'center',
-                alignSelf: 'center',
-                paddingHorizontal: 10
-              }}>
+    //let day = moment(rowData.createDate.getDate());
+    // let day = rowData.createDate.getDate();
+    // let month = rowData.createDate.getMonth();
+    // let year = rowData.createDate.getFullYear().toString().slice(-2);
 
-                <Text style={{ color: 'black', textAlign: 'left', flexWrap: 'wrap' }}>
-                  <Text>
-                    {rowData.txnid}
-                  </Text>
-                </Text>
+    let serviceProvider = rowData.service_provider;
+    let iOS = false;
 
+    let amount = rowData.amount;
+    let amountText = "Android 1 month subscription";
 
-                <Text style={{ textAlign: 'left', color: 'grey', flexDirection: 'row', flexWrap: 'wrap' }}>
-                  <Text>
-                    Amount: {rowData.amount} ,
-                  </Text>
-                  {rowData.currentLevelId != null &&
-                    (<Text>
-                      Course Id: {rowData.currentLevelId}
-                    </Text>)
-                  }
-                  {rowData.productinfo != null &&
-                    (<Text>
-                      Course Id: {rowData.productinfo}
-                    </Text>)
-                  }
-                </Text>
-
-              </View>
-            </View>
-          </View>
-
-        </TouchableHighlight>
-      );
+    if (serviceProvider === "payuBiz") {
+      iOS = false;
     } else {
-      return null;
+      iOS = true;
     }
+
+    if (amount <= 1000 && iOS === false) {
+      amountText = "Android 1 month subscription";
+    } else if (amount > 1000 && amount <= 1500 && iOS === false) {
+      amountText = "Android 2 month subscription";
+    } else if (amount > 1500 && iOS === false) {
+      amountText = "Android 3 month subscription";
+    }
+    /* {day}/{month}/{year} */
+    return (
+      <View style={{ paddingTop: 10, paddingBottom: 10, borderBottomColor: "#E0E0E0", borderBottomWidth: 1 }}>
+        <View style={{ paddingLeft: 20, paddingRight: 20 }}>
+          <View style={{ flexWrap: 'wrap', flexDirection: 'row', flex: 1 }}>
+            <Text style={{fontFamily: "Nunito-Bold", justifyContent: "flex-start", fontSize: 18, fontWeight: "600", color: "#000000" }}>{moment(rowData.purchase_date_pst, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}</Text>
+            <View style={{ flex: 1 }}></View>
+            <Text style={{ fontFamily: "Nunito-Bold",justifyContent: "flex-end", fontSize: 18, fontWeight: "600", color: "#000000" }}>{rowData.purchase_currency+" "+ rowData.course_fee_amount_paid}</Text>
+          </View>
+          <Text style={{fontFamily: "Nunito-Bold", fontWeight: 'bold' }}>{rowData.course_name}</Text>
+          <Text style={{fontFamily: "Nunito-Bold", fontWeight: 'bold' }}>{rowData.subscription_info}</Text>
+          {/* {iOS ? ( <Text style={{fontFamily: "Nunito-Bold"}}>IOS auto-renewable subscription</Text> ) : ( <Text>{amountText}</Text> )}
+          <Text style={{fontFamily: "Nunito-Bold"}} numberOfLines={1}>Txn id - {rowData.txnid}</Text> */}
+         {/*  <Text style={{fontFamily: "Nunito-Bold"}}><Text style={{ fontFamily: "Nunito-Bold",fontWeight: 'bold' }}>Subscription Start Date:</Text>{` ${moment(rowData.subscription_start_date_time, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}`}</Text>
+          <Text style={{fontFamily: "Nunito-Bold"}}><Text style={{ fontFamily: "Nunito-Bold",fontWeight: 'bold' }}>Subscription End Date:</Text>{` ${moment(rowData.subscription_end_date_time, 'DD/MM/YYYY hh:mm').format("DD/MM/YYYY")}`}</Text> */}
+          <Text style={{fontFamily: "Nunito-Bold"}}><Text style={{ fontFamily: "Nunito-Bold",fontWeight: 'bold' }}>Txn_id: </Text>{rowData.txn_id}</Text>
+        </View>
+      </View>
+    )
+    /* } else {
+      return null;
+    } */
 
   } // var rowHash = Math.abs(hashCode(rowData));
   getCoursemodule = (courseId) => {
@@ -566,10 +561,10 @@ class MyAccountScreen extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Header title={"My Account"} leftNavMenu={true} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.navigate({ routeName: 'DrawerOpen' }))} />
-        <ScrollView style={{ backgroundColor: "#fefefe" }}>
+        <Header title={"My Account"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} center={true} />
+        <ScrollView style={{ backgroundColor: "#E0E0E0" }}>
           {this._renderUserInfo()}
-          <View style={{ height: 10 }} />
+          {/* <View style={{ height: 10 }} />
           <ActivityIndicator animating={this.state.animating} />
           <SegmentedControlTab
             values={['Transaction History']}
@@ -580,7 +575,7 @@ class MyAccountScreen extends Component {
             tabStyle={{ backgroundColor: '#F2F2F2', borderWidth: 0, flexWrap: "wrap" }}
             activeTabStyle={{ backgroundColor: 'white', marginTop: 2, }}
             tabTextStyle={{ color: '#444444', fontSize: 14, }}
-            activeTabTextStyle={{ color: '#6b38a5', fontSize: 14 }} />
+            activeTabTextStyle={{ color: '#6b38a5', fontSize: 14 }} /> */}
           <View style={{ flex: 1 }}>
             {this._renderCustomSegmentElement()}
           </View>

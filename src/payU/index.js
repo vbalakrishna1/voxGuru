@@ -41,7 +41,8 @@ const PayuNewOrder = function() {
  * @param {Object} payment - Properties from this object will be updated in the main object.
  */
 PayuNewOrder.prototype.Create = function(payment, secure) {
-    console.log(payment)
+    console.log(payment,secure)
+    
     try {
         if (payment) {
             // If it is not secure and hash is not made then we add test data.

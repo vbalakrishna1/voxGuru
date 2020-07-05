@@ -4,6 +4,7 @@ import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import WebPage from '../Component/WebPage';
 import Header from '../Component/Header';
+import axios from 'axios';
 
 import { StyledText, AlignedText, StyledContainer, StyledBox } from '../UI';
 
@@ -198,9 +199,45 @@ onRegister = (email, password) => {
               if (password.length >= 8) {
                 // New Registration
                 firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
-                  .then((user) => {
+                  .then(async (user) => {
+                    console.log("firebase user===>",user);
                     ToastAndroid.show(`Logged in!`, ToastAndroid.LONG);
-                    this.props.onRegister();
+                    
+                      let reqData = {
+                        "email": email,
+                        "password": password,
+                        "phone": "",
+                        "phone_country_code": "",
+                        "firebase_unique_reference_go": user.user.uid
+                      };
+
+                      axios.post("https://app.voxguru.in/api/add_user.php", reqData)
+                      .then((dataApi) =>{
+                        let response = dataApi.data;
+                        console.log(response);
+                        if(response.Status==='Success'){
+                          this.props.onRegister();
+                        } else{
+                          Alert.alert(  
+                            'Oops!',  
+                            'Something went wrong! Please try again .',  
+                            [
+                              {text: 'OK', onPress: () => this.resetRegisterState()},
+                            ],
+                            {cancelable: false}  
+                          );
+  
+                        }
+                      })
+                      .catch((error)=> {
+                        console.log(error);
+                        this.resetRegisterState();
+                        console.log('catch enter')
+                        Alert.alert(  
+                          'Oops!',  
+                          error.toString());
+                      });
+                    
                   })
                   .catch((error) => {
                     console.log(error.code);
@@ -238,6 +275,31 @@ onRegister = (email, password) => {
     } else {
       this.resetRegisterState();
     }
+  }
+}
+
+registerOnApi=async (email,password,firebaseId)=>{
+  
+  try{
+    let reqData = {
+      "email": email,
+      "password": password,
+      "phone": "",
+      "phone_country_code": "",
+      "firebase_unique_reference_go": firebaseId
+    };
+  
+    let response = await fetch("https://app.voxguru.in/api/add_user.php", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;'
+      },
+      body: JSON.stringify(reqData)
+    });
+    return await response.json();
+  } catch(err){
+    return err;
+    console.log(error.code);
   }
 }
 

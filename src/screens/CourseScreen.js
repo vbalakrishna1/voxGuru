@@ -54,6 +54,7 @@ class CScreen extends React.Component {
    }
 
    check = (val, zero) => {
+      console.log("this.state.userLogin",this.state.userLogin);
       (this.state.userLogin) ? this.props.onViewAll(val, zero) : this.props.openLogin();
    }
 
@@ -103,7 +104,8 @@ class CScreen extends React.Component {
                                  backgroundColor: '#6b38a5',
                                  borderRadius: 4,
                               }}>
-                              <TouchableOpacity onPress={debounce(() => this.check(this.state.Levels[val].levelId, this.state.Levels[val]), 1000, { leading: true, trailing: false })}
+                             {/*  <TouchableOpacity onPress={debounce(() => this.check(this.state.Levels[val].levelId, this.state.Levels[val]), 1000, { leading: true, trailing: false })} */}
+                             <TouchableOpacity onPress={debounce(() => {console.log("testjbjbjb"); this.check(this.state.Levels[val].levelId, this.state.Levels[val])}, 1000, { leading: true, trailing: false })}
                                  // this.onViewAll(this.state.Levels[val].levelId,this.state.Levels[val])
                                  style={{
                                     flexDirection: 'row',
@@ -206,9 +208,12 @@ class CScreen extends React.Component {
    }
 }
 
-const mapStateToProps = state => ({
-   user: state.user,
-});
+const mapStateToProps = state => {
+   console.log("state",state);
+   return({
+   user: state.user
+})
+};
 
 const mapDispatchToProps = dispatch => ({
    openVideo: (params) => {
@@ -238,7 +243,7 @@ const mapDispatchToProps = dispatch => ({
          });
    },
    openLogin: (params) => {
-      //console.log("!!this ran");
+      console.log("!!this ran");
       dispatch({ type: 'OPEN_LOGIN', params })
    },
 });

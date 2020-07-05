@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "io.fabric"
+
 crashlytics {
     enableNdk true
 }
@@ -113,8 +114,8 @@ android {
         applicationId "com.voxguru"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 50
-        versionName '33.0'
+        versionCode 56
+        versionName '39.0'
         multiDexEnabled true
     }
 
@@ -174,19 +175,22 @@ android {
 
 
 dependencies {
+    implementation project(':react-native-webview-bridge')
+    implementation project(':react-native-video')
+    implementation project(':react-native-carrier-info')
+    implementation project(':react-native-svg')
+    implementation project(':react-native-randombytes')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':@react-native-community_slider')
+    implementation project(':react-native-orientation-locker')
     implementation project(':react-native-device-info')
     implementation project(':react-native-fabric')
-    implementation project(':react-native-orientation')
-    implementation project(':react-native-video')
-    implementation project(':react-native-randombytes')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-udp')
     implementation project(':react-native-tcp')
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-keep-awake')
-    implementation project(':react-native-gesture-handler')
     implementation project(':react-native-clear-app-cache')
-    implementation project(':react-native-carrier-info')
     implementation project(':react-native-branch')
     implementation project(':lottie-react-native')
     implementation project(':react-native-fbsdk')

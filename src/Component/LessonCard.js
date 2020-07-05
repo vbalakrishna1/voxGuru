@@ -89,15 +89,17 @@ export class LessonCard extends Component {
   }
 
   render() {
-    return (
+    console.log("this.props",this.props);
+    return ( 
       <View>
         {this.props.courseActive ? (
           <TouchableOpacity onPress={debounce(() =>
-            this.props.onViewAll(this.props.item.lessonId, this.state.isActive, this.state.progressState, this.props.lessonName,
+            this.props.onViewAll(this.props.item.lessonId, this.state.isActive, this.state.progressState, this.props.item.LevelDescNew,
               this.props.courseActive, this.props.params), 1000, { leading: true, trailing: false })}
             style={{ marginVertical: 3, marginHorizontal: 6, backgroundColor: '#fff' }}>
             <View style={{ padding: 4, borderRadius: 2, flexDirection: "row" }}>
               <View>
+                {console.log("this.props.item.img trial",this.props.item.img)}
                 <Image source={{ uri: this.props.item.img }} style={{ width: 100, aspectRatio: 1, borderRadius: 10 }} />
                 <View style={{ position: 'absolute', width: 100, aspectRatio: 1, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
                   <Image source={require('../images/playIcon.png')} style={{ height: 35, width: 35, resizeMode: 'contain' }}></Image>
@@ -130,12 +132,13 @@ export class LessonCard extends Component {
           </TouchableOpacity>
         ) : (
             <TouchableOpacity onPress={debounce(() =>
-              this.props.onViewAll(this.props.item.lessonId, this.state.isActive, this.state.progressState, this.props.lessonName,
+              this.props.onViewAll(this.props.item.lessonId, this.state.isActive, this.state.progressState, this.props.LevelDescNew,
                 this.props.courseActive, this.props.params), 1000, { leading: true, trailing: false })}
               style={{ marginVertical: 3, marginHorizontal: 6, backgroundColor: '#fff' }}>
               <View style={{ padding: 4, borderRadius: 2, flexDirection: "row" }}>
                 <View>
-                  <Image source={{ uri: this.props.item.img }} style={{ width: 100, aspectRatio: 1, borderRadius: 10 }} />
+                {console.log("this.props.item.img",this.props.item.img)}
+                  <Image source={{ uri: this.props.item.img}} style={{ width: 100, aspectRatio: 1, borderRadius: 10 }} />
                   <View style={{ position: 'absolute', backgroundColor: 'rgba(0, 0, 0, 0.5)', width: 100, aspectRatio: 1, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
                     <Image source={require('../images/lock.png')} style={{ height: 28, width: 28, resizeMode: 'contain' }}></Image>
                   </View>

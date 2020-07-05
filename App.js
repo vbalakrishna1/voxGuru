@@ -17,6 +17,8 @@ import store from './src/store';
 import { Provider } from 'react-redux';
 import CarrierInfo from 'react-native-carrier-info';
 import HomeScreen from './src/screens/HomeScreen'
+
+import Orientation from 'react-native-orientation-locker';
 import './shim.js';
 import DeviceInfo from 'react-native-device-info'
 
@@ -39,6 +41,7 @@ export default class MyApp extends React.Component {
       this.state = {
          isLoading: true,
          progress: new Animated.Value(0),
+         fullscreen:false
       };
       this.unsubscribeFireStore = null;
    }
@@ -117,6 +120,7 @@ export default class MyApp extends React.Component {
          CarrierInfo.isoCountryCode()
             .then((result) => {
                countryVar = result
+               // countryVar = 'india'
                if (user) {
                   loginVar = 1;
                   console.log(user);
@@ -192,6 +196,7 @@ export default class MyApp extends React.Component {
          store.dispatch({ type: 'USER_UPDATE', params: { LessonStatus } });
       }
       BackHandler.addEventListener("hardwareBackPress", this.onBackPress);
+      Orientation.addOrientationListener(this.handleOrientation);
       FCM.getToken().then(token => {
          console.log(token);
       });
@@ -221,6 +226,7 @@ export default class MyApp extends React.Component {
    }
    componentWillUnmount() {
       BackHandler.removeEventListener("hardwareBackPress", this.onBackPress);
+      Orientation.removeOrientationListener(this.handleOrientation);
       console.log('----------reached hardwareBackPress here--------');
       // console.log("****unsubscribe*****",unsubscribe())
       unsubscribe();
@@ -232,8 +238,18 @@ export default class MyApp extends React.Component {
          this.handleFirstConnectivityChange
       );
    }
-   onBackPress = () => {
+   handleOrientation=(orientation) => {
+      orientation === 'LANDSCAPE-LEFT' || orientation === 'LANDSCAPE-RIGHT'
+        ? (this.setState({fullscreen: true}))
+        : this.setState({fullscreen: false})
+    }
+   onBackPress = async() => {
       let state = store.getState();
+      
+      if(this.state.fullscreen){
+         Orientation.unlockAllOrientations();
+         StatusBar.setHidden(false);
+      } else{
       if (state.nav.index === 0 && state.home.index === 0 && state.about.index === 0) {
          if (backCounter < 3) {
             ToastAndroid.show(`Press ${backCounter} Times to Exit`, ToastAndroid.SHORT)
@@ -256,6 +272,7 @@ export default class MyApp extends React.Component {
          )
       }
       store.dispatch(NavigationActions.back());
+   }
       return true;
    };
 

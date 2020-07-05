@@ -2,7 +2,7 @@
 
 // React
 import React from 'react'
-import { Modal, View, Alert, StatuBar, ActivityIndicator, ToastAndroid, TouchableOpacity } from 'react-native'
+import { Modal, View, Alert, ActivityIndicator, ToastAndroid, TouchableOpacity, Platform } from 'react-native'
 
 import {
     StyledContainer,
@@ -18,7 +18,8 @@ import WebPage from '../Component/WebPage';
 //Redux
 import { connect } from 'react-redux';
 
-import debounce from 'lodash.debounce'
+import debounce from 'lodash.debounce';
+import axios from 'axios';
 
 // payment processor
 
@@ -56,6 +57,8 @@ class SubscriptionModalNavigation extends React.Component {
             isFail: false,
             showWebpage: false,
         };
+
+        this.paymentType='production';// test for test and  'production' for production
 
     }
 
@@ -198,75 +201,82 @@ class SubscriptionModalNavigation extends React.Component {
             }
             console.log(CURRENCY);
 
-            // New Ecommerce Code - Start
-            /*
+        //
+            // Currency Conversion - Start
+            let planValueAfter = null;
+            let planValue = parseInt(this.state.planSelected.value, 10);
+            if(CURRENCY === null) {
+                if(planValueAfter <= 100) {
+                    CURRENCY = "USD";
+                } else {
+                    CURRENCY = "INR";
+                }
+            }
+            // Conversion
+            if(CURRENCY !== 'INR') {
+                switch(planValue) {
+                    case 20:
+                        planValueAfter = 1435;
+                        break;
+                    case 22:
+                        planValueAfter = 1573;
+                        break;
+                    case 35:
+                        planValueAfter = 2511;
+                        break;
+                    case 38:
+                        planValueAfter = 2716;
+                        break;
+                    case 45:
+                        planValueAfter = 3229;
+                        break;
+                    case 49:
+                        planValueAfter = 3502;
+                        break;
+                }
+            } else {
+                planValueAfter = parseInt(this.state.planSelected.value, 10);
+            }
+            console.log("Plan Value After: ", planValueAfter);
+            // Currency Conversion - End
+        //
+            // Original Firebase Ecommerce_Purchase
+            firebase.analytics().logEvent(`ECOMMERCE_PURCHASE`, {
+                TRANSACTION_ID: transition.txnid,
+                CURRENCY: CURRENCY,
+                VALUE: planValueAfter,
+            });
 
-            Manual Conversion
+            // Firebase Ecommerce_Purchase
+            firebase.analytics().logEvent("AndroidEcommercePurchase", {
+                Amount: planValueAfter,
+                currency: CURRENCY,
+                value: planValueAfter,
+            });
 
-            20 => 750  + 685 = 1435
-            35 => 1385 + 1126 = 2511
-            45 => 1900 + 1329 = 3229
+            console.log("Transaction ID", transition.txnid);
+            console.log("Currency", CURRENCY);
+            console.log("Value", this.state.planSelected.value);
 
-            */
-
-           const currentAmount = parseInt(this.state.planSelected.value, 10);
-           let ecommerceAmount = null;
-           let ecommerceConvertedAmount = null;
-
-           if(CURRENCY !== 'INR') {
-               switch(currentAmount) {
-                   case 20:
-                       ecommerceConvertedAmount = 1435;
-                       break;
-                   case 22:
-                       ecommerceConvertedAmount = 1573;
-                       break;
-                   case 35:
-                       ecommerceConvertedAmount = 2511;
-                       break;
-                   case 38:
-                       ecommerceConvertedAmount = 2716;
-                       break;
-                   case 45:
-                       ecommerceConvertedAmount = 3229;
-                       break;
-                   case 49:
-                       ecommerceConvertedAmount = 3502; 
-                       break;
-               }
-               ecommerceAmount = ecommerceConvertedAmount;
-           } else {
-               ecommerceAmount = currentAmount;
-           }
-
-           console.log("Amount: ", typeof ecommerceAmount, ecommerceAmount);
-           console.log("Currency: ", typeof CURRENCY, CURRENCY);
-
-           firebase.analytics().logEvent("AndroidEcommercePurchase", {
-               Amount: ecommerceAmount,
-               value: ecommerceAmount,
-               Currency: CURRENCY,
-           });
-           
-          // New Ecommerce Code - End
-
-            this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
+            //this.sendCommerceEvent(transition.txnid, CURRENCY, this.state.planSelected.value)
 
             params.LessonStatus[key] = update;
             this.setState({ executed: false, showWebpage: false });
-            console.log("success:", data);
+            console.log("success:", data,params);
+
             this.writeToDB({ params, lessonDetails: this.props.params.info, isSuccess: true, lesnId });
 
 
             this.writeToRealtimeDatabase(params, update, CURRENCY)
 
-            if (this.state.isSuccess) {
+            /* if (this.state.isSuccess) {
                 this.setState({ showWebpage: false })
                 this.closeSuccess()
-            }
+            } */
         }
     }
-    writeToRealtimeDatabase(params, purchasedLesson, CURRENCY) {
+     writeToRealtimeDatabase = async(params, purchasedLesson, CURRENCY)=> {
+        console.log("writeToRealtimeDatabase",params, purchasedLesson, CURRENCY)
         var self = this
         firebase.firestore().collection("users").doc(self.props.user.user.uid).get().then(function (doc) {
             if (doc.exists) {
@@ -294,32 +304,31 @@ class SubscriptionModalNavigation extends React.Component {
         let transHistoryArray = Object.values(params.TransactionHistory)
         var sId = firebase.database().ref().push().key
         console.log("subscription_id---", sId);
+         firebase.database().ref('/user_subscription').child(sId).set({
+             subscription_id: sId,
+             email: self.props.user.user.email,
+             product_id: purchasedLesson.currentLevelId,
+             purchase_date_pst: purchasedLesson.startDate,
+             is_trial_period: false,
+             subscription_type:"Fresh",
+             subscription_start_date_time: purchasedLesson.startDate,
+             subscription_end_date_time: purchasedLesson.endDate,
+             course_fee_amount_paid: transHistoryArray[0].amount
+         });    
 
-        // Live Transaction
-        firebase.database().ref('/user_subscription').child(sId).set({
-            subscription_id: sId,
-            email: self.props.user.user.email,
-            product_id: purchasedLesson.currentLevelId,
-            purchase_date_pst: purchasedLesson.startDate,
-            is_trial_period: false,
-            subscription_type: 'Fresh',
-            subscription_start_date_time: purchasedLesson.startDate,
-            subscription_end_date_time: purchasedLesson.endDate,
-            course_fee_amount_paid: transHistoryArray[0].amount
-        });
-
-        // Test Transaction
-        // firebase.database().ref('/user_subscription').child(sId).set({
-        //     subscription_id: sId,
-        //     email: self.props.user.user.email,
-        //     product_id: purchasedLesson.currentLevelId,
-        //     purchase_date_pst: purchasedLesson.startDate,
-        //     is_trial_period: false,
-        //     subscription_type: 'Test',
-        //     subscription_start_date_time: purchasedLesson.startDate,
-        //     subscription_end_date_time: purchasedLesson.endDate,
-        //     course_fee_amount_paid: transHistoryArray[0].amount
+        // Subscription Test - Start
+        //firebase.database().ref('/user_subscription').child(sId).set({
+          //   subscription_id: sId,
+           // email: self.props.user.user.email,
+           // product_id: purchasedLesson.currentLevelId,
+           //purchase_date_pst: purchasedLesson.startDate,
+           //  is_trial_period: false,
+           //  subscription_type: 'Test',
+           //  subscription_start_date_time: purchasedLesson.startDate,
+           //  subscription_end_date_time: purchasedLesson.endDate,
+           //  course_fee_amount_paid: transHistoryArray[0].amount
         // });
+        // Subscription Test - End
 
         var stId = firebase.database().ref().push().key
         firebase.database().ref('/user_subscription_transactions').child(stId).set({
@@ -332,6 +341,40 @@ class SubscriptionModalNavigation extends React.Component {
             amount: transHistoryArray[0].amount,
             currency: CURRENCY,
         });
+
+        let apiData =  {
+            "course_fee_amount_paid": transHistoryArray[0].amount,
+            "email": self.props.user.user.email,
+            "is_trial_period": false,
+            "product_id": purchasedLesson.currentLevelId,
+            "purchase_date_pst": purchasedLesson.startDate,
+            "subscription_start_date_time": purchasedLesson.startDate,
+            "subscription_end_date_time": purchasedLesson.endDate,
+            "subscription_id": sId,
+            "subscription_type": "fresh",
+            "transaction_details":
+                 {
+                    "amount": transHistoryArray[0].amount,
+                    "currentLessonId": this.props.params.info.currentLessonId,
+                    "currentLevelId": purchasedLesson.currentLevelId,
+                    "start_date": purchasedLesson.startDate,
+                    "end_date": purchasedLesson.endDate,
+                    "txnid": sId,
+                    "currency": CURRENCY,
+                    "purchased_from_device": Platform.OS,
+                    "payment_gateway": this.paymentType==='test'? "PayUTest" : "PayU",
+                    "transaction_date":  purchasedLesson.startDate
+                 }
+          }
+
+         //let data_user_subscription = await this.sendTansactionReportsOnAPi("https://dev100.mercuryminds.com/voxguru/api/add_user_subscription.php",apiData);
+         console.log("sendTansactionReportsOnAPi request==>",apiData);
+         axios.post("https://app.voxguru.in/api/add_user_subscription.php", apiData)
+                      .then((dataApi) =>{
+                            console.log("sendTansactionReportsOnAPi",dataApi);
+                      }).catch(err=>{
+                        console.log("sendTansactionReportsOnAPi err",err);
+                      });
     }
 
     onNavigationStateChange = (data) => {
@@ -376,35 +419,38 @@ class SubscriptionModalNavigation extends React.Component {
     userInfoSubmit = (params) => {
         console.log(params);
         this.setState({ userInfoConfirm: true });
-        // processing payment
+        if(this.paymentType === 'test'){
+            //for test account payU
+         newOrder.Create({
+            amount: this.state.planSelected.value,
+             productinfo: this.state.params.info.currentLevelName,
+             firstname: params.name,
+             email: this.props.user.user.email,
+             phone: params.phone,
+             surl: 'https://www.google.com/_success',
+             furl: 'https://www.google.com/_failure',
+             service_provider: 'payuBiz',
+             txnid: uuid.v4(),
+         }, false);
+        } else{
+                    // processing payment
 
         // for live account payU
-        newOrder.Create({
-            amount: this.state.planSelected.value,
-            productinfo: this.state.params.info.currentLevelName,
-            firstname: params.name,
-            email: params.email,
-            phone: params.phone,
-            surl: 'https://www.google.com/_success',
-            furl: 'https://www.google.com/_failure',
-            service_provider: 'payuBiz',
-            txnid: uuid.v4(),
-            key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
-            salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
+        console.log('live payment ')
+       newOrder.Create({
+           amount: this.state.planSelected.value,
+           productinfo: this.state.params.info.currentLevelName,
+           firstname: params.name,
+           email: this.props.user.user.email,
+           phone: params.phone,
+           surl: 'https://www.google.com/_success',
+           furl: 'https://www.google.com/_failure',
+           service_provider: 'payuBiz',
+           txnid: uuid.v4(),
+           key: this.props.user.userIN ? "7dr1rA" : "fDBTdB",
+           salt: this.props.user.userIN ? "vLEDVf0x" : "FKU2QUeq",
         }, true);
-
-        // for test account payU
-        // newOrder.Create({
-        //     amount: this.state.planSelected.value,
-        //     productinfo: this.state.params.info.currentLevelName,
-        //     firstname: params.name,
-        //     email: params.email,
-        //     phone: params.phone,
-        //     surl: 'https://www.google.com/_success',
-        //     furl: 'https://www.google.com/_failure',
-        //     service_provider: 'payuBiz',
-        //     txnid: uuid.v4(),
-        // }, false);
+        }
 
         newOrder.sendReq()
             .then(Response => {
@@ -428,6 +474,24 @@ class SubscriptionModalNavigation extends React.Component {
                 console.log(err);
             });
     };
+
+    sendTansactionReportsOnAPi=async (url,data)=>{
+  
+        try{
+        
+          let response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(data)
+          });
+          return await response.json();
+        } catch(err){
+          return err;
+          console.log(error.code);
+        }
+      }
 
     writeToDB = ({ params, lessonDetails, isSuccess, lesnId }) => {
         var self = this;
@@ -455,7 +519,7 @@ class SubscriptionModalNavigation extends React.Component {
         }
 
         batch.commit().then(function () {
-            // console.log("batch wrote successfully");
+             console.log("batch wrote successfully");
             ToastAndroid.show(`Completed Course buy`, ToastAndroid.LONG)
             self.props.dispatch({ type: "USER_COURSE_BUY", params, lessonDetails, isSuccess, lesnId });
             self.props.dispatch({ type: "USER_UPDATE", params });
@@ -463,6 +527,9 @@ class SubscriptionModalNavigation extends React.Component {
         })
     }
     render() {
+
+
+
         return (
             <Modal
                 visible={this.state.modalVisible}

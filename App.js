@@ -19,7 +19,6 @@ import CarrierInfo from 'react-native-carrier-info';
 import HomeScreen from './src/screens/HomeScreen'
 
 import Orientation from 'react-native-orientation-locker';
-import './shim.js';
 import DeviceInfo from 'react-native-device-info'
 
 
@@ -298,7 +297,7 @@ export default class MyApp extends React.Component {
                   onRequestClose={() => this.onBackPress()}
                   transparent
                >
-                  <View style={{ flex: 1, opacity: 0.95, backgroundColor: 'rgba(0,0,0,0.7)' }}>
+                  <View style={{  opacity: 0.95, backgroundColor: 'rgba(0,0,0,0.7)' }}>
                      <LottieView
                         ref={animation => {
                            this.animation = animation;

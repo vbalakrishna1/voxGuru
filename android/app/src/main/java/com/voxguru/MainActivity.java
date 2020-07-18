@@ -2,7 +2,6 @@ package com.voxguru;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.multidex.MultiDex;
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {

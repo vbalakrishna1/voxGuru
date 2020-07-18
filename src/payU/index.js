@@ -1,8 +1,3 @@
-// const crypto = require("crypto"),
-//       request = require("request");
-//
-import '../../shim.js';
-import crypto from 'react-native-crypto';
 
 
 const PayuNewOrder = function() {
@@ -147,12 +142,7 @@ PayuNewOrder.prototype.makeHash = function() {
         }
         hashString += "|||||" + this.salt;
 
-        // HASH
-        let hash = new crypto.createHash("sha512");
-        hash.update(hashString);
-        this.__main__.hash = String.prototype.toLowerCase.call(hash.digest('hex'));
-
-        return this.__main__.hash;
+        return null;
     } catch (e) {
         console.error(e);
         return false;

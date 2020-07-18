@@ -9,7 +9,6 @@ import {
 //Redux
 import { connect } from 'react-redux';
 import Voxplayer from '../Component/Voxplayer';
-import KeepAwake from 'react-native-keep-awake';
 import firebase from 'react-native-firebase';
 import debounce from 'lodash.debounce';
 import Icon from 'react-native-vector-icons/MaterialIcons'

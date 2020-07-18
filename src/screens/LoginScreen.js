@@ -473,7 +473,7 @@ class LScreen extends React.Component {
     }
       return (
         <StyledContainer>
-          <Header title={"Login with Email"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.back())} />
+          <Header title={"Login with Email"} leftNavMenu={false} leftNavFunc={() => this.props.navigation.dispatch(NavigationActions.PUSH())} />
           <View style={{ flex: 1, alignItems: "center", justifyContent: "space-between" }}>
             <View style={{ width: " 90%" }}>
               <TextField

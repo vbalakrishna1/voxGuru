@@ -175,27 +175,21 @@ android {
 
 
 dependencies {
+    implementation project(':react-native-randombytes')
     implementation project(':react-native-webview-bridge')
     implementation project(':react-native-video')
     implementation project(':react-native-carrier-info')
-    implementation project(':react-native-svg')
-    implementation project(':react-native-randombytes')
     implementation project(':react-native-gesture-handler')
-    implementation project(':@react-native-community_slider')
     implementation project(':react-native-orientation-locker')
     implementation project(':react-native-device-info')
-    implementation project(':react-native-fabric')
     implementation project(':react-native-vector-icons')
-    implementation project(':react-native-udp')
-    implementation project(':react-native-tcp')
     implementation project(':react-native-linear-gradient')
-    implementation project(':react-native-keep-awake')
     implementation project(':react-native-clear-app-cache')
     implementation project(':react-native-branch')
     implementation project(':lottie-react-native')
     implementation project(':react-native-fbsdk')
     implementation project(':react-native-firebase')
-    implementation 'com.android.support:multidex:1.0.2'
+    implementation 'com.android.support:multidex:1.0.3'
 //    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
 //        transitive = true
 //    }
@@ -223,14 +217,14 @@ dependencies {
 
 //    compile 'com.google.firebase:firebase-messaging:10.0.1'
 //    +'
-    implementation 'com.android.support:support-annotations:28.0.0'
+    // implementation 'com.android.support:support-annotations:28.0.0'
 
 
 
     implementation "com.google.firebase:firebase-dynamic-links:17.0.0"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    // implementation "com.android.support:appcompat-v7:28.0.0:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
 }
 

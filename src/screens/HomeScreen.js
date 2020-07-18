@@ -20,12 +20,9 @@ import Header from '../Component/Header';
 import TopCard from '../Component/TopCard';
 import Card from '../Component/Card';
 import * as Progress from 'react-native-progress';
-// var Fabric = require('react-native-fabric');
 // var { Crashlytics } = Fabric;
 // const debounce = require('lodash.debounce');
 import debounce from 'lodash.debounce'
-import { newOrder } from '../payU';
-import { fail } from 'assert';
 const uuid = require('react-native-uuid');
 import LinearGradient from 'react-native-linear-gradient';
 

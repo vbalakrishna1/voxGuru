@@ -8,7 +8,7 @@ const Header = (props) => {
    return (
       <StyledHeader>
           <StyledLeftBox>
-          <StyledTouchableOpacity onPress = {props.leftNavFunc}>
+          <TouchableOpacity onPress = {()=>props.leftNavFunc()}>
           { props.leftNavMenu ? (<View style={{flexDirection: "row", alignContent: "flex-start", justifyContent: "space-between"}}>
                     <StyledMenuIcon name="md-menu"/>
                       <Image 
@@ -16,7 +16,7 @@ const Header = (props) => {
                       source={require('../images/logo1.png')}/>
         </View>
         ):(<StyledBackIcon name="md-arrow-back"/>)}
-          </StyledTouchableOpacity>
+          </TouchableOpacity>
           { !props.leftNavMenu && props.title ? (<AlignedText textalign={"Left"} selfalign={"Center"} padding={"5px"} color={"Dark"} weight={"Bold"} size={"Large"}>{props.title}</AlignedText>): null}
           </StyledLeftBox>
           <StyledCenterBox>

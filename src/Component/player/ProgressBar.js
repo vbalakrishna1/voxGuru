@@ -1,5 +1,4 @@
 import React from 'react';
-import Slider from '@react-native-community/slider';
 import {View, Text, StyleSheet} from 'react-native';
 
 export const ProgressBar = ({
@@ -14,18 +13,6 @@ export const ProgressBar = ({
 
   return (
     <View style={styles.wrapper}>
-      <Slider
-        value={currentTime}
-        minimumValue={0}
-        maximumValue={duration}
-        step={1}
-        onValueChange={handleOnSlide}
-        onSlidingStart={onSlideStart}
-        onSlidingComplete={onSlideComplete}
-        minimumTrackTintColor={'#F44336'}
-        maximumTrackTintColor={'#FFFFFF'}
-        thumbTintColor={'#F44336'}
-      />
       <View style={styles.timeWrapper}>
         <Text style={styles.timeLeft}>{position}</Text>
         <Text style={styles.timeRight}>{fullDuration}</Text>
